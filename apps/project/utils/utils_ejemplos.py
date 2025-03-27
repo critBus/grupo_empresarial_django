@@ -10,5 +10,6 @@ User = get_user_model()
 # from apps.project.models import (
 #
 # )
-
+def crear_datos_random():
+    pass
 
