@@ -1,0 +1,185 @@
+@startuml
+
+entity Student {
+    id : Integer PK // id
+    ci : CharField(20) // Carnet de Identidad
+    address : CharField // Dirección
+    grade : IntegerField // Grado
+    last_name : CharField // Apellidos
+    first_name : CharField // Nombres
+    registration_number : CharField // Número de Registro
+    sex : CharField(10) // Sexo
+    is_graduated : BooleanField // Graduado
+    is_dropped_out : BooleanField // Baja
+    can_edit_bullet : BooleanField
+}
+
+entity Dropout {
+    id : Integer PK // id
+    date : DateField // Fecha
+    municipality : CharField // Municipio
+    province : CharField // Provincia
+    school : CharField // Escuela
+}
+
+entity Career {
+    id : Integer PK // id
+    amount : IntegerField // Monto
+    name : CharField // Nombre
+}
+
+
+entity Subject {
+    id : Integer PK // id
+    grade : IntegerField // Grado
+    name : CharField // Nombre
+    tcp2_required : BooleanField // Requiere TCP2
+}
+
+entity SchoolYear {
+    id : Integer PK
+    start_date : Date
+    end_date : Date
+    name : Varchar(255)
+}
+
+
+entity StudentNote {
+    id : Integer PK
+    acs : FloatField // ACS
+    final_grade : FloatField // Nota Final
+    final_exam : FloatField // Examen Final
+    tcp1 : FloatField // TCP1
+    tcp2 : FloatField // TCP2
+}
+
+
+
+entity StudentCareer {
+    id : Integer PK
+    index : IntegerField // Índice
+}
+
+entity DegreeScale {
+    ranking_score : FloatField // Nota Escalafón
+    ranking_number : IntegerField // Número de Escalafón
+}
+entity GrantCareer{
+    id : Integer PK
+}
+
+entity ApprovedSchoolCourse{
+    id : Integer PK
+    grade : IntegerField // Grado
+    date : DateField // Fecha
+}
+
+entity SubjectSection{
+    id : Integer PK
+    index: IntegerField
+    title : CharField
+    description: CharField
+}
+entity Folder{
+    id : Integer PK
+    title : CharField
+    description: CharField
+}
+entity File{
+    id : Integer PK
+    title : CharField
+    description: CharField
+    type: CharField
+    file: CharField
+}
+entity Professor {
+    id : Integer PK
+    ci : CharField(20)
+    last_name : CharField
+    first_name : CharField
+}
+
+entity SchoolTask{
+    id : Integer PK
+    date : DateField
+    title : CharField
+    description: CharField
+}
+entity StudentResponse{
+    id : Integer PK
+    date : DateField
+    description: CharField
+}
+
+
+
+entity SchoolEvent {
+    id : Integer PK
+    date : DateTimeField
+    title : CharField
+    description: CharField
+}
+
+entity User{
+    id : Integer PK
+    username: CharField
+    email: CharField
+    password: CharField
+}
+
+entity StudentGroup {
+    id : Integer PK
+    name: CharField
+    grade : IntegerField 
+}
+
+StudentGroup "*" -- "*" Student: Grupo del estudiante
+StudentGroup "*" -- "*" Professor: Grupo del profesor
+StudentGroup "*" -- "1" SchoolYear : Curso del Grupo
+
+User "1" -- "1" Professor : Cuenta de Profesor
+User "1" -- "1" Student : Cuenta de Estudiante
+
+
+
+
+SchoolEvent "*" -- SchoolYear : Evento de Curso Escolar
+
+SubjectSection "*" -- "1" SchoolYear : Seccion del curso
+SubjectSection "*" -- "1" Subject : Seccion de asignatura
+SchoolTask "*" -- "1" SubjectSection : Tarea de seccion
+
+Folder "*" -- "1" SubjectSection : Carpeta de seccion
+Folder "1" -- "*" File : Archivo de carpeta
+
+SchoolTask "1" -- "*" File : Archivo de tarea
+SchoolTask "1" -- "*" StudentResponse : Respuesta de Tarea
+
+StudentResponse "1" -- "*" File : Archivo de respuesta
+StudentResponse "*" -- "*" Student : Respuesta de Estudiante
+
+Subject "*" -- "*" Professor : Profesor de seccion de asignatura
+
+ApprovedSchoolCourse "1" -- "1" Student : Estudiante del curso aprobado
+ApprovedSchoolCourse "*" -- "1" SchoolYear : Curso Escolar aprobado
+ApprovedSchoolCourse "1" -- "1" GrantCareer : Otorgamiento en este curso aprobado
+
+GrantCareer "1" -- "1" Student : Estudiante del otorgamiento
+GrantCareer "*" -- "1" Career : Carrera otorgada
+
+
+SchoolYear "1" -- "*" DegreeScale :  Curso del Escalafon
+SchoolYear "1" -- "*" StudentNote : Curso de la nota
+
+DegreeScale "1" -- "1" Student : Escalafon del estudiante
+
+Student "1" -- "1" Dropout : student // Estudiante
+Student "1" -- "*" StudentNote : student // Estudiante
+Student "1" -- "*" StudentCareer : student // Estudiante
+
+
+
+StudentNote "1" -- "1" Subject : subject // Asignatura
+StudentCareer "*" -- "1" Career : career // Carrera
+
+@enduml
