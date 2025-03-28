@@ -163,3 +163,4 @@ db.sqlite3
 *.cpython-311
 __pycache__/
 __pycache__
+.vscode
