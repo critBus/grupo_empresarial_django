@@ -7,4 +7,16 @@ User = get_user_model()
 
 @admin.register(User)
 class MyUserAdmin(UserAdmin):
-    pass
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        ('Información Personal', {'fields': ('first_name', 'last_name', 'email')}),
+        ('Permisos', {'fields': ('is_active', 'is_superuser', 'groups')}),
+        
+    )
+    
+    # add_fieldsets = (
+    #     (None, {
+    #         'classes': ('wide',),
+    #         'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name'),
+    #     }),
+    # )

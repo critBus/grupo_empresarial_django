@@ -10,7 +10,8 @@ from ..models import (
     Empresa, Cuadro, CargoSinCubrir, AtencionPoblacion, CapitalHumano,
     Interruptos, Delitos, PlanRecape, PlanMateriaPrima, TipoMateriaPrima,
     Inmuebles, PlanDeMantenimiento, Inversiones, IndicadorGeneral,
-    Deficiencias, UEBperdidas, CuentasCobrar, CuentasPagar
+    Deficiencias, UEBperdidas, CuentasCobrar, CuentasPagar,
+    ROL_NAME_ADMIN, ROL_NAME_SECRETARIA, ROL_NAME_DIRECTORA
 )
 
 User = get_user_model()
@@ -20,6 +21,27 @@ def crear_datos_random():
         return
 
     fake = Faker('es_ES')
+
+    # Crear usuarios para cada rol
+    secretaria_user = User.objects.create_user(
+        username='secretaria',
+        email='secretaria@example.com',
+        password='123',
+        first_name='Secretaria',
+        last_name='General',
+    )
+    secretaria_group = Group.objects.get(name=ROL_NAME_SECRETARIA)
+    secretaria_user.groups.add(secretaria_group)
+
+    directora_user = User.objects.create_user(
+        username='directora',
+        email='directora@example.com',
+        password='123',
+        first_name='Directora',
+        last_name='General',
+    )
+    directora_group = Group.objects.get(name=ROL_NAME_DIRECTORA)
+    directora_user.groups.add(directora_group)
 
     # Lista de empresas predefinidas
     empresas_nombres = [
