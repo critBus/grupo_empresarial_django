@@ -152,7 +152,7 @@ cython_debug/
 .idea/
 media
 .idea
-static
+/static/
 
 .env
 .env.despliegue
