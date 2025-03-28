@@ -62,6 +62,8 @@ Empresa "1" -- "*" Delitos
 
 class PlanRecape {
     plan: integer(10)
+    mes: integer(10)
+    anno: integer(10)
     empresa_id: integer(10)
 }
 Empresa "1" -- "1" PlanRecape
