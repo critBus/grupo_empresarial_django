@@ -1,6 +1,6 @@
 @startuml
 
-!include <C4/C4_Component>
+' !include <C4/C4_Component>
 
 class Empresa {
     codigo: varchar(10)
@@ -126,24 +126,42 @@ class Deficiencias {
 Empresa "1" -- "*" Deficiencias
 
 
-class UEBpérdidas {
+class UEBperdidas {
     cantidadUEB: integer(10)
     nombre: varchar(255)
     municipio: varchar(255)
     empresa_id: integer(10)
 }
-Empresa "1" -- "*" UEBpérdidas
+Empresa "1" -- "*" UEBperdidas
 
 class CuentasCobrar {
-    cantidad: integer(10)
+    inicio_anno: float()
+    mes_anterior: float()
+    mes_actual: float()
+    diferencia_incio_anno: float()
+    diferencia_mes_anterior: float()
+    saldo_al_inicio: float()
+    mes_anterior_vencidas: float()
+    mes_actual_vencidas: float()
+    indice_gestion_cloro: float()
+    ciclo_cobros_dias: float()
     empresa_id: integer(10)
 }
-Empresa "1" -- "*" CuentasCobrar
+Empresa "1" -- "1" CuentasCobrar
 class CuentasPagar {
-    cantidad: integer(10)
+    inicio_anno: float()
+    mes_anterior: float()
+    mes_actual: float()
+    diferencia_incio_anno: float()
+    diferencia_mes_anterior: float()
+    saldo_al_inicio: float()
+    mes_anterior_vencidas: float()
+    mes_actual_vencidas: float()
+    indice_gestion_cloro: float()
+    ciclo_cobros_dias: float()
     empresa_id: integer(10)
 }
-Empresa "1" -- "*" CuentasPagar
+Empresa "1" -- "1" CuentasPagar
 
 
 

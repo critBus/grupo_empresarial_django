@@ -152,15 +152,33 @@ class UEBperdidas(models.Model):
         return f"{self.nombre} - {self.municipio}"
 
 class CuentasCobrar(models.Model):
-    cantidad = models.IntegerField()
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    inicio_anno = models.FloatField()
+    mes_anterior = models.FloatField()
+    mes_actual = models.FloatField()
+    diferencia_incio_anno = models.FloatField()
+    diferencia_mes_anterior = models.FloatField()
+    saldo_al_inicio = models.FloatField()
+    mes_anterior_vencidas = models.FloatField()
+    mes_actual_vencidas = models.FloatField()
+    indice_gestion_cloro = models.FloatField()
+    ciclo_cobros_dias = models.FloatField()
+    empresa = models.OneToOneField(Empresa, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Cuentas por Cobrar - {self.empresa.nombre}"
 
 class CuentasPagar(models.Model):
-    cantidad = models.IntegerField()
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    inicio_anno = models.FloatField()
+    mes_anterior = models.FloatField()
+    mes_actual = models.FloatField()
+    diferencia_incio_anno = models.FloatField()
+    diferencia_mes_anterior = models.FloatField()
+    saldo_al_inicio = models.FloatField()
+    mes_anterior_vencidas = models.FloatField()
+    mes_actual_vencidas = models.FloatField()
+    indice_gestion_cloro = models.FloatField()
+    ciclo_cobros_dias = models.FloatField()
+    empresa = models.OneToOneField(Empresa, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Cuentas por Pagar - {self.empresa.nombre}"

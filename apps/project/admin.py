@@ -85,8 +85,12 @@ class UEBperdidasAdmin(admin.ModelAdmin):
 
 @admin.register(CuentasCobrar)
 class CuentasCobrarAdmin(admin.ModelAdmin):
-    list_display = ('empresa', 'cantidad')
+    list_display = ('empresa', 'inicio_anno', 'mes_anterior', 'mes_actual', 'diferencia_incio_anno', 
+                   'diferencia_mes_anterior', 'saldo_al_inicio', 'mes_anterior_vencidas', 
+                   'mes_actual_vencidas', 'indice_gestion_cloro', 'ciclo_cobros_dias')
 
 @admin.register(CuentasPagar)
 class CuentasPagarAdmin(admin.ModelAdmin):
-    list_display = ('empresa', 'cantidad')
+    list_display = ('empresa', 'inicio_anno', 'mes_anterior', 'mes_actual', 'diferencia_incio_anno', 
+                   'diferencia_mes_anterior', 'saldo_al_inicio', 'mes_anterior_vencidas', 
+                   'mes_actual_vencidas', 'indice_gestion_cloro', 'ciclo_cobros_dias')
