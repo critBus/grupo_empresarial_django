@@ -92,19 +92,18 @@ def crear_datos_random():
             otrasCausas=random.randint(2, 15)
         )
 
-        # Crear Delitos (múltiples)
-        for _ in range(random.randint(0, 3)):
-            Delitos.objects.create(
-                empresa=empresa,
-                denuncia=random.randint(1, 100),
-                municipio=random.choice(municipios),
-                fecha=fake.date_between(start_date='-1y', end_date='today'),
-                unidad=fake.company(),
-                tipocidad=random.choice(['Robo', 'Hurto', 'Vandalismo']),
-                productosSustraidos=fake.text(max_nb_chars=50),
-                valorPerdidas=round(random.uniform(100, 10000), 2),
-                medidasTomadas=random.choice(['Preventiva', 'Correctiva', 'Legal'])
-            )
+        # Crear Delitos (uno por empresa)
+        Delitos.objects.create(
+            empresa=empresa,
+            denuncia=random.randint(1, 100),
+            municipio=random.choice(municipios),
+            fecha=fake.date_between(start_date='-1y', end_date='today'),
+            unidad=fake.company(),
+            tipocidad=random.choice(['Robo', 'Hurto', 'Vandalismo']),
+            productosSustraidos=fake.text(max_nb_chars=50),
+            valorPerdidas=round(random.uniform(100, 10000), 2),
+            medidasTomadas=random.choice(['Preventiva', 'Correctiva', 'Legal'])
+        )
 
         # Crear PlanRecape
         PlanRecape.objects.create(
@@ -126,13 +125,12 @@ def crear_datos_random():
                 cantidad=random.randint(100, 1000)
             )
 
-        # Crear Inmuebles (múltiples)
-        for tipo in tipos_inmuebles:
-            Inmuebles.objects.create(
-                empresa=empresa,
-                tipo=tipo,
-                cantidad=random.randint(1, 10)
-            )
+        # Crear Inmuebles (uno por empresa)
+        Inmuebles.objects.create(
+            empresa=empresa,
+            tipo=random.choice(tipos_inmuebles),
+            cantidad=random.randint(1, 10)
+        )
 
         # Crear PlanDeMantenimiento
         plan = random.randint(1000, 5000)
@@ -167,25 +165,23 @@ def crear_datos_random():
             tipo=random.choice(['Producción', 'Servicios', 'Ventas'])
         )
 
-        # Crear Deficiencias (múltiples)
-        for _ in range(random.randint(1, 3)):
-            total = random.randint(5, 20)
-            resueltas = random.randint(0, total)
-            Deficiencias.objects.create(
-                empresa=empresa,
-                total=total,
-                resueltas=resueltas,
-                pendientes=total - resueltas
-            )
+        # Crear Deficiencias (una por empresa)
+        total = random.randint(5, 20)
+        resueltas = random.randint(0, total)
+        Deficiencias.objects.create(
+            empresa=empresa,
+            total=total,
+            resueltas=resueltas,
+            pendientes=total - resueltas
+        )
 
-        # Crear UEBperdidas (múltiples)
-        for _ in range(random.randint(1, 3)):
-            UEBperdidas.objects.create(
-                empresa=empresa,
-                cantidadUEB=random.randint(1, 5),
-                nombre=fake.company(),
-                municipio=random.choice(municipios)
-            )
+        # Crear UEBperdidas (una por empresa)
+        UEBperdidas.objects.create(
+            empresa=empresa,
+            cantidadUEB=random.randint(1, 5),
+            nombre=fake.company(),
+            municipio=random.choice(municipios)
+        )
 
         # Crear CuentasCobrar
         valor_base = random.uniform(10000, 50000)

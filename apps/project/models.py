@@ -7,7 +7,8 @@ from django.core.exceptions import ValidationError
 
 User = get_user_model()
 ROL_NAME_ADMIN="admin"
-
+ROL_NAME_SECRETARIA="secretaria"
+ROL_NAME_DIRECTORA="directora"
 class Empresa(models.Model):
     codigo = models.CharField(max_length=10, verbose_name="Código")
     nombre = models.CharField(max_length=255, verbose_name="Nombre")
