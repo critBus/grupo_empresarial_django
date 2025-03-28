@@ -3,6 +3,7 @@ from typing import Dict, List
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 ROL_NAME_ADMIN="admin"
@@ -66,7 +67,7 @@ class Delitos(models.Model):
     productosSustraidos = models.CharField(max_length=255)
     valorPerdidas = models.FloatField()
     medidasTomadas = models.CharField(max_length=50)
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empresa = models.OneToOneField(Empresa, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Delito en {self.unidad} - {self.fecha}"
@@ -98,7 +99,16 @@ class TipoMateriaPrima(models.Model):
 class Inmuebles(models.Model):
     tipo = models.CharField(max_length=255)
     cantidad = models.IntegerField()
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empresa = models.OneToOneField(Empresa, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['tipo', 'empresa']
+
+    def clean(self):
+        super().clean()
+        # Validar que no exista otro inmueble del mismo tipo para esta empresa
+        if Inmuebles.objects.filter(tipo=self.tipo, empresa=self.empresa).exclude(pk=self.pk).exists():
+            raise ValidationError(f'Ya existe un inmueble de tipo {self.tipo} para esta empresa.')
 
     def __str__(self):
         return f"{self.tipo} - {self.empresa.nombre}"
@@ -137,7 +147,13 @@ class Deficiencias(models.Model):
     total = models.IntegerField()
     resueltas = models.IntegerField()
     pendientes = models.IntegerField()
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empresa = models.OneToOneField(Empresa, on_delete=models.CASCADE)
+
+    def clean(self):
+        super().clean()
+        # Validar que el total sea igual a resueltas + pendientes
+        if self.total != (self.resueltas + self.pendientes):
+            raise ValidationError('El total debe ser igual a la suma de resueltas y pendientes.')
 
     def __str__(self):
         return f"Deficiencias - {self.empresa.nombre}"
@@ -146,7 +162,16 @@ class UEBperdidas(models.Model):
     cantidadUEB = models.IntegerField()
     nombre = models.CharField(max_length=255)
     municipio = models.CharField(max_length=255)
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empresa = models.OneToOneField(Empresa, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['nombre', 'empresa']
+
+    def clean(self):
+        super().clean()
+        # Validar que no exista otra UEB con el mismo nombre para esta empresa
+        if UEBperdidas.objects.filter(nombre=self.nombre, empresa=self.empresa).exclude(pk=self.pk).exists():
+            raise ValidationError(f'Ya existe una UEB con el nombre {self.nombre} para esta empresa.')
 
     def __str__(self):
         return f"{self.nombre} - {self.municipio}"

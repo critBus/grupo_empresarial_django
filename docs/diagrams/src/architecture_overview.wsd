@@ -58,7 +58,7 @@ class Delitos {
     medidasTomadas: varchar(50)
     empresa_id: integer(10)
 }
-Empresa "1" -- "*" Delitos
+Empresa "1" -- "1" Delitos
 
 class PlanRecape {
     plan: integer(10)
@@ -123,7 +123,7 @@ class Deficiencias {
     pendientes: integer(10)
     empresa_id: integer(10)
 }
-Empresa "1" -- "*" Deficiencias
+Empresa "1" -- "1" Deficiencias
 
 
 class UEBperdidas {
@@ -132,7 +132,7 @@ class UEBperdidas {
     municipio: varchar(255)
     empresa_id: integer(10)
 }
-Empresa "1" -- "*" UEBperdidas
+Empresa "1" -- "1" UEBperdidas
 
 class CuentasCobrar {
     inicio_anno: float()
