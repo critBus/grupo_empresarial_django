@@ -15,6 +15,10 @@ class EmpresaAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
+class CargoSinCubrirInline(admin.TabularInline):
+    model = CargoSinCubrir
+    extra = 1  # Number of empty forms to display
+
 @admin.register(Cuadro)
 class CuadroAdmin(admin.ModelAdmin):
     def get_cargos_sin_cubrir(self, obj):
@@ -26,6 +30,7 @@ class CuadroAdmin(admin.ModelAdmin):
     ordering = ('empresa', 'aprobada', 'cubierta',)
     list_display_links = list(list_display).copy()
     list_filter = ('cargosincubrir__cargo',)
+    inlines = [CargoSinCubrirInline]
 
 @admin.register(CargoSinCubrir)
 class CargoSinCubrirAdmin(admin.ModelAdmin):
