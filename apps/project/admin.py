@@ -6,6 +6,7 @@ from .models import (
     Inmuebles, PlanDeMantenimiento, Inversiones, IndicadorGeneral,
     Deficiencias, UEBperdidas, CuentasCobrar, CuentasPagar
 )
+from django.utils.safestring import mark_safe
 
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
@@ -16,8 +17,13 @@ class EmpresaAdmin(admin.ModelAdmin):
 
 @admin.register(Cuadro)
 class CuadroAdmin(admin.ModelAdmin):
-    list_display = ('empresa', 'aprobada', 'cubierta')
-    ordering = list(list_display).copy()
+    def get_cargos_sin_cubrir(self, obj):
+        cargos=[cargo.cargo for cargo in obj.cargosincubrir_set.all()]
+        return mark_safe("<br>\n".join(cargos))
+    get_cargos_sin_cubrir.short_description = 'Cargos sin Cubrir'
+
+    list_display = ('empresa', 'aprobada', 'cubierta', 'get_cargos_sin_cubrir')
+    ordering = ('empresa', 'aprobada', 'cubierta',)
     list_display_links = list(list_display).copy()
 
 @admin.register(CargoSinCubrir)
