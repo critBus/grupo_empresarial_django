@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("project", "0001_initial"),
     ]
@@ -15,28 +14,32 @@ class Migration(migrations.Migration):
             model_name="deficiencias",
             name="empresa",
             field=models.OneToOneField(
-                on_delete=django.db.models.deletion.CASCADE, to="project.empresa"
+                on_delete=django.db.models.deletion.CASCADE,
+                to="project.empresa",
             ),
         ),
         migrations.AlterField(
             model_name="delitos",
             name="empresa",
             field=models.OneToOneField(
-                on_delete=django.db.models.deletion.CASCADE, to="project.empresa"
+                on_delete=django.db.models.deletion.CASCADE,
+                to="project.empresa",
             ),
         ),
         migrations.AlterField(
             model_name="inmuebles",
             name="empresa",
             field=models.OneToOneField(
-                on_delete=django.db.models.deletion.CASCADE, to="project.empresa"
+                on_delete=django.db.models.deletion.CASCADE,
+                to="project.empresa",
             ),
         ),
         migrations.AlterField(
             model_name="uebperdidas",
             name="empresa",
             field=models.OneToOneField(
-                on_delete=django.db.models.deletion.CASCADE, to="project.empresa"
+                on_delete=django.db.models.deletion.CASCADE,
+                to="project.empresa",
             ),
         ),
         migrations.AlterUniqueTogether(

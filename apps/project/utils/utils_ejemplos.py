@@ -7,38 +7,55 @@ from django.utils import timezone
 from django.utils.datetime_safe import datetime
 from faker import Faker
 from ..models import (
-    Empresa, Cuadro, CargoSinCubrir, AtencionPoblacion, CapitalHumano,
-    Interruptos, Delitos, PlanRecape, PlanMateriaPrima, TipoMateriaPrima,
-    Inmuebles, PlanDeMantenimiento, Inversiones, IndicadorGeneral,
-    Deficiencias, UEBperdidas, CuentasCobrar, CuentasPagar,
-    ROL_NAME_ADMIN, ROL_NAME_SECRETARIA, ROL_NAME_DIRECTORA
+    Empresa,
+    Cuadro,
+    CargoSinCubrir,
+    AtencionPoblacion,
+    CapitalHumano,
+    Interruptos,
+    Delitos,
+    PlanRecape,
+    PlanMateriaPrima,
+    TipoMateriaPrima,
+    Inmuebles,
+    PlanDeMantenimiento,
+    Inversiones,
+    IndicadorGeneral,
+    Deficiencias,
+    UEBperdidas,
+    CuentasCobrar,
+    CuentasPagar,
+    ROL_NAME_ADMIN,
+    ROL_NAME_SECRETARIA,
+    ROL_NAME_DIRECTORA,
 )
 
 User = get_user_model()
+
 
 def crear_datos_random():
     if User.objects.count() > 1 or Empresa.objects.count() > 0:
         return
 
-    fake = Faker('es_ES')
+    fake = Faker("es_ES")
 
     # Crear usuarios para cada rol
     secretaria_user = User.objects.create_user(
-        username='secretaria',
-        email='secretaria@example.com',
-        password='123',
-        first_name='Secretaria',
-        last_name='General',
+        username="secretaria",
+        email="secretaria@example.com",
+        password="123",
+        first_name="Secretaria",
+        last_name="General",
     )
     secretaria_group = Group.objects.get(name=ROL_NAME_SECRETARIA)
     secretaria_user.groups.add(secretaria_group)
 
     directora_user = User.objects.create_user(
-        username='directora',
-        email='directora@example.com',
-        password='123',
-        first_name='Directora',
-        last_name='General',
+        username="directora",
+        email="directora@example.com",
+        password="123",
+        first_name="Directora",
+        last_name="General",
     )
     directora_group = Group.objects.get(name=ROL_NAME_DIRECTORA)
     directora_user.groups.add(directora_group)
@@ -54,45 +71,45 @@ def crear_datos_random():
         "Empresa Provincial de Mantenimiento Vial y Construcción",
         "Empresa Provincial de Logística",
         "Empresa Provincial de Alimentos y Producciones Varias",
-        "Empresa Provincial de Servicios Técnicos del Arquitecto de la Comunidad"
+        "Empresa Provincial de Servicios Técnicos del Arquitecto de la Comunidad",
     ]
 
     # Crear empresas
     empresas = []
     for i, nombre in enumerate(empresas_nombres, 1):
-        empresa = Empresa.objects.create(
-            codigo=f'EMP{i:03d}',
-            nombre=nombre
-        )
+        empresa = Empresa.objects.create(codigo=f"EMP{i:03d}", nombre=nombre)
         empresas.append(empresa)
 
     # Tipos comunes para varias entidades
-    tipos_mantenimiento = ['Preventivo', 'Correctivo', 'Predictivo']
-    tipos_inmuebles = ['Oficina', 'Almacén', 'Taller', 'Local Comercial']
-    municipios = ['Pinar del Río', 'San Luis', 'San Juan', 'Viñales', 'La Palma']
-    tipos_materia_prima = ['Tipo A', 'Tipo B', 'Tipo C', 'Tipo D']
+    tipos_mantenimiento = ["Preventivo", "Correctivo", "Predictivo"]
+    tipos_inmuebles = ["Oficina", "Almacén", "Taller", "Local Comercial"]
+    municipios = [
+        "Pinar del Río",
+        "San Luis",
+        "San Juan",
+        "Viñales",
+        "La Palma",
+    ]
+    tipos_materia_prima = ["Tipo A", "Tipo B", "Tipo C", "Tipo D"]
 
     for empresa in empresas:
         # Crear Cuadro
         cuadro = Cuadro.objects.create(
             empresa=empresa,
             aprobada=random.randint(50, 200),
-            cubierta=random.randint(30, 150)
+            cubierta=random.randint(30, 150),
         )
 
         # Crear CargoSinCubrir
         for _ in range(random.randint(2, 5)):
-            CargoSinCubrir.objects.create(
-                cuadro=cuadro,
-                cargo=fake.job()
-            )
+            CargoSinCubrir.objects.create(cuadro=cuadro, cargo=fake.job())
 
         # Crear AtencionPoblacion
         AtencionPoblacion.objects.create(
             empresa=empresa,
             quejas=random.randint(0, 50),
             peticiones=random.randint(10, 100),
-            termino=random.choice(['Enero', 'Febrero', 'Marzo'])
+            termino=random.choice(["Enero", "Febrero", "Marzo"]),
         )
 
         # Crear CapitalHumano
@@ -101,7 +118,7 @@ def crear_datos_random():
             empresa=empresa,
             plantillaAprobada=plantilla_aprobada,
             plantillaCubierta=random.randint(80, plantilla_aprobada),
-            mujeres=random.randint(30, 200)
+            mujeres=random.randint(30, 200),
         )
 
         # Crear Interruptos
@@ -111,7 +128,7 @@ def crear_datos_random():
             total=total_interrupts,
             equiposRotos=random.randint(5, 20),
             faltaPiezas=random.randint(3, 15),
-            otrasCausas=random.randint(2, 15)
+            otrasCausas=random.randint(2, 15),
         )
 
         # Crear Delitos (uno por empresa)
@@ -119,12 +136,12 @@ def crear_datos_random():
             empresa=empresa,
             denuncia=random.randint(1, 100),
             municipio=random.choice(municipios),
-            fecha=fake.date_between(start_date='-1y', end_date='today'),
+            fecha=fake.date_between(start_date="-1y", end_date="today"),
             unidad=fake.company(),
-            tipocidad=random.choice(['Robo', 'Hurto', 'Vandalismo']),
+            tipocidad=random.choice(["Robo", "Hurto", "Vandalismo"]),
             productosSustraidos=fake.text(max_nb_chars=50),
             valorPerdidas=round(random.uniform(100, 10000), 2),
-            medidasTomadas=random.choice(['Preventiva', 'Correctiva', 'Legal'])
+            medidasTomadas=random.choice(["Preventiva", "Correctiva", "Legal"]),
         )
 
         # Crear PlanRecape
@@ -132,26 +149,25 @@ def crear_datos_random():
             empresa=empresa,
             plan=random.randint(1000, 5000),
             mes=random.randint(1, 12),
-            anno=2024
+            anno=2024,
         )
 
         # Crear PlanMateriaPrima y TipoMateriaPrima
         plan_mp = PlanMateriaPrima.objects.create(
-            empresa=empresa,
-            plan=random.randint(1000, 5000)
+            empresa=empresa, plan=random.randint(1000, 5000)
         )
         for tipo in tipos_materia_prima:
             TipoMateriaPrima.objects.create(
                 plan_materia_prima=plan_mp,
                 tipo=tipo,
-                cantidad=random.randint(100, 1000)
+                cantidad=random.randint(100, 1000),
             )
 
         # Crear Inmuebles (uno por empresa)
         Inmuebles.objects.create(
             empresa=empresa,
             tipo=random.choice(tipos_inmuebles),
-            cantidad=random.randint(1, 10)
+            cantidad=random.randint(1, 10),
         )
 
         # Crear PlanDeMantenimiento
@@ -161,8 +177,8 @@ def crear_datos_random():
             empresa=empresa,
             plan=plan,
             real=real,
-            porciento=int((real/plan) * 100),
-            tipo=random.choice(tipos_mantenimiento)
+            porciento=int((real / plan) * 100),
+            tipo=random.choice(tipos_mantenimiento),
         )
 
         # Crear Inversiones
@@ -172,8 +188,10 @@ def crear_datos_random():
             empresa=empresa,
             plan=plan_inv,
             real=real_inv,
-            porciento=int((real_inv/plan_inv) * 100),
-            tipo=random.choice(['Construcción', 'Equipamiento', 'Infraestructura'])
+            porciento=int((real_inv / plan_inv) * 100),
+            tipo=random.choice(
+                ["Construcción", "Equipamiento", "Infraestructura"]
+            ),
         )
 
         # Crear IndicadorGeneral
@@ -183,8 +201,8 @@ def crear_datos_random():
             empresa=empresa,
             plan=plan_ind,
             real=real_ind,
-            porciento=int((real_ind/plan_ind) * 100),
-            tipo=random.choice(['Producción', 'Servicios', 'Ventas'])
+            porciento=int((real_ind / plan_ind) * 100),
+            tipo=random.choice(["Producción", "Servicios", "Ventas"]),
         )
 
         # Crear Deficiencias (una por empresa)
@@ -194,7 +212,7 @@ def crear_datos_random():
             empresa=empresa,
             total=total,
             resueltas=resueltas,
-            pendientes=total - resueltas
+            pendientes=total - resueltas,
         )
 
         # Crear UEBperdidas (una por empresa)
@@ -202,7 +220,7 @@ def crear_datos_random():
             empresa=empresa,
             cantidadUEB=random.randint(1, 5),
             nombre=fake.company(),
-            municipio=random.choice(municipios)
+            municipio=random.choice(municipios),
         )
 
         # Crear CuentasCobrar
@@ -218,7 +236,7 @@ def crear_datos_random():
             mes_anterior_vencidas=valor_base * 0.3,
             mes_actual_vencidas=valor_base * 0.25,
             indice_gestion_cloro=random.uniform(0.7, 1.0),
-            ciclo_cobros_dias=random.randint(30, 90)
+            ciclo_cobros_dias=random.randint(30, 90),
         )
 
         # Crear CuentasPagar
@@ -234,5 +252,5 @@ def crear_datos_random():
             mes_anterior_vencidas=valor_base * 0.3,
             mes_actual_vencidas=valor_base * 0.25,
             indice_gestion_cloro=random.uniform(0.7, 1.0),
-            ciclo_cobros_dias=random.randint(30, 90)
+            ciclo_cobros_dias=random.randint(30, 90),
         )

@@ -13,4 +13,3 @@ def format_float(value):
         return "-"
     else:
         return f"{value:.2f}"
-
