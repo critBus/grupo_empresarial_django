@@ -104,42 +104,43 @@ class TipoMateriaPrimaAdmin(admin.ModelAdmin):
 @admin.register(Inmuebles)
 class InmueblesAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'tipo', 'cantidad')
-    list_filter = ('tipo',)
+    list_filter = ('empresa', 'tipo', 'cantidad')
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
 @admin.register(PlanDeMantenimiento)
 class PlanDeMantenimientoAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'plan', 'real', 'porciento', 'tipo')
-    list_filter = ('tipo',)
+    list_filter = ('empresa', 'plan', 'real', 'porciento', 'tipo')
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
 @admin.register(Inversiones)
 class InversionesAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'plan', 'real', 'porciento', 'tipo')
-    list_filter = ('tipo',)
+    list_filter = ('empresa', 'plan', 'real', 'porciento', 'tipo')
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
 @admin.register(IndicadorGeneral)
 class IndicadorGeneralAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'plan', 'real', 'porciento', 'tipo')
-    list_filter = ('tipo',)
+    list_filter = ('empresa', 'plan', 'real', 'porciento', 'tipo')
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
 @admin.register(Deficiencias)
 class DeficienciasAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'total', 'resueltas', 'pendientes')
+    list_filter = ('empresa', 'total', 'resueltas', 'pendientes')
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
 @admin.register(UEBperdidas)
 class UEBperdidasAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'cantidadUEB', 'nombre', 'municipio')
-    list_filter = ('municipio',)
-    search_fields = ('nombre', 'municipio')
+    list_filter = ('empresa', 'cantidadUEB','municipio')
+    search_fields = ('nombre',)
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
@@ -148,6 +149,10 @@ class CuentasCobrarAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'inicio_anno', 'mes_anterior', 'mes_actual', 'diferencia_incio_anno', 
                    'diferencia_mes_anterior', 'saldo_al_inicio', 'mes_anterior_vencidas', 
                    'mes_actual_vencidas', 'indice_gestion_cloro', 'ciclo_cobros_dias')
+
+    list_filter = ('empresa', 'inicio_anno', 'mes_anterior', 'mes_actual', 'diferencia_incio_anno',
+                   'diferencia_mes_anterior', 'saldo_al_inicio', 'mes_anterior_vencidas',
+                   'mes_actual_vencidas', 'indice_gestion_cloro', 'ciclo_cobros_dias')
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
@@ -155,6 +160,9 @@ class CuentasCobrarAdmin(admin.ModelAdmin):
 class CuentasPagarAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'inicio_anno', 'mes_anterior', 'mes_actual', 'diferencia_incio_anno', 
                    'diferencia_mes_anterior', 'saldo_al_inicio', 'mes_anterior_vencidas', 
+                   'mes_actual_vencidas', 'indice_gestion_cloro', 'ciclo_cobros_dias')
+    list_filter =('empresa', 'inicio_anno', 'mes_anterior', 'mes_actual', 'diferencia_incio_anno',
+                   'diferencia_mes_anterior', 'saldo_al_inicio', 'mes_anterior_vencidas',
                    'mes_actual_vencidas', 'indice_gestion_cloro', 'ciclo_cobros_dias')
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
