@@ -25,6 +25,7 @@ class CuadroAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'aprobada', 'cubierta', 'get_cargos_sin_cubrir')
     ordering = ('empresa', 'aprobada', 'cubierta',)
     list_display_links = list(list_display).copy()
+    list_filter = ('cargosincubrir__cargo',)
 
 @admin.register(CargoSinCubrir)
 class CargoSinCubrirAdmin(admin.ModelAdmin):
