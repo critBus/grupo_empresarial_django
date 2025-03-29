@@ -86,7 +86,7 @@ class Interruptos(models.Model):
 class Delitos(models.Model):
     denuncia = models.IntegerField(verbose_name="Número de Denuncia")
     municipio = models.CharField(max_length=50, verbose_name="Municipio")
-    fecha = models.DateField(verbose_name="Fecha")
+    fecha = models.DateField(verbose_name="Fecha",auto_now=True)
     unidad = models.CharField(max_length=50, verbose_name="Unidad")
     tipocidad = models.CharField(max_length=50, verbose_name="Tipicidad")
     productosSustraidos = models.CharField(max_length=255, verbose_name="Productos Sustraídos")
