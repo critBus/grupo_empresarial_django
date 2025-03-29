@@ -3,8 +3,8 @@ from django.contrib.auth.models import Group, Permission
 from django_reportbroD.models import ReportDefinition, ReportRequest
 
 from apps.project.models import (
-    ROL_NAME_ADMIN, 
-    ROL_NAME_DIRECTORA, 
+    ROL_NAME_ADMIN,
+    ROL_NAME_DIRECTORA,
     ROL_NAME_SECRETARIA,
     Empresa,
     Cuadro,
@@ -38,7 +38,7 @@ def crear_roles_django_default():
             User,
             Group,
             Permission,
-            ReportRequest
+            ReportRequest,
         ],
         lista_modelos_solo_update=[],
         lista_modelos_solo_create=[],

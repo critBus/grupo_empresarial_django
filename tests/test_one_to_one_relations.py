@@ -17,62 +17,47 @@ from apps.project.models import (
     UEBperdidas,
     CuentasCobrar,
     CuentasPagar,
-    Inmuebles
+    Inmuebles,
 )
+
 
 class OneToOneRelationsTest(TestCase):
     def setUp(self):
         # Crear una empresa para las pruebas
         self.empresa1 = Empresa.objects.create(
-            codigo="EMP001",
-            nombre="Empresa Test 1"
+            codigo="EMP001", nombre="Empresa Test 1"
         )
         self.empresa2 = Empresa.objects.create(
-            codigo="EMP002",
-            nombre="Empresa Test 2"
+            codigo="EMP002", nombre="Empresa Test 2"
         )
 
     @transaction.atomic
     def test_cuadro_one_to_one(self):
         # Crear primer cuadro
         cuadro1 = Cuadro.objects.create(
-            aprobada=10,
-            cubierta=8,
-            empresa=self.empresa1
+            aprobada=10, cubierta=8, empresa=self.empresa1
         )
-        
+
         # Intentar crear otro cuadro para la misma empresa debe fallar
         with transaction.atomic():
             with self.assertRaises(IntegrityError):
                 Cuadro.objects.create(
-                    aprobada=12,
-                    cubierta=10,
-                    empresa=self.empresa1
+                    aprobada=12, cubierta=10, empresa=self.empresa1
                 )
-        
+
         # Crear cuadro para otra empresa debe funcionar
-        Cuadro.objects.create(
-            aprobada=15,
-            cubierta=12,
-            empresa=self.empresa2
-        )
+        Cuadro.objects.create(aprobada=15, cubierta=12, empresa=self.empresa2)
 
     @transaction.atomic
     def test_atencion_poblacion_one_to_one(self):
         atencion1 = AtencionPoblacion.objects.create(
-            quejas=5,
-            peticiones=10,
-            termino="Q1",
-            empresa=self.empresa1
+            quejas=5, peticiones=10, termino="Q1", empresa=self.empresa1
         )
 
         with transaction.atomic():
             with self.assertRaises(IntegrityError):
                 AtencionPoblacion.objects.create(
-                    quejas=3,
-                    peticiones=7,
-                    termino="Q2",
-                    empresa=self.empresa1
+                    quejas=3, peticiones=7, termino="Q2", empresa=self.empresa1
                 )
 
     @transaction.atomic
@@ -81,7 +66,7 @@ class OneToOneRelationsTest(TestCase):
             plantillaAprobada=100,
             plantillaCubierta=90,
             mujeres=45,
-            empresa=self.empresa1
+            empresa=self.empresa1,
         )
 
         with transaction.atomic():
@@ -90,7 +75,7 @@ class OneToOneRelationsTest(TestCase):
                     plantillaAprobada=120,
                     plantillaCubierta=110,
                     mujeres=55,
-                    empresa=self.empresa1
+                    empresa=self.empresa1,
                 )
 
     @transaction.atomic
@@ -100,7 +85,7 @@ class OneToOneRelationsTest(TestCase):
             equiposRotos=8,
             faltaPiezas=7,
             otrasCausas=5,
-            empresa=self.empresa1
+            empresa=self.empresa1,
         )
 
         with transaction.atomic():
@@ -110,7 +95,7 @@ class OneToOneRelationsTest(TestCase):
                     equiposRotos=6,
                     faltaPiezas=5,
                     otrasCausas=4,
-                    empresa=self.empresa1
+                    empresa=self.empresa1,
                 )
 
     @transaction.atomic
@@ -124,7 +109,7 @@ class OneToOneRelationsTest(TestCase):
             productosSustraidos="Productos1",
             valorPerdidas=1000.0,
             medidasTomadas="Medidas1",
-            empresa=self.empresa1
+            empresa=self.empresa1,
         )
 
         with transaction.atomic():
@@ -138,25 +123,19 @@ class OneToOneRelationsTest(TestCase):
                     productosSustraidos="Productos2",
                     valorPerdidas=2000.0,
                     medidasTomadas="Medidas2",
-                    empresa=self.empresa1
+                    empresa=self.empresa1,
                 )
 
     @transaction.atomic
     def test_deficiencias_one_to_one(self):
         deficiencias1 = Deficiencias.objects.create(
-            total=10,
-            resueltas=6,
-            pendientes=4,
-            empresa=self.empresa1
+            total=10, resueltas=6, pendientes=4, empresa=self.empresa1
         )
 
         with transaction.atomic():
             with self.assertRaises(IntegrityError):
                 Deficiencias.objects.create(
-                    total=8,
-                    resueltas=5,
-                    pendientes=3,
-                    empresa=self.empresa1
+                    total=8, resueltas=5, pendientes=3, empresa=self.empresa1
                 )
 
     @transaction.atomic
@@ -165,7 +144,7 @@ class OneToOneRelationsTest(TestCase):
             cantidadUEB=5,
             nombre="UEB Test",
             municipio="Municipio Test",
-            empresa=self.empresa1
+            empresa=self.empresa1,
         )
 
         with transaction.atomic():
@@ -174,23 +153,19 @@ class OneToOneRelationsTest(TestCase):
                     cantidadUEB=3,
                     nombre="UEB Test 2",
                     municipio="Municipio Test 2",
-                    empresa=self.empresa1
+                    empresa=self.empresa1,
                 )
 
     @transaction.atomic
     def test_inmuebles_one_to_one(self):
         inmuebles1 = Inmuebles.objects.create(
-            tipo="Tipo Test",
-            cantidad=10,
-            empresa=self.empresa1
+            tipo="Tipo Test", cantidad=10, empresa=self.empresa1
         )
 
         with transaction.atomic():
             with self.assertRaises(IntegrityError):
                 Inmuebles.objects.create(
-                    tipo="Tipo Test 2",
-                    cantidad=5,
-                    empresa=self.empresa1
+                    tipo="Tipo Test 2", cantidad=5, empresa=self.empresa1
                 )
 
     def test_deficiencias_validation_rule(self):
@@ -200,7 +175,7 @@ class OneToOneRelationsTest(TestCase):
                 total=10,
                 resueltas=4,
                 pendientes=5,  # 4 + 5 != 10
-                empresa=self.empresa1
+                empresa=self.empresa1,
             )
             deficiencias.full_clean()  # Esto dispara las validaciones
 
@@ -209,6 +184,6 @@ class OneToOneRelationsTest(TestCase):
             total=10,
             resueltas=6,
             pendientes=4,  # 6 + 4 = 10
-            empresa=self.empresa1
+            empresa=self.empresa1,
         )
         deficiencias.full_clean()  # No debe lanzar excepción
