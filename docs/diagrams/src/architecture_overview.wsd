@@ -1,185 +1,168 @@
 @startuml
 
-entity Student {
-    id : Integer PK // id
-    ci : CharField(20) // Carnet de Identidad
-    address : CharField // Dirección
-    grade : IntegerField // Grado
-    last_name : CharField // Apellidos
-    first_name : CharField // Nombres
-    registration_number : CharField // Número de Registro
-    sex : CharField(10) // Sexo
-    is_graduated : BooleanField // Graduado
-    is_dropped_out : BooleanField // Baja
-    can_edit_bullet : BooleanField
+' !include <C4/C4_Component>
+
+class Empresa {
+    codigo: varchar(10)
+    nombre: varchar(255)
 }
 
-entity Dropout {
-    id : Integer PK // id
-    date : DateField // Fecha
-    municipality : CharField // Municipio
-    province : CharField // Provincia
-    school : CharField // Escuela
+class Cuadro {
+    aprobada: integer(10)
+    cubierta: integer(10)
+    empresa_id: integer(10)
+}
+Empresa "1" -- "1" Cuadro
+
+class CargoSinCubrir {
+    cargo: varchar(255)
+    cuadro_id:integer(10)
+}
+Cuadro "1" -- "*" CargoSinCubrir
+
+class AtencionPoblacion {
+    quejas: integer(10)
+    peticiones: integer(10)
+    termino: varchar(10)
+    empresa_id: integer(10)
+}
+Empresa "1" -- "1" AtencionPoblacion
+
+class CapitalHumano {
+    plantillaAprobada: integer(10)
+    plantillaCubierta: integer(10)
+    mujeres: integer(10)
+    empresa_id: integer(10)
 }
 
-entity Career {
-    id : Integer PK // id
-    amount : IntegerField // Monto
-    name : CharField // Nombre
+Empresa "1" -- "1" CapitalHumano
+
+
+class Interruptos {
+    total: integer(10)
+    equiposRotos: integer(10)
+    faltaPiezas: integer(10)
+    otrasCausas: integer(10)
+    empresa_id: integer(10)
 }
+Empresa "1" -- "1" Interruptos
 
-
-entity Subject {
-    id : Integer PK // id
-    grade : IntegerField // Grado
-    name : CharField // Nombre
-    tcp2_required : BooleanField // Requiere TCP2
+class Delitos {
+    denuncia: integer(10)
+    municipio: varchar(50)
+    fecha: date()
+    unidad: varchar(50)
+    tipocidad: varchar(50)
+    productosSustraidos: varchar(255)
+    valorPerdidas: float(2)
+    medidasTomadas: varchar(50)
+    empresa_id: integer(10)
 }
+Empresa "1" -- "1" Delitos
 
-entity SchoolYear {
-    id : Integer PK
-    start_date : Date
-    end_date : Date
-    name : Varchar(255)
+class PlanRecape {
+    plan: integer(10)
+    mes: integer(10)
+    anno: integer(10)
+    empresa_id: integer(10)
 }
+Empresa "1" -- "1" PlanRecape
 
-
-entity StudentNote {
-    id : Integer PK
-    acs : FloatField // ACS
-    final_grade : FloatField // Nota Final
-    final_exam : FloatField // Examen Final
-    tcp1 : FloatField // TCP1
-    tcp2 : FloatField // TCP2
+class PlanMateriaPrima {
+    plan: integer(10)
+    empresa_id: integer(10)
 }
+Empresa "1" -- "1" PlanMateriaPrima
 
-
-
-entity StudentCareer {
-    id : Integer PK
-    index : IntegerField // Índice
+class TipoMateriaPrima{
+    plan_materia_prima_id: integer(10)
+    tipo: varchar(10)
+    cantidad: integer(10)
 }
+PlanMateriaPrima "1"--"*" TipoMateriaPrima
 
-entity DegreeScale {
-    ranking_score : FloatField // Nota Escalafón
-    ranking_number : IntegerField // Número de Escalafón
+
+class Inmuebles {
+    tipo: varchar(255)
+    cantidad: integer(10)
+    empresa_id: integer(10)
 }
-entity GrantCareer{
-    id : Integer PK
+Empresa "1" -- "*" Inmuebles
+
+class PlanDeMantenimiento {
+    plan: integer(10)
+    real: integer(10)
+    porciento: integer(10)
+    tipo: varchar(70)
+    empresa_id: integer(10)
 }
+Empresa "1" -- "1" PlanDeMantenimiento
 
-entity ApprovedSchoolCourse{
-    id : Integer PK
-    grade : IntegerField // Grado
-    date : DateField // Fecha
+class Inversiones {
+    plan: integer(10)
+    real: integer(10)
+    porciento: integer(10)
+    tipo: varchar(70)
+    Empresacodigo: varchar(10)
 }
+Empresa "1" -- "1" Inversiones
 
-entity SubjectSection{
-    id : Integer PK
-    index: IntegerField
-    title : CharField
-    description: CharField
+
+class IndicadorGeneral {
+    plan: integer(10)
+    real: integer(10)
+    porciento: integer(10)
+    tipo: varchar(70)
+    Empresacodigo: varchar(10)
 }
-entity Folder{
-    id : Integer PK
-    title : CharField
-    description: CharField
+Empresa "1" -- "1" IndicadorGeneral
+
+class Deficiencias {
+    total: integer(10)
+    resueltas: integer(10)
+    pendientes: integer(10)
+    empresa_id: integer(10)
 }
-entity File{
-    id : Integer PK
-    title : CharField
-    description: CharField
-    type: CharField
-    file: CharField
+Empresa "1" -- "1" Deficiencias
+
+
+class UEBperdidas {
+    cantidadUEB: integer(10)
+    nombre: varchar(255)
+    municipio: varchar(255)
+    empresa_id: integer(10)
 }
-entity Professor {
-    id : Integer PK
-    ci : CharField(20)
-    last_name : CharField
-    first_name : CharField
+Empresa "1" -- "1" UEBperdidas
+
+class CuentasCobrar {
+    inicio_anno: float()
+    mes_anterior: float()
+    mes_actual: float()
+    diferencia_incio_anno: float()
+    diferencia_mes_anterior: float()
+    saldo_al_inicio: float()
+    mes_anterior_vencidas: float()
+    mes_actual_vencidas: float()
+    indice_gestion_cloro: float()
+    ciclo_cobros_dias: float()
+    empresa_id: integer(10)
 }
-
-entity SchoolTask{
-    id : Integer PK
-    date : DateField
-    title : CharField
-    description: CharField
+Empresa "1" -- "1" CuentasCobrar
+class CuentasPagar {
+    inicio_anno: float()
+    mes_anterior: float()
+    mes_actual: float()
+    diferencia_incio_anno: float()
+    diferencia_mes_anterior: float()
+    saldo_al_inicio: float()
+    mes_anterior_vencidas: float()
+    mes_actual_vencidas: float()
+    indice_gestion_cloro: float()
+    ciclo_cobros_dias: float()
+    empresa_id: integer(10)
 }
-entity StudentResponse{
-    id : Integer PK
-    date : DateField
-    description: CharField
-}
+Empresa "1" -- "1" CuentasPagar
 
 
-
-entity SchoolEvent {
-    id : Integer PK
-    date : DateTimeField
-    title : CharField
-    description: CharField
-}
-
-entity User{
-    id : Integer PK
-    username: CharField
-    email: CharField
-    password: CharField
-}
-
-entity StudentGroup {
-    id : Integer PK
-    name: CharField
-    grade : IntegerField 
-}
-
-StudentGroup "*" -- "*" Student: Grupo del estudiante
-StudentGroup "*" -- "*" Professor: Grupo del profesor
-StudentGroup "*" -- "1" SchoolYear : Curso del Grupo
-
-User "1" -- "1" Professor : Cuenta de Profesor
-User "1" -- "1" Student : Cuenta de Estudiante
-
-
-
-
-SchoolEvent "*" -- SchoolYear : Evento de Curso Escolar
-
-SubjectSection "*" -- "1" SchoolYear : Seccion del curso
-SubjectSection "*" -- "1" Subject : Seccion de asignatura
-SchoolTask "*" -- "1" SubjectSection : Tarea de seccion
-
-Folder "*" -- "1" SubjectSection : Carpeta de seccion
-Folder "1" -- "*" File : Archivo de carpeta
-
-SchoolTask "1" -- "*" File : Archivo de tarea
-SchoolTask "1" -- "*" StudentResponse : Respuesta de Tarea
-
-StudentResponse "1" -- "*" File : Archivo de respuesta
-StudentResponse "*" -- "*" Student : Respuesta de Estudiante
-
-Subject "*" -- "*" Professor : Profesor de seccion de asignatura
-
-ApprovedSchoolCourse "1" -- "1" Student : Estudiante del curso aprobado
-ApprovedSchoolCourse "*" -- "1" SchoolYear : Curso Escolar aprobado
-ApprovedSchoolCourse "1" -- "1" GrantCareer : Otorgamiento en este curso aprobado
-
-GrantCareer "1" -- "1" Student : Estudiante del otorgamiento
-GrantCareer "*" -- "1" Career : Carrera otorgada
-
-
-SchoolYear "1" -- "*" DegreeScale :  Curso del Escalafon
-SchoolYear "1" -- "*" StudentNote : Curso de la nota
-
-DegreeScale "1" -- "1" Student : Escalafon del estudiante
-
-Student "1" -- "1" Dropout : student // Estudiante
-Student "1" -- "*" StudentNote : student // Estudiante
-Student "1" -- "*" StudentCareer : student // Estudiante
-
-
-
-StudentNote "1" -- "1" Subject : subject // Asignatura
-StudentCareer "*" -- "1" Career : career // Carrera
 
 @enduml

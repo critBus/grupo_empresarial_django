@@ -184,6 +184,27 @@ JAZZMIN_SETTINGS = {
     "site_logo_classes": "",
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "icons": {
+        "project.empresa": "fas fa-building",  # Icono de edificio para empresas
+        "project.cuadro": "fas fa-table",  # Tabla para cuadro
+        "project.cargoSinCubrir": "fas fa-user-times",  # Usuario con X para cargos sin cubrir
+        "project.atencionPoblacion": "fas fa-hands-helping",  # Manos ayudando para atención a población
+        "project.capitalHumano": "fas fa-users",  # Grupo de usuarios para capital humano
+        "project.interruptos": "fas fa-stop-circle",  # Círculo de parada para interruptos
+        "project.delitos": "fas fa-exclamation-triangle",  # Triángulo de advertencia para delitos
+        "project.planRecape": "fas fa-car-side",  # Carro para plan recape
+        "project.planMateriaPrima": "fas fa-boxes",  # Cajas para materia prima
+        "project.tipoMateriaPrima": "fas fa-box",  # Caja individual para tipo de materia prima
+        "project.inmuebles": "fas fa-home",  # Casa para inmuebles
+        "project.planDeMantenimiento": "fas fa-tools",  # Herramientas para mantenimiento
+        "project.inversiones": "fas fa-chart-line",  # Gráfico de línea para inversiones
+        "project.indicadorGeneral": "fas fa-chart-bar",  # Gráfico de barras para indicadores
+        "project.deficiencias": "fas fa-exclamation-circle",  # Círculo de exclamación para deficiencias
+        "project.uebPerdidas": "fas fa-minus-circle",  # Círculo con menos para UEB perdidas
+        "project.cuentasCobrar": "fas fa-hand-holding-usd",  # Mano sosteniendo dinero para cuentas por cobrar
+        "project.cuentasPagar": "fas fa-money-bill-wave",  # Billete para cuentas por pagar
+    },
     "topmenu_links": [
         # Url that gets reversed (Permissions can be added)
         {
