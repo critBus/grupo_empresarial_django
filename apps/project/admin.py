@@ -36,7 +36,7 @@ class CuadroAdmin(admin.ModelAdmin):
 class CargoSinCubrirAdmin(admin.ModelAdmin):
     list_display = ('cargo', 'cuadro')
     list_filter = ('cuadro','cargo',)
-    search_fields = ('cuadro','cargo',)
+    search_fields = ('cargo',)
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
