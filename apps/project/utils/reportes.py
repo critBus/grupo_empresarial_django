@@ -86,7 +86,13 @@ generar_atencion_poblacion_pdf.short_description = (
 def generar_capital_humano_pdf(modeladmin, request, queryset):
     elementos: List[CapitalHumano] = queryset
     lista = []
+    total_aprobadas=0
+    total_cubierta=0
+    total_mujeres=0
     for elemento in elementos:
+        total_aprobadas += elemento.plantillaAprobada
+        total_cubierta += elemento.plantillaCubierta
+        total_mujeres += elemento.mujeres
         lista.append(
             {
                 "empresa": str(elemento.empresa.nombre),
@@ -98,6 +104,10 @@ def generar_capital_humano_pdf(modeladmin, request, queryset):
 
     data = {
         "lista": lista,
+        "total_mujeres": str(total_mujeres),
+        "total_aprobadas": str(total_aprobadas),
+        "ttoal_cubiertas": str(total_cubierta)
+
     }
     return custom_export_report_by_name(
         "Capital Humano",
