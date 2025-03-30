@@ -24,7 +24,8 @@ from .models import (
 )
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,
-    generar_reporte_cuadros_pdf, generar_capital_humano_pdf,
+    generar_capital_humano_pdf,
+    generar_reporte_cuadros_pdf,
 )
 
 

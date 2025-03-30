@@ -28,9 +28,7 @@ class OneToOneRelationsTest(TestCase):
     @transaction.atomic
     def test_cuadro_one_to_one(self):
         # Crear primer cuadro
-        Cuadro.objects.create(
-            aprobada=10, cubierta=8, empresa=self.empresa1
-        )
+        Cuadro.objects.create(aprobada=10, cubierta=8, empresa=self.empresa1)
 
         # Intentar crear otro cuadro para la misma empresa debe fallar
         with transaction.atomic():
