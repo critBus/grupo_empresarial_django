@@ -1,6 +1,6 @@
 from typing import List
 
-from apps.project.models import AtencionPoblacion, CargoSinCubrir, Cuadro
+from apps.project.models import AtencionPoblacion, CargoSinCubrir, Cuadro, CapitalHumano
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
 
@@ -66,4 +66,34 @@ def generar_atencion_poblacion_pdf(modeladmin, request, queryset):
 
 generar_atencion_poblacion_pdf.short_description = (
     "Generar Reporte Atencion a la Poblacion PDF"
+)
+
+
+
+
+def generar_capital_humano_pdf(modeladmin, request, queryset):
+    elementos: List[CapitalHumano] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "aprobada": str(elemento.plantillaAprobada),
+                "cubierta": str(elemento.plantillaCubierta),
+                "mujeres": str(elemento.mujeres),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Capital Humano",
+        data,
+        file="reporte_capital_humano",
+    )
+
+
+generar_capital_humano_pdf.short_description = (
+    "Generar Reporte Capital Humano PDF"
 )

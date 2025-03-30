@@ -24,7 +24,7 @@ from .models import (
 )
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,
-    generar_reporte_cuadros_pdf,
+    generar_reporte_cuadros_pdf, generar_capital_humano_pdf,
 )
 
 
@@ -115,6 +115,7 @@ class CapitalHumanoAdmin(admin.ModelAdmin):
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_capital_humano_pdf]
 
 
 @admin.register(Interruptos)
