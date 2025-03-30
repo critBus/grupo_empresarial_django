@@ -1,6 +1,6 @@
 from typing import List
 
-from apps.project.models import CargoSinCubrir, Cuadro
+from apps.project.models import AtencionPoblacion, CargoSinCubrir, Cuadro
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
 
@@ -39,3 +39,31 @@ def generar_reporte_cuadros_pdf(modeladmin, request, queryset):
 
 
 generar_reporte_cuadros_pdf.short_description = "Generar Reporte Cuadros PDF"
+
+
+def generar_atencion_poblacion_pdf(modeladmin, request, queryset):
+    elementos: List[AtencionPoblacion] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "quejas": str(elemento.quejas),
+                "denuncias": str(elemento.denuncias),
+                "total_de_casos": str(elemento.quejas + elemento.denuncias),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Atencion a la Poblacion",
+        data,
+        file="reporte_atencion_poblacion",
+    )
+
+
+generar_atencion_poblacion_pdf.short_description = (
+    "Generar Reporte Atencion a la Poblacion PDF"
+)

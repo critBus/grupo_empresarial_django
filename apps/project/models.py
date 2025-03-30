@@ -51,6 +51,7 @@ class CargoSinCubrir(models.Model):
 
 class AtencionPoblacion(models.Model):
     quejas = models.IntegerField(verbose_name="Quejas")
+    denuncias = models.IntegerField(verbose_name="Denuncias", default=0)
     peticiones = models.IntegerField(verbose_name="Peticiones")
     termino = models.CharField(max_length=10, verbose_name="Término")
     empresa = models.OneToOneField(

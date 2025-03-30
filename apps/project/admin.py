@@ -22,7 +22,10 @@ from .models import (
     TipoMateriaPrima,
     UEBperdidas,
 )
-from .utils.reportes import generar_reporte_cuadros_pdf
+from .utils.reportes import (
+    generar_atencion_poblacion_pdf,
+    generar_reporte_cuadros_pdf,
+)
 
 
 @admin.register(Empresa)
@@ -77,15 +80,23 @@ class CargoSinCubrirAdmin(admin.ModelAdmin):
 
 @admin.register(AtencionPoblacion)
 class AtencionPoblacionAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "quejas", "peticiones", "termino")
+    list_display = (
+        "empresa",
+        "quejas",
+        "peticiones",
+        "denuncias",
+        "termino",
+    )
     search_fields = ("termino",)
     list_filter = (
         "empresa",
         "quejas",
         "peticiones",
+        "denuncias",
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_atencion_poblacion_pdf]
 
 
 @admin.register(CapitalHumano)

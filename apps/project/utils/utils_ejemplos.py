@@ -106,6 +106,7 @@ def crear_datos_random():
             empresa=empresa,
             quejas=random.randint(0, 50),
             peticiones=random.randint(10, 100),
+            denuncias=random.randint(10, 100),
             termino=random.choice(["Enero", "Febrero", "Marzo"]),
         )
 
