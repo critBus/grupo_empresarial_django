@@ -1,33 +1,30 @@
 import random
-from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django.utils import timezone
-from django.utils.datetime_safe import datetime
 from faker import Faker
+
 from ..models import (
-    Empresa,
-    Cuadro,
-    CargoSinCubrir,
+    ROL_NAME_DIRECTORA,
+    ROL_NAME_SECRETARIA,
     AtencionPoblacion,
     CapitalHumano,
-    Interruptos,
-    Delitos,
-    PlanRecape,
-    PlanMateriaPrima,
-    TipoMateriaPrima,
-    Inmuebles,
-    PlanDeMantenimiento,
-    Inversiones,
-    IndicadorGeneral,
-    Deficiencias,
-    UEBperdidas,
+    CargoSinCubrir,
+    Cuadro,
     CuentasCobrar,
     CuentasPagar,
-    ROL_NAME_ADMIN,
-    ROL_NAME_SECRETARIA,
-    ROL_NAME_DIRECTORA,
+    Deficiencias,
+    Delitos,
+    Empresa,
+    IndicadorGeneral,
+    Inmuebles,
+    Interruptos,
+    Inversiones,
+    PlanDeMantenimiento,
+    PlanMateriaPrima,
+    PlanRecape,
+    TipoMateriaPrima,
+    UEBperdidas,
 )
 
 User = get_user_model()

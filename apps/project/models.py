@@ -1,9 +1,6 @@
-from typing import Dict, List
-
 from django.contrib.auth import get_user_model
-from django.db import models
-from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.db import models
 
 User = get_user_model()
 ROL_NAME_ADMIN = "admin"

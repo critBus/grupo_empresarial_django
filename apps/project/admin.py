@@ -1,26 +1,28 @@
 # Register your models here.
 from django.contrib import admin
+from django.utils.safestring import mark_safe
+
 from .models import (
-    Empresa,
-    Cuadro,
-    CargoSinCubrir,
     AtencionPoblacion,
     CapitalHumano,
-    Interruptos,
-    Delitos,
-    PlanRecape,
-    PlanMateriaPrima,
-    TipoMateriaPrima,
-    Inmuebles,
-    PlanDeMantenimiento,
-    Inversiones,
-    IndicadorGeneral,
-    Deficiencias,
-    UEBperdidas,
+    CargoSinCubrir,
+    Cuadro,
     CuentasCobrar,
     CuentasPagar,
+    Deficiencias,
+    Delitos,
+    Empresa,
+    IndicadorGeneral,
+    Inmuebles,
+    Interruptos,
+    Inversiones,
+    PlanDeMantenimiento,
+    PlanMateriaPrima,
+    PlanRecape,
+    TipoMateriaPrima,
+    UEBperdidas,
 )
-from django.utils.safestring import mark_safe
+from .utils.reportes import generar_reporte_cuadros_pdf
 
 
 @admin.register(Empresa)
@@ -58,6 +60,7 @@ class CuadroAdmin(admin.ModelAdmin):
         "cargosincubrir__cargo",
     )
     inlines = [CargoSinCubrirInline]
+    actions = [generar_reporte_cuadros_pdf]
 
 
 @admin.register(CargoSinCubrir)

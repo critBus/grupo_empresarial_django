@@ -1,23 +1,17 @@
-from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
+from django.test import TestCase
+
 from apps.project.models import (
-    Empresa,
-    Cuadro,
     AtencionPoblacion,
     CapitalHumano,
-    Interruptos,
-    Delitos,
-    PlanRecape,
-    PlanMateriaPrima,
-    PlanDeMantenimiento,
-    Inversiones,
-    IndicadorGeneral,
+    Cuadro,
     Deficiencias,
-    UEBperdidas,
-    CuentasCobrar,
-    CuentasPagar,
+    Delitos,
+    Empresa,
     Inmuebles,
+    Interruptos,
+    UEBperdidas,
 )
 
 
