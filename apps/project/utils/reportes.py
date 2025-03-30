@@ -5,6 +5,7 @@ from apps.project.models import (
     CapitalHumano,
     CargoSinCubrir,
     Cuadro,
+    Interruptos,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -86,9 +87,9 @@ generar_atencion_poblacion_pdf.short_description = (
 def generar_capital_humano_pdf(modeladmin, request, queryset):
     elementos: List[CapitalHumano] = queryset
     lista = []
-    total_aprobadas=0
-    total_cubierta=0
-    total_mujeres=0
+    total_aprobadas = 0
+    total_cubierta = 0
+    total_mujeres = 0
     for elemento in elementos:
         total_aprobadas += elemento.plantillaAprobada
         total_cubierta += elemento.plantillaCubierta
@@ -106,8 +107,7 @@ def generar_capital_humano_pdf(modeladmin, request, queryset):
         "lista": lista,
         "total_mujeres": str(total_mujeres),
         "total_aprobadas": str(total_aprobadas),
-        "ttoal_cubiertas": str(total_cubierta)
-
+        "ttoal_cubiertas": str(total_cubierta),
     }
     return custom_export_report_by_name(
         "Capital Humano",
@@ -118,4 +118,45 @@ def generar_capital_humano_pdf(modeladmin, request, queryset):
 
 generar_capital_humano_pdf.short_description = (
     "Generar Reporte Capital Humano PDF"
+)
+
+
+def generar_reporte_interruptos_pdf(modeladmin, request, queryset):
+    elementos: List[Interruptos] = queryset
+    lista = []
+    total_interruptos = 0
+    total_roturas = 0
+    total_piezas = 0
+    total_otras_causas = 0
+    for elemento in elementos:
+        total_interruptos += elemento.total
+        total_roturas += elemento.equiposRotos
+        total_piezas += elemento.faltaPiezas
+        total_otras_causas += elemento.otrasCausas
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "interruptos": str(elemento.total),
+                "roturas": str(elemento.equiposRotos),
+                "piezas": str(elemento.faltaPiezas),
+                "otras_causas": str(elemento.otrasCausas),
+            }
+        )
+
+    data = {
+        "lista": lista,
+        "total_interruptos": str(total_interruptos),
+        "total_roturas": str(total_roturas),
+        "total_piezas": str(total_piezas),
+        "total_otras_causas": str(total_otras_causas),
+    }
+    return custom_export_report_by_name(
+        "Cantidad de Interruptos",
+        data,
+        file="reporte_interruptos",
+    )
+
+
+generar_reporte_interruptos_pdf.short_description = (
+    "Generar Reporte Interruptos PDF"
 )

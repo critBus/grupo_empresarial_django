@@ -26,6 +26,7 @@ from .utils.reportes import (
     generar_atencion_poblacion_pdf,
     generar_capital_humano_pdf,
     generar_reporte_cuadros_pdf,
+    generar_reporte_interruptos_pdf,
 )
 
 
@@ -137,6 +138,7 @@ class InterruptosAdmin(admin.ModelAdmin):
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_interruptos_pdf]
 
 
 @admin.register(Delitos)
