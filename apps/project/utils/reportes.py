@@ -197,32 +197,33 @@ generar_reporte_delitos_pdf.short_description = "Generar Reporte Delitos PDF"
 
 
 def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
-    elementos: List[PlanRecape] = queryset#.order_by("empresa", "anno", "mes")
+    elementos: List[PlanRecape] = queryset
     
     # Organizar datos por empresa y año
-    data_by_empresa = {}
-    years = set()
+    data_by_empresa_año = {}
     
     for plan in elementos:
         empresa_id = plan.empresa_id
         year = plan.anno
-        years.add(year)
+        key = (empresa_id, year)
         
-        if empresa_id not in data_by_empresa:
-            data_by_empresa[empresa_id] = {
+        if key not in data_by_empresa_año:
+            data_by_empresa_año[key] = {
                 "empresa": plan.empresa.nombre,
+                "año": year,
                 "meses": {mes: 0 for mes in range(1, 13)},
                 "total": 0
             }
         
-        data_by_empresa[empresa_id]["meses"][plan.mes] = plan.plan
-        data_by_empresa[empresa_id]["total"] += plan.plan
+        data_by_empresa_año[key]["meses"][plan.mes] = plan.plan
+        data_by_empresa_año[key]["total"] += plan.plan
     
     # Crear la lista final con el formato requerido
     lista = []
-    for empresa_data in data_by_empresa.values():
+    for empresa_data in data_by_empresa_año.values():
         row = {
             "empresa": empresa_data["empresa"],
+            "anno": str(empresa_data["año"]),
             "enero_1": str(empresa_data["meses"][1]),
             "febrero_2": str(empresa_data["meses"][2]),
             "marzo_3": str(empresa_data["meses"][3]),
@@ -239,9 +240,12 @@ def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
         }
         lista.append(row)
     
+    # Ordenar la lista primero por año y luego por empresa
+    lista = sorted(lista, key=lambda x: (int(x["anno"]), x["empresa"]))
+    
     data = {
         "lista": lista,
-        "mostrar_anno": len(years) > 1
+        "mostrar_anno": True
     }
     
     return custom_export_report_by_name(
