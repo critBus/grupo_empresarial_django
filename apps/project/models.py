@@ -133,13 +133,14 @@ class PlanRecape(models.Model):
     plan = models.IntegerField(verbose_name="Plan")
     mes = models.IntegerField(verbose_name="Mes")
     anno = models.IntegerField(verbose_name="Año")
-    empresa = models.OneToOneField(
+    empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
 
     class Meta:
         verbose_name = "Plan de Recape"
         verbose_name_plural = "Planes de Recape"
+        unique_together = ('mes', 'anno', 'empresa')
 
     def __str__(self):
         return f"Plan Recape {self.mes}/{self.anno} - {self.empresa.nombre}"
@@ -265,8 +266,6 @@ class Deficiencias(models.Model):
             raise ValidationError(
                 "El total debe ser igual a la suma de resueltas y pendientes."
             )
-
-
 
 
 class UEBperdidas(models.Model):

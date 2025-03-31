@@ -151,12 +151,17 @@ def crear_datos_random():
                 )
 
         # Crear PlanRecape
-        PlanRecape.objects.create(
-            empresa=empresa,
-            plan=random.randint(1000, 5000),
-            mes=random.randint(1, 12),
-            anno=2024,
-        )
+        # Generar planes para los últimos 3 años
+        current_year = 2024
+        for year in range(current_year - 2, current_year + 1):
+            # Para cada mes del año
+            for month in range(1, 13):
+                PlanRecape.objects.create(
+                    empresa=empresa,
+                    plan=random.randint(1000, 5000),
+                    mes=month,
+                    anno=year,
+                )
 
         # Crear PlanMateriaPrima y TipoMateriaPrima
         plan_mp = PlanMateriaPrima.objects.create(
