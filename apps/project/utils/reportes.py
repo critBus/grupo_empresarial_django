@@ -201,10 +201,11 @@ def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
     
     # Organizar datos por empresa y año
     data_by_empresa_año = {}
-    
+    years = set()
     for plan in elementos:
         empresa_id = plan.empresa_id
         year = plan.anno
+        years.add(year)
         key = (empresa_id, year)
         
         if key not in data_by_empresa_año:
@@ -245,7 +246,7 @@ def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
     
     data = {
         "lista": lista,
-        "mostrar_anno": True
+        "mostrar_anno": len(years) > 1
     }
     
     return custom_export_report_by_name(
