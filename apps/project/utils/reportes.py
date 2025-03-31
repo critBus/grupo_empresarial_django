@@ -7,6 +7,7 @@ from apps.project.models import (
     Cuadro,
     Delitos,
     Interruptos,
+    PlanRecape,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -193,3 +194,61 @@ def generar_reporte_delitos_pdf(modeladmin, request, queryset):
 
 
 generar_reporte_delitos_pdf.short_description = "Generar Reporte Delitos PDF"
+
+
+def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
+    elementos: List[PlanRecape] = queryset#.order_by("empresa", "anno", "mes")
+    
+    # Organizar datos por empresa y año
+    data_by_empresa = {}
+    years = set()
+    
+    for plan in elementos:
+        empresa_id = plan.empresa_id
+        year = plan.anno
+        years.add(year)
+        
+        if empresa_id not in data_by_empresa:
+            data_by_empresa[empresa_id] = {
+                "empresa": plan.empresa.nombre,
+                "meses": {mes: 0 for mes in range(1, 13)},
+                "total": 0
+            }
+        
+        data_by_empresa[empresa_id]["meses"][plan.mes] = plan.plan
+        data_by_empresa[empresa_id]["total"] += plan.plan
+    
+    # Crear la lista final con el formato requerido
+    lista = []
+    for empresa_data in data_by_empresa.values():
+        row = {
+            "empresa": empresa_data["empresa"],
+            "enero_1": str(empresa_data["meses"][1]),
+            "febrero_2": str(empresa_data["meses"][2]),
+            "marzo_3": str(empresa_data["meses"][3]),
+            "abril_4": str(empresa_data["meses"][4]),
+            "mayo_5": str(empresa_data["meses"][5]),
+            "junio_6": str(empresa_data["meses"][6]),
+            "julio_7": str(empresa_data["meses"][7]),
+            "agosto_8": str(empresa_data["meses"][8]),
+            "septiembre_9": str(empresa_data["meses"][9]),
+            "octubre_10": str(empresa_data["meses"][10]),
+            "noviembre_11": str(empresa_data["meses"][11]),
+            "diciembre_12": str(empresa_data["meses"][12]),
+            "total": str(empresa_data["total"])
+        }
+        lista.append(row)
+    
+    data = {
+        "lista": lista,
+        "mostrar_anno": len(years) > 1
+    }
+    
+    return custom_export_report_by_name(
+        "Plan de Recape",
+        data,
+        file="reporte_planes_recape"
+    )
+
+
+generar_reporte_planes_recape_pdf.short_description = "Generar Reporte Recape PDF"

@@ -28,6 +28,7 @@ from .utils.reportes import (
     generar_reporte_cuadros_pdf,
     generar_reporte_delitos_pdf,
     generar_reporte_interruptos_pdf,
+    generar_reporte_planes_recape_pdf,
 )
 
 
@@ -173,6 +174,7 @@ class PlanRecapeAdmin(admin.ModelAdmin):
     list_filter = ("empresa", "plan", "mes", "anno")
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_planes_recape_pdf]
 
 
 class TipoMateriaPrimaInline(admin.TabularInline):
