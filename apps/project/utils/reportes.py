@@ -5,6 +5,7 @@ from apps.project.models import (
     CapitalHumano,
     CargoSinCubrir,
     Cuadro,
+    Delitos,
     Interruptos,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
@@ -160,3 +161,35 @@ def generar_reporte_interruptos_pdf(modeladmin, request, queryset):
 generar_reporte_interruptos_pdf.short_description = (
     "Generar Reporte Interruptos PDF"
 )
+
+
+def generar_reporte_delitos_pdf(modeladmin, request, queryset):
+    elementos: List[Delitos] = queryset.order_by("empresa", "-fecha")
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "no": str(elemento.empresa.codigo),
+                "empresa": str(elemento.empresa.nombre),
+                "municipios": str(elemento.municipio),
+                "unidad": str(elemento.unidad),
+                "tipicidad": str(elemento.tipocidad),
+                "productos_sustraidos": str(elemento.productosSustraidos),
+                "valor_perdidas": format_float(elemento.valorPerdidas),
+                "medidas_tomadas": str(elemento.medidasTomadas),
+                "no_denuncia": str(elemento.no_denuncia),
+                "fecha": str(elemento.fecha),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Delitos",
+        data,
+        file="reporte_delitos",
+    )
+
+
+generar_reporte_delitos_pdf.short_description = "Generar Reporte Delitos PDF"

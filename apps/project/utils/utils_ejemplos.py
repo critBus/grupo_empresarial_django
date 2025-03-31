@@ -129,18 +129,26 @@ def crear_datos_random():
             otrasCausas=random.randint(2, 15),
         )
 
-        # Crear Delitos (uno por empresa)
-        Delitos.objects.create(
-            empresa=empresa,
-            denuncia=random.randint(1, 100),
-            municipio=random.choice(municipios),
-            fecha=fake.date_between(start_date="-1y", end_date="today"),
-            unidad=fake.company(),
-            tipocidad=random.choice(["Robo", "Hurto", "Vandalismo"]),
-            productosSustraidos=fake.text(max_nb_chars=50),
-            valorPerdidas=round(random.uniform(100, 10000), 2),
-            medidasTomadas=random.choice(["Preventiva", "Correctiva", "Legal"]),
-        )
+        for i in range(random.randint(1, 10)):
+            no_denuncia = random.randint(1, 1000)
+            if not Delitos.objects.filter(
+                no_denuncia=no_denuncia, empresa=empresa
+            ).exists():
+                # Crear Delitos
+                Delitos.objects.create(
+                    no_denuncia=no_denuncia,
+                    empresa=empresa,
+                    denuncia=random.randint(1, 100),
+                    municipio=random.choice(municipios),
+                    fecha=fake.date_between(start_date="-1y", end_date="today"),
+                    unidad=fake.company(),
+                    tipocidad=random.choice(["Robo", "Hurto", "Vandalismo"]),
+                    productosSustraidos=fake.text(max_nb_chars=50),
+                    valorPerdidas=round(random.uniform(100, 10000), 2),
+                    medidasTomadas=random.choice(
+                        ["Preventiva", "Correctiva", "Legal"]
+                    ),
+                )
 
         # Crear PlanRecape
         PlanRecape.objects.create(

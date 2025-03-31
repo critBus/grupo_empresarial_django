@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 
 User = get_user_model()
@@ -9,7 +10,7 @@ ROL_NAME_DIRECTORA = "directora"
 
 
 class Empresa(models.Model):
-    codigo = models.CharField(max_length=10, verbose_name="Código")
+    codigo = models.CharField(max_length=10, verbose_name="Código", unique=True)
     nombre = models.CharField(max_length=255, verbose_name="Nombre")
 
     class Meta:
@@ -100,9 +101,12 @@ class Interruptos(models.Model):
 
 
 class Delitos(models.Model):
+    no_denuncia = models.IntegerField(
+        max_length=10, verbose_name="Código", validators=[MinValueValidator(1)]
+    )
     denuncia = models.IntegerField(verbose_name="Número de Denuncia")
     municipio = models.CharField(max_length=50, verbose_name="Municipio")
-    fecha = models.DateField(verbose_name="Fecha", auto_now=True)
+    fecha = models.DateField(verbose_name="Fecha")
     unidad = models.CharField(max_length=50, verbose_name="Unidad")
     tipocidad = models.CharField(max_length=50, verbose_name="Tipicidad")
     productosSustraidos = models.CharField(
@@ -112,13 +116,14 @@ class Delitos(models.Model):
     medidasTomadas = models.CharField(
         max_length=50, verbose_name="Medidas Tomadas"
     )
-    empresa = models.OneToOneField(
+    empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
 
     class Meta:
         verbose_name = "Delito"
         verbose_name_plural = "Delitos"
+        unique_together = ["no_denuncia", "empresa"]
 
     def __str__(self):
         return f"Delito en {self.unidad} - {self.fecha}"
@@ -251,7 +256,8 @@ class Deficiencias(models.Model):
     class Meta:
         verbose_name = "Deficiencia"
         verbose_name_plural = "Deficiencias"
-
+    def __str__(self):
+        return f"Deficiencias - {self.empresa.nombre}"
     def clean(self):
         super().clean()
         # Validar que el total sea igual a resueltas + pendientes
@@ -260,8 +266,7 @@ class Deficiencias(models.Model):
                 "El total debe ser igual a la suma de resueltas y pendientes."
             )
 
-    def __str__(self):
-        return f"Deficiencias - {self.empresa.nombre}"
+
 
 
 class UEBperdidas(models.Model):
