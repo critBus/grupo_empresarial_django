@@ -203,7 +203,8 @@ class PlanMateriaPrimaAdmin(admin.ModelAdmin):
     get_tipos_materia_prima.allow_tags = True
     list_display = ("empresa",  "mes", "anno","get_tipos_materia_prima")
     list_filter = ("empresa", "mes", "anno")
-    ordering = ("empresa", )
+    ordering = ("empresa","mes", "anno" )
+    list_display_links = ("empresa","mes", "anno" )
 
 
 @admin.register(Inmuebles)
