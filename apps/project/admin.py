@@ -184,29 +184,31 @@ class PlanMateriaPrimaAdmin(admin.ModelAdmin):
         entidades = []
         for field in obj._meta.fields:
             if field.name in [
-                'papel_carton', 'chatarra_acero', 'envase_textil',
-                'chatarra_aluminio', 'chatarra_plomo', 'polietileno'
+                "papel_carton",
+                "chatarra_acero",
+                "envase_textil",
+                "chatarra_aluminio",
+                "chatarra_plomo",
+                "polietileno",
             ]:
                 entidades.append(
                     f'<tr><td style="width: 200px; text-align: right; padding-right: 10px;">{field.verbose_name}</td>'
-                    f'<td>{getattr(obj, field.name)}</td></tr>'
+                    f"<td>{getattr(obj, field.name)}</td></tr>"
                 )
-        
+
         return mark_safe(
-            '<table style="border-collapse: collapse; width: 100%;">' +
-            '<tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>'
-            '<th>Cantidad</th></tr>' +
-            ''.join(entidades) +
-            '</table>'
+            '<table style="border-collapse: collapse; width: 100%;">'
+            + '<tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>'
+            "<th>Cantidad</th></tr>" + "".join(entidades) + "</table>"
         )
 
     get_tipos_materia_prima.short_description = "Materias Primas"
     get_tipos_materia_prima.allow_tags = True
-    list_display = ("empresa",  "anno","get_tipos_materia_prima")
+    list_display = ("empresa", "anno", "get_tipos_materia_prima")
     list_filter = ("empresa", "anno")
-    ordering = ("empresa", "anno" )
-    list_display_links = ("empresa", "anno" )
-    actions =[generar_reporte_planes_materia_prima_pdf]
+    ordering = ("empresa", "anno")
+    list_display_links = ("empresa", "anno")
+    actions = [generar_reporte_planes_materia_prima_pdf]
 
 
 @admin.register(Inmuebles)
@@ -216,33 +218,59 @@ class InmueblesAdmin(admin.ModelAdmin):
         entidades = []
         for field in obj._meta.fields:
             if field.name in [
-                'loc_oficina', 'cpl', 'almacenes', 'farmacias_opticas',
-                'taller', 'poncheras', 'plantas_fre', 'top',
-                'nave_pasaje', 'funeraria', 'floristeria', 'banos_p',
-                'tienda', 'base_carga', 'circulos_s', 'capillas',
-                'comedores', 'panaderias', 'dulcerias', 'pana_dulc',
-                'bodegas', 'minitalleres', 'fabricas', 'carnicerias',
-                'm_ideal', 'mais', 'tmc', 'bar',
-                'c_elaboracion', 'restaurant', 'cafeterias', 'c_nocturno',
-                'cabaret', 'merendero', 'heladerias', 'alojamiento',
-                'servicios', 'incinerador'
+                "loc_oficina",
+                "cpl",
+                "almacenes",
+                "farmacias_opticas",
+                "taller",
+                "poncheras",
+                "plantas_fre",
+                "top",
+                "nave_pasaje",
+                "funeraria",
+                "floristeria",
+                "banos_p",
+                "tienda",
+                "base_carga",
+                "circulos_s",
+                "capillas",
+                "comedores",
+                "panaderias",
+                "dulcerias",
+                "pana_dulc",
+                "bodegas",
+                "minitalleres",
+                "fabricas",
+                "carnicerias",
+                "m_ideal",
+                "mais",
+                "tmc",
+                "bar",
+                "c_elaboracion",
+                "restaurant",
+                "cafeterias",
+                "c_nocturno",
+                "cabaret",
+                "merendero",
+                "heladerias",
+                "alojamiento",
+                "servicios",
+                "incinerador",
             ]:
                 entidades.append(
                     f'<tr><td style="width: 200px; text-align: right; padding-right: 10px;">{field.verbose_name}</td>'
-                    f'<td>{getattr(obj, field.name)}</td></tr>'
+                    f"<td>{getattr(obj, field.name)}</td></tr>"
                 )
-        
+
         return mark_safe(
-            '<table style="border-collapse: collapse; width: 100%;">' +
-            '<tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>'
-            '<th>Cantidad</th></tr>' +
-            ''.join(entidades) +
-            '</table>'
+            '<table style="border-collapse: collapse; width: 100%;">'
+            + '<tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>'
+            "<th>Cantidad</th></tr>" + "".join(entidades) + "</table>"
         )
 
     get_tipos_inmuebles.short_description = "Inmuebles"
     get_tipos_inmuebles.allow_tags = True
-    
+
     list_display = ("empresa", "get_tipos_inmuebles")
     list_filter = ("empresa",)
     ordering = ("empresa",)

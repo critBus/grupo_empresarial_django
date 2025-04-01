@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -9,19 +9,20 @@ ROL_NAME_ADMIN = "admin"
 ROL_NAME_SECRETARIA = "secretaria"
 ROL_NAME_DIRECTORA = "directora"
 MESES_ESPANOL = {
-        1: _('Enero'),
-        2: _('Febrero'),
-        3: _('Marzo'),
-        4: _('Abril'),
-        5: _('Mayo'),
-        6: _('Junio'),
-        7: _('Julio'),
-        8: _('Agosto'),
-        9: _('Septiembre'),
-        10: _('Octubre'),
-        11: _('Noviembre'),
-        12: _('Diciembre'),
-    }
+    1: _("Enero"),
+    2: _("Febrero"),
+    3: _("Marzo"),
+    4: _("Abril"),
+    5: _("Mayo"),
+    6: _("Junio"),
+    7: _("Julio"),
+    8: _("Agosto"),
+    9: _("Septiembre"),
+    10: _("Octubre"),
+    11: _("Noviembre"),
+    12: _("Diciembre"),
+}
+
 
 class Empresa(models.Model):
     codigo = models.CharField(max_length=10, verbose_name="Código", unique=True)
@@ -150,8 +151,8 @@ class PlanRecape(models.Model):
         choices=[(k, v) for k, v in MESES_ESPANOL.items()],
         validators=[
             MinValueValidator(1, message="El mes debe estar entre 1 y 12"),
-            MaxValueValidator(12, message="El mes debe estar entre 1 y 12")
-        ]
+            MaxValueValidator(12, message="El mes debe estar entre 1 y 12"),
+        ],
     )
     anno = models.IntegerField(verbose_name="Año")
     empresa = models.ForeignKey(
@@ -161,7 +162,7 @@ class PlanRecape(models.Model):
     class Meta:
         verbose_name = "Plan de Recape"
         verbose_name_plural = "Planes de Recape"
-        unique_together = ('mes', 'anno', 'empresa')
+        unique_together = ("mes", "anno", "empresa")
 
     def __str__(self):
         return f"Plan Recape {MESES_ESPANOL.get(self.mes, self.mes)}/{self.anno} - {self.empresa.nombre}"
@@ -172,54 +173,40 @@ class PlanRecape(models.Model):
 
 class PlanMateriaPrima(models.Model):
     anno = models.IntegerField(verbose_name="Año")
-    
+
     empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
-    
-    papel_carton = models.IntegerField(
-        verbose_name="Papel y Cartón",
-        default=0
-    )
+
+    papel_carton = models.IntegerField(verbose_name="Papel y Cartón", default=0)
     chatarra_acero = models.IntegerField(
-        verbose_name="Chatarra de acero",
-        default=0
+        verbose_name="Chatarra de acero", default=0
     )
-    envase_textil = models.IntegerField(
-        verbose_name="Envase Textil",
-        default=0
-    )
+    envase_textil = models.IntegerField(verbose_name="Envase Textil", default=0)
     chatarra_aluminio = models.IntegerField(
-        verbose_name="Chatarra aluminio",
-        default=0
+        verbose_name="Chatarra aluminio", default=0
     )
     chatarra_plomo = models.IntegerField(
-        verbose_name="Chatarra Plomo",
-        default=0
+        verbose_name="Chatarra Plomo", default=0
     )
-    polietileno = models.IntegerField(
-        verbose_name="Polietileno",
-        default=0
-    )
+    polietileno = models.IntegerField(verbose_name="Polietileno", default=0)
 
     class Meta:
         verbose_name = "Plan de Materia Prima"
         verbose_name_plural = "Planes de Materia Prima"
-        unique_together = ( 'anno', 'empresa')
+        unique_together = ("anno", "empresa")
 
     def __str__(self):
         return f"Plan Materia Prima - {self.anno} - {self.empresa.nombre}"
 
-    
-
     def get_total(self):
         return (
-            self.papel_carton +
-            self.chatarra_acero +
-            self.envase_textil +
-            self.chatarra_aluminio +
-            self.chatarra_plomo +
-            self.polietileno
+            self.papel_carton
+            + self.chatarra_acero
+            + self.envase_textil
+            + self.chatarra_aluminio
+            + self.chatarra_plomo
+            + self.polietileno
         )
 
     def get_materiales(self):
@@ -234,44 +221,80 @@ class PlanMateriaPrima(models.Model):
 
 
 class Inmuebles(models.Model):
-    loc_oficina = models.PositiveIntegerField(verbose_name="Loc. oficina", default=0)
+    loc_oficina = models.PositiveIntegerField(
+        verbose_name="Loc. oficina", default=0
+    )
     cpl = models.PositiveIntegerField(verbose_name="CPL", default=0)
     almacenes = models.PositiveIntegerField(verbose_name="almacenes", default=0)
-    farmacias_opticas = models.PositiveIntegerField(verbose_name="farmacias y opticas / C. auditivo", default=0)
+    farmacias_opticas = models.PositiveIntegerField(
+        verbose_name="farmacias y opticas / C. auditivo", default=0
+    )
     taller = models.PositiveIntegerField(verbose_name="taller", default=0)
     poncheras = models.PositiveIntegerField(verbose_name="Poncheras", default=0)
-    plantas_fre = models.PositiveIntegerField(verbose_name="Plantas Fre", default=0)
+    plantas_fre = models.PositiveIntegerField(
+        verbose_name="Plantas Fre", default=0
+    )
     top = models.PositiveIntegerField(verbose_name="TOP", default=0)
-    nave_pasaje = models.PositiveIntegerField(verbose_name="nave pasaje", default=0)
+    nave_pasaje = models.PositiveIntegerField(
+        verbose_name="nave pasaje", default=0
+    )
     funeraria = models.PositiveIntegerField(verbose_name="Funeraria", default=0)
-    floristeria = models.PositiveIntegerField(verbose_name="Floristería", default=0)
+    floristeria = models.PositiveIntegerField(
+        verbose_name="Floristería", default=0
+    )
     banos_p = models.PositiveIntegerField(verbose_name="baños P", default=0)
     tienda = models.PositiveIntegerField(verbose_name="tienda", default=0)
-    base_carga = models.PositiveIntegerField(verbose_name="base carga", default=0)
-    circulos_s = models.PositiveIntegerField(verbose_name="Círculos .S", default=0)
+    base_carga = models.PositiveIntegerField(
+        verbose_name="base carga", default=0
+    )
+    circulos_s = models.PositiveIntegerField(
+        verbose_name="Círculos .S", default=0
+    )
     capillas = models.PositiveIntegerField(verbose_name="Capillas", default=0)
     comedores = models.PositiveIntegerField(verbose_name="comedores", default=0)
-    panaderias = models.PositiveIntegerField(verbose_name="panaderías", default=0)
+    panaderias = models.PositiveIntegerField(
+        verbose_name="panaderías", default=0
+    )
     dulcerias = models.PositiveIntegerField(verbose_name="dulcerías", default=0)
-    pana_dulc = models.PositiveIntegerField(verbose_name="Pana / dulc", default=0)
+    pana_dulc = models.PositiveIntegerField(
+        verbose_name="Pana / dulc", default=0
+    )
     bodegas = models.PositiveIntegerField(verbose_name="Bodegas", default=0)
-    minitalleres = models.PositiveIntegerField(verbose_name="minitalleres", default=0)
+    minitalleres = models.PositiveIntegerField(
+        verbose_name="minitalleres", default=0
+    )
     fabricas = models.PositiveIntegerField(verbose_name="fabricas", default=0)
-    carnicerias = models.PositiveIntegerField(verbose_name="Carnicerías", default=0)
+    carnicerias = models.PositiveIntegerField(
+        verbose_name="Carnicerías", default=0
+    )
     m_ideal = models.PositiveIntegerField(verbose_name="M. Ideal", default=0)
     mais = models.PositiveIntegerField(verbose_name="MAIS", default=0)
     tmc = models.PositiveIntegerField(verbose_name="TMC", default=0)
     bar = models.PositiveIntegerField(verbose_name="Bar", default=0)
-    c_elaboracion = models.PositiveIntegerField(verbose_name="C. Elabor.", default=0)
-    restaurant = models.PositiveIntegerField(verbose_name="Restaurant", default=0)
-    cafeterias = models.PositiveIntegerField(verbose_name="Cafeterías", default=0)
-    c_nocturno = models.PositiveIntegerField(verbose_name="C Nocturno", default=0)
+    c_elaboracion = models.PositiveIntegerField(
+        verbose_name="C. Elabor.", default=0
+    )
+    restaurant = models.PositiveIntegerField(
+        verbose_name="Restaurant", default=0
+    )
+    cafeterias = models.PositiveIntegerField(
+        verbose_name="Cafeterías", default=0
+    )
+    c_nocturno = models.PositiveIntegerField(
+        verbose_name="C Nocturno", default=0
+    )
     cabaret = models.PositiveIntegerField(verbose_name="Cabaret", default=0)
     merendero = models.PositiveIntegerField(verbose_name="Merendero", default=0)
-    heladerias = models.PositiveIntegerField(verbose_name="Heladerías", default=0)
-    alojamiento = models.PositiveIntegerField(verbose_name="Alojamiento", default=0)
+    heladerias = models.PositiveIntegerField(
+        verbose_name="Heladerías", default=0
+    )
+    alojamiento = models.PositiveIntegerField(
+        verbose_name="Alojamiento", default=0
+    )
     servicios = models.PositiveIntegerField(verbose_name="Servicios", default=0)
-    incinerador = models.PositiveIntegerField(verbose_name="Incinerador", default=0)
+    incinerador = models.PositiveIntegerField(
+        verbose_name="Incinerador", default=0
+    )
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )

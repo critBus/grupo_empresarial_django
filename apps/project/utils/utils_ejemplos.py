@@ -78,7 +78,6 @@ def crear_datos_random():
 
     # Tipos comunes para varias entidades
     tipos_mantenimiento = ["Preventivo", "Correctivo", "Predictivo"]
-    tipos_inmuebles = ["Oficina", "Almacén", "Taller", "Local Comercial"]
     municipios = [
         "Pinar del Río",
         "San Luis",
@@ -86,7 +85,6 @@ def crear_datos_random():
         "Viñales",
         "La Palma",
     ]
-    tipos_materia_prima = ["Tipo A", "Tipo B", "Tipo C", "Tipo D"]
 
     for empresa in empresas:
         # Crear Cuadro
@@ -166,22 +164,21 @@ def crear_datos_random():
         current_year = 2024
         for year in range(current_year - 2, current_year + 1):
             PlanMateriaPrima.objects.create(
-                    empresa=empresa,
-                    anno=year,
-                    papel_carton=random.randint(0, 1000),
-                    chatarra_acero=random.randint(0, 1000),
-                    envase_textil=random.randint(0, 1000),
-                    chatarra_aluminio=random.randint(0, 1000),
-                    chatarra_plomo=random.randint(0, 1000),
-                    polietileno=random.randint(0, 1000),
-                )
-                
+                empresa=empresa,
+                anno=year,
+                papel_carton=random.randint(0, 1000),
+                chatarra_acero=random.randint(0, 1000),
+                envase_textil=random.randint(0, 1000),
+                chatarra_aluminio=random.randint(0, 1000),
+                chatarra_plomo=random.randint(0, 1000),
+                polietileno=random.randint(0, 1000),
+            )
 
         # Crear Inmuebles (uno por empresa)
         inmueble = Inmuebles.objects.create(
             empresa=empresa,
         )
-        
+
         # Asignar valores aleatorios a los campos de inmuebles
         inmueble.loc_oficina = random.randint(0, 10)
         inmueble.cpl = random.randint(0, 10)
