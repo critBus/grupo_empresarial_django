@@ -78,7 +78,6 @@ def crear_datos_random():
 
     # Tipos comunes para varias entidades
     tipos_mantenimiento = ["Preventivo", "Correctivo", "Predictivo"]
-    tipos_inmuebles = ["Oficina", "Almacén", "Taller", "Local Comercial"]
     municipios = [
         "Pinar del Río",
         "San Luis",
@@ -86,7 +85,6 @@ def crear_datos_random():
         "Viñales",
         "La Palma",
     ]
-    tipos_materia_prima = ["Tipo A", "Tipo B", "Tipo C", "Tipo D"]
 
     for empresa in empresas:
         # Crear Cuadro
@@ -166,23 +164,61 @@ def crear_datos_random():
         current_year = 2024
         for year in range(current_year - 2, current_year + 1):
             PlanMateriaPrima.objects.create(
-                    empresa=empresa,
-                    anno=year,
-                    papel_carton=random.randint(0, 1000),
-                    chatarra_acero=random.randint(0, 1000),
-                    envase_textil=random.randint(0, 1000),
-                    chatarra_aluminio=random.randint(0, 1000),
-                    chatarra_plomo=random.randint(0, 1000),
-                    polietileno=random.randint(0, 1000),
-                )
-                
+                empresa=empresa,
+                anno=year,
+                papel_carton=random.randint(0, 1000),
+                chatarra_acero=random.randint(0, 1000),
+                envase_textil=random.randint(0, 1000),
+                chatarra_aluminio=random.randint(0, 1000),
+                chatarra_plomo=random.randint(0, 1000),
+                polietileno=random.randint(0, 1000),
+            )
 
         # Crear Inmuebles (uno por empresa)
-        Inmuebles.objects.create(
+        inmueble = Inmuebles.objects.create(
             empresa=empresa,
-            tipo=random.choice(tipos_inmuebles),
-            cantidad=random.randint(1, 10),
         )
+
+        # Asignar valores aleatorios a los campos de inmuebles
+        inmueble.loc_oficina = random.randint(0, 10)
+        inmueble.cpl = random.randint(0, 10)
+        inmueble.almacenes = random.randint(0, 10)
+        inmueble.farmacias_opticas = random.randint(0, 10)
+        inmueble.taller = random.randint(0, 10)
+        inmueble.poncheras = random.randint(0, 10)
+        inmueble.plantas_fre = random.randint(0, 10)
+        inmueble.top = random.randint(0, 10)
+        inmueble.nave_pasaje = random.randint(0, 10)
+        inmueble.funeraria = random.randint(0, 10)
+        inmueble.floristeria = random.randint(0, 10)
+        inmueble.banos_p = random.randint(0, 10)
+        inmueble.tienda = random.randint(0, 10)
+        inmueble.base_carga = random.randint(0, 10)
+        inmueble.circulos_s = random.randint(0, 10)
+        inmueble.capillas = random.randint(0, 10)
+        inmueble.comedores = random.randint(0, 10)
+        inmueble.panaderias = random.randint(0, 10)
+        inmueble.dulcerias = random.randint(0, 10)
+        inmueble.pana_dulc = random.randint(0, 10)
+        inmueble.bodegas = random.randint(0, 10)
+        inmueble.minitalleres = random.randint(0, 10)
+        inmueble.fabricas = random.randint(0, 10)
+        inmueble.carnicerias = random.randint(0, 10)
+        inmueble.m_ideal = random.randint(0, 10)
+        inmueble.mais = random.randint(0, 10)
+        inmueble.tmc = random.randint(0, 10)
+        inmueble.bar = random.randint(0, 10)
+        inmueble.c_elaboracion = random.randint(0, 10)
+        inmueble.restaurant = random.randint(0, 10)
+        inmueble.cafeterias = random.randint(0, 10)
+        inmueble.c_nocturno = random.randint(0, 10)
+        inmueble.cabaret = random.randint(0, 10)
+        inmueble.merendero = random.randint(0, 10)
+        inmueble.heladerias = random.randint(0, 10)
+        inmueble.alojamiento = random.randint(0, 10)
+        inmueble.servicios = random.randint(0, 10)
+        inmueble.incinerador = random.randint(0, 10)
+        inmueble.save()
 
         # Crear PlanDeMantenimiento
         plan = random.randint(1000, 5000)

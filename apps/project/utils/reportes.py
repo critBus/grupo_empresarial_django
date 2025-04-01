@@ -199,7 +199,7 @@ generar_reporte_delitos_pdf.short_description = "Generar Reporte Delitos PDF"
 
 def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
     elementos: List[PlanRecape] = queryset
-    
+
     # Organizar datos por empresa y año
     data_by_empresa_año = {}
     years = set()
@@ -208,18 +208,18 @@ def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
         year = plan.anno
         years.add(year)
         key = (empresa_id, year)
-        
+
         if key not in data_by_empresa_año:
             data_by_empresa_año[key] = {
                 "empresa": plan.empresa.nombre,
                 "año": year,
                 "meses": {mes: 0 for mes in range(1, 13)},
-                "total": 0
+                "total": 0,
             }
-        
+
         data_by_empresa_año[key]["meses"][plan.mes] = plan.plan
         data_by_empresa_año[key]["total"] += plan.plan
-    
+
     # Crear la lista final con el formato requerido
     lista = []
     for empresa_data in data_by_empresa_año.values():
@@ -238,62 +238,57 @@ def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
             "octubre_10": str(empresa_data["meses"][10]),
             "noviembre_11": str(empresa_data["meses"][11]),
             "diciembre_12": str(empresa_data["meses"][12]),
-            "total": str(empresa_data["total"])
+            "total": str(empresa_data["total"]),
         }
         lista.append(row)
-    
+
     # Ordenar la lista primero por año y luego por empresa
     lista = sorted(lista, key=lambda x: (int(x["anno"]), x["empresa"]))
-    
-    data = {
-        "lista": lista,
-        "mostrar_anno": len(years) > 1
-    }
-    
+
+    data = {"lista": lista, "mostrar_anno": len(years) > 1}
+
     return custom_export_report_by_name(
-        "Plan de Recape",
-        data,
-        file="reporte_planes_recape"
+        "Plan de Recape", data, file="reporte_planes_recape"
     )
 
 
-generar_reporte_planes_recape_pdf.short_description = "Generar Reporte Recape PDF"
-
+generar_reporte_planes_recape_pdf.short_description = (
+    "Generar Reporte Recape PDF"
+)
 
 
 def generar_reporte_planes_materia_prima_pdf(modeladmin, request, queryset):
     elementos: List[PlanMateriaPrima] = queryset
-    
+
     # Organizar datos por empresa y año
     years = set()
     lista = []
     for plan in elementos:
         year = plan.anno
         years.add(year)
-        lista.append({
-            "empresa": plan.empresa.nombre,
-            "anno": str(year),
-            "papel_carton": str(plan.papel_carton),
-            "chatarra_acero": str(plan.chatarra_acero),
-            "envase_textil": str(plan.envase_textil),
-            "chatarra_aluminio": str(plan.chatarra_aluminio),
-            "chatarra_plomo": str(plan.chatarra_plomo),
-            "polietileno": str(plan.polietileno)
-        })
-    
+        lista.append(
+            {
+                "empresa": plan.empresa.nombre,
+                "anno": str(year),
+                "papel_carton": str(plan.papel_carton),
+                "chatarra_acero": str(plan.chatarra_acero),
+                "envase_textil": str(plan.envase_textil),
+                "chatarra_aluminio": str(plan.chatarra_aluminio),
+                "chatarra_plomo": str(plan.chatarra_plomo),
+                "polietileno": str(plan.polietileno),
+            }
+        )
+
     # Ordenar la lista primero por año y luego por empresa
     lista = sorted(lista, key=lambda x: (int(x["anno"]), x["empresa"]))
-    
-    data = {
-        "lista": lista,
-        "mostrar_anno": len(years) > 1
-    }
-    
+
+    data = {"lista": lista, "mostrar_anno": len(years) > 1}
+
     return custom_export_report_by_name(
-        "Plan de Materia Prima",
-        data,
-        file="reporte_planes_materia_prima"
+        "Plan de Materia Prima", data, file="reporte_planes_materia_prima"
     )
 
 
-generar_reporte_planes_materia_prima_pdf.short_description = "Generar Reporte Materia Prima PDF"
+generar_reporte_planes_materia_prima_pdf.short_description = (
+    "Generar Reporte Materia Prima PDF"
+)

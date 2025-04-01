@@ -22,7 +22,6 @@ from apps.project.models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    
     UEBperdidas,
 )
 from config.utils.utils_permission import crear_rol
