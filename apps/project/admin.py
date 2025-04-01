@@ -267,7 +267,7 @@ class InmueblesAdmin(admin.ModelAdmin):
                 <button id="collapsible-{obj.id}" 
                 class="collapsible" 
                 type="button"
-                >Tipos de Inmuebles</button>
+                ><i class="fas fa-plus icon"></i>Tipos de Inmuebles</button>
                 <div class="inmuebles-content">
                     <table 
                     style="border-collapse: collapse; width: 100%;">
@@ -288,22 +288,19 @@ class InmueblesAdmin(admin.ModelAdmin):
                     text-align: left;
                     outline: none;
                     font-size: 15px;
+                    position: relative;
                 }}
-                .collapsible:after {{
-                    content: '\25B6'; /* Unicode character for "right-pointing triangle" */
+                .collapsible .icon {{
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
                     color: #777;
-                    font-weight: bold;
-                    float: right;
-                    margin-left: 5px;
-                }}
-                .collapsible.active:after {{
-                    content: "\25BC"; /* Unicode character for "down-pointing triangle" */
                 }}
                 .collapsible.active, .collapsible:hover {{
                     background-color: #ddd;
                 }}
                 .inmuebles-content {{
-                    
                     display: none;
                     overflow: hidden;
                     background-color: #f1f1f1;
@@ -319,6 +316,14 @@ class InmueblesAdmin(admin.ModelAdmin):
                     this.classList.toggle("active");
                     var content = this.nextElementSibling;
                     content.classList.toggle("show");
+                    var icon = this.querySelector(".icon");
+                    if(icon.classList.contains("fa-plus")){{
+                        icon.classList.remove("fa-plus");
+                        icon.classList.add("fa-minus");
+                    }} else {{
+                        icon.classList.remove("fa-minus");
+                        icon.classList.add("fa-plus");
+                    }}
                 }});
             </script>
         ''')
