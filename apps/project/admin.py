@@ -29,6 +29,7 @@ from .utils.reportes import (
     generar_reporte_interruptos_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
+    generar_reporte_inmuebles_pdf,
 )
 
 
@@ -334,6 +335,7 @@ class InmueblesAdmin(admin.ModelAdmin):
     list_filter = ("empresa",)
     ordering = ("empresa",)
     list_display_links = ("empresa",)
+    actions = [generar_reporte_inmuebles_pdf]
 
 
 @admin.register(PlanDeMantenimiento)

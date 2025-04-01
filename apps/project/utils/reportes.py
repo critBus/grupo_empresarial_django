@@ -6,6 +6,7 @@ from apps.project.models import (
     CargoSinCubrir,
     Cuadro,
     Delitos,
+    Inmuebles,
     Interruptos,
     PlanMateriaPrima,
     PlanRecape,
@@ -292,3 +293,64 @@ def generar_reporte_planes_materia_prima_pdf(modeladmin, request, queryset):
 generar_reporte_planes_materia_prima_pdf.short_description = (
     "Generar Reporte Materia Prima PDF"
 )
+
+
+def generar_reporte_inmuebles_pdf(modeladmin, request, queryset):
+    elementos: List[Inmuebles] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "loc_oficina": str(elemento.loc_oficina),
+                "cpl": str(elemento.cpl),
+                "almacenes": str(elemento.almacenes),
+                "farmacias_opticas": str(elemento.farmacias_opticas),
+                "taller": str(elemento.taller),
+                "poncheras": str(elemento.poncheras),
+                "plantas_fre": str(elemento.plantas_fre),
+                "top": str(elemento.top),
+                "nave_pasaje": str(elemento.nave_pasaje),
+                "funeraria": str(elemento.funeraria),
+                "floristeria": str(elemento.floristeria),
+                "banos_p": str(elemento.banos_p),
+                "tienda": str(elemento.tienda),
+                "base_carga": str(elemento.base_carga),
+                "circulos_s": str(elemento.circulos_s),
+                "capillas": str(elemento.capillas),
+                "comedores": str(elemento.comedores),
+                "panaderias": str(elemento.panaderias),
+                "dulcerias": str(elemento.dulcerias),
+                "pana_dulc": str(elemento.pana_dulc),
+                "bodegas": str(elemento.bodegas),
+                "minitalleres": str(elemento.minitalleres),
+                "fabricas": str(elemento.fabricas),
+                "carnicerias": str(elemento.carnicerias),
+                "m_ideal": str(elemento.m_ideal),
+                "mais": str(elemento.mais),
+                "tmc": str(elemento.tmc),
+                "bar": str(elemento.bar),
+                "c_elaboracion": str(elemento.c_elaboracion),
+                "restaurant": str(elemento.restaurant),
+                "cafeterias": str(elemento.cafeterias),
+                "c_nocturno": str(elemento.c_nocturno),
+                "cabaret": str(elemento.cabaret),
+                "merendero": str(elemento.merendero),
+                "heladerias": str(elemento.heladerias),
+                "alojamiento": str(elemento.alojamiento),
+                "servicios": str(elemento.servicios),
+                "incinerador": str(elemento.incinerador),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Inmuebles",
+        data,
+        file="reporte_inmuebles",
+    )
+
+
+generar_reporte_inmuebles_pdf.short_description = "Generar Reporte Inmuebles PDF"
