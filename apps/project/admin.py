@@ -262,12 +262,62 @@ class InmueblesAdmin(admin.ModelAdmin):
                     f"<td>{getattr(obj, field.name)}</td></tr>"
                 )
 
-        return mark_safe(
-            '<table style="border-collapse: collapse; width: 100%;">'
-            + '<tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>'
-            "<th>Cantidad</th></tr>" + "".join(entidades) + "</table>"
-        )
+        return mark_safe(f'''
+            <div class="collapsible-container">
+                <button id="collapsible-{obj.id}" 
+                class="collapsible" 
+                type="button"
+                >Tipos de Inmuebles</button>
+                <div class="content">
+                    <table 
+                    style="border-collapse: collapse; width: 100%;">
+                        <tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>
+                        <th>Cantidad</th></tr>
+                        {''.join(entidades)}
+                    </table>
+                </div>
+            </div>
+            <style>
+                .collapsible {{
+                    background-color: #eee;
+                    color: #444;
+                    cursor: pointer;
+                    padding: 18px;
+                    width: 100%;
+                    border: none;
+                    text-align: left;
+                    outline: none;
+                    font-size: 15px;
+                }}
+                .collapsible:after {{
+                    content: '\25B6'; /* Unicode character for "right-pointing triangle" */
+                    color: #777;
+                    font-weight: bold;
+                    float: right;
+                    margin-left: 5px;
+                }}
+                .collapsible.active:after {{
+                    content: "\25BC"; /* Unicode character for "down-pointing triangle" */
+                }}
+                .collapsible.active, .collapsible:hover {{
+                    background-color: #ddd;
+                }}
+                
+            </style>
 
+            <script>
+                var coll = document.getElementById("collapsible-{obj.id}");
+                coll.addEventListener("click", function() {{
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.display != "none") {{
+                        content.style.display = "none";
+                    }} else {{
+                        content.style.display = "block";
+                    }}
+                }});
+            </script>
+        ''')
     get_tipos_inmuebles.short_description = "Inmuebles"
     get_tipos_inmuebles.allow_tags = True
 
