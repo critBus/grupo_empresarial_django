@@ -178,11 +178,26 @@ class PlanRecapeAdmin(admin.ModelAdmin):
 
 @admin.register(PlanMateriaPrima)
 class PlanMateriaPrimaAdmin(admin.ModelAdmin):
-    list_display = ("empresa",  "mes", "anno")
+    def get_tipos_materia_prima(self, obj):
+        # Define the maximum width for the labels
+        max_width = 20
+        
+        # Create a list of formatted strings
+        entidades = [
+            f"{field.verbose_name.ljust(max_width)}: {getattr(obj, field.name)}"
+            for field in obj._meta.fields
+            if field.name in [
+                'papel_carton', 'chatarra_acero', 'envase_textil',
+                'chatarra_aluminio', 'chatarra_plomo', 'polietileno'
+            ]
+        ]
+        
+        return mark_safe("<br>\n".join(entidades))
+
+    get_tipos_materia_prima.short_description = "Materias Primas"
+    list_display = ("empresa",  "mes", "anno","get_tipos_materia_prima")
     list_filter = ("empresa", "mes", "anno")
     ordering = ("empresa", )
-    list_display_links = list(list_display).copy()
-
 
 
 @admin.register(Inmuebles)
