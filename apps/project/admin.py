@@ -268,7 +268,7 @@ class InmueblesAdmin(admin.ModelAdmin):
                 class="collapsible" 
                 type="button"
                 >Tipos de Inmuebles</button>
-                <div class="content">
+                <div class="inmuebles-content">
                     <table 
                     style="border-collapse: collapse; width: 100%;">
                         <tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>
@@ -302,7 +302,15 @@ class InmueblesAdmin(admin.ModelAdmin):
                 .collapsible.active, .collapsible:hover {{
                     background-color: #ddd;
                 }}
-                
+                .inmuebles-content {{
+                    
+                    display: none;
+                    overflow: hidden;
+                    background-color: #f1f1f1;
+                }}
+                .inmuebles-content.show {{
+                    display: block;
+                }}
             </style>
 
             <script>
@@ -310,11 +318,7 @@ class InmueblesAdmin(admin.ModelAdmin):
                 coll.addEventListener("click", function() {{
                     this.classList.toggle("active");
                     var content = this.nextElementSibling;
-                    if (content.style.display != "none") {{
-                        content.style.display = "none";
-                    }} else {{
-                        content.style.display = "block";
-                    }}
+                    content.classList.toggle("show");
                 }});
             </script>
         ''')
