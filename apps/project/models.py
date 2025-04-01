@@ -181,7 +181,7 @@ class PlanMateriaPrima(models.Model):
     )
     anno = models.IntegerField(verbose_name="Año")
     
-    empresa = models.OneToOneField(
+    empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
     
@@ -213,6 +213,7 @@ class PlanMateriaPrima(models.Model):
     class Meta:
         verbose_name = "Plan de Materia Prima"
         verbose_name_plural = "Planes de Materia Prima"
+        unique_together = ('mes', 'anno', 'empresa')
 
     def __str__(self):
         return f"Plan Materia Prima - {MESES_ESPANOL.get(self.mes, self.mes)}/{self.anno} - {self.empresa.nombre}"

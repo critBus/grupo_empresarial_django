@@ -178,16 +178,8 @@ class PlanRecapeAdmin(admin.ModelAdmin):
 
 @admin.register(PlanMateriaPrima)
 class PlanMateriaPrimaAdmin(admin.ModelAdmin):
-    def get_tipos_materia_prima(self, obj):
-        entidades = [
-            f"{materia_prima.tipo} | {materia_prima.cantidad}"
-            for materia_prima in obj.tipomateriaprima_set.all()
-        ]
-        return mark_safe("<br>\n".join(entidades))
-
-    get_tipos_materia_prima.short_description = "Materias Primas"
-    list_display = ("empresa",  "get_tipos_materia_prima")
-    list_filter = ("empresa", )
+    list_display = ("empresa",  "mes", "anno")
+    list_filter = ("empresa", "mes", "anno")
     ordering = ("empresa", )
     list_display_links = list(list_display).copy()
 

@@ -23,7 +23,6 @@ from ..models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    TipoMateriaPrima,
     UEBperdidas,
 )
 
@@ -163,16 +162,21 @@ def crear_datos_random():
                     anno=year,
                 )
 
-        # Crear PlanMateriaPrima y TipoMateriaPrima
-        plan_mp = PlanMateriaPrima.objects.create(
-            empresa=empresa, plan=random.randint(1000, 5000)
-        )
-        for tipo in tipos_materia_prima:
-            TipoMateriaPrima.objects.create(
-                plan_materia_prima=plan_mp,
-                tipo=tipo,
-                cantidad=random.randint(100, 1000),
-            )
+        # Crear PlanMateriaPrima
+        current_year = 2024
+        for year in range(current_year - 2, current_year + 1):
+            for month in range(1, 13):
+                plan_materia_prima = PlanMateriaPrima.objects.create(
+                    empresa=empresa,
+                    mes=month,
+                    anno=year,
+                    papel_carton=random.randint(0, 1000),
+                    chatarra_acero=random.randint(0, 1000),
+                    envase_textil=random.randint(0, 1000),
+                    chatarra_aluminio=random.randint(0, 1000),
+                    chatarra_plomo=random.randint(0, 1000),
+                    polietileno=random.randint(0, 1000),
+                )
 
         # Crear Inmuebles (uno por empresa)
         Inmuebles.objects.create(
