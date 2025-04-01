@@ -187,12 +187,12 @@ class PlanMateriaPrima(models.Model):
 
 class TipoMateriaPrima(models.Model):
     TIPOS_MATERIALES = [
-        ('papel_carton', 'Papel y Cartón'),
-        ('chatarra_acero', 'Chatarra de acero'),
-        ('envase_textil', 'Envase Textil'),
-        ('chatarra_aluminio', 'Chatarra aluminio'),
-        ('chatarra_plomo', 'Chatarra Plomo'),
-        ('polietileno', 'Polietileno'),
+        ('Papel y Cartón', 'Papel y Cartón'),
+        ('Chatarra de acero', 'Chatarra de acero'),
+        ('Envase Textil', 'Envase Textil'),
+        ('Chatarra aluminio', 'Chatarra aluminio'),
+        ('Chatarra Plomo', 'Chatarra Plomo'),
+        ( 'Polietileno', 'Polietileno'),
     ]
 
     plan_materia_prima = models.ForeignKey(
