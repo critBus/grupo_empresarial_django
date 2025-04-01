@@ -26,6 +26,7 @@ from .utils.reportes import (
     generar_capital_humano_pdf,
     generar_reporte_cuadros_pdf,
     generar_reporte_delitos_pdf,
+    generar_reporte_inmuebles_pdf,
     generar_reporte_interruptos_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
@@ -262,11 +263,71 @@ class InmueblesAdmin(admin.ModelAdmin):
                     f"<td>{getattr(obj, field.name)}</td></tr>"
                 )
 
-        return mark_safe(
-            '<table style="border-collapse: collapse; width: 100%;">'
-            + '<tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>'
-            "<th>Cantidad</th></tr>" + "".join(entidades) + "</table>"
-        )
+        return mark_safe(f"""
+            <div class="collapsible-container">
+                <button id="collapsible-{obj.id}" 
+                class="collapsible" 
+                type="button"
+                ><i class="fas fa-plus icon"></i>Tipos de Inmuebles</button>
+                <div class="inmuebles-content">
+                    <table 
+                    style="border-collapse: collapse; width: 100%;">
+                        <tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>
+                        <th>Cantidad</th></tr>
+                        {"".join(entidades)}
+                    </table>
+                </div>
+            </div>
+            <style>
+                .collapsible {{
+                    background-color: #eee;
+                    color: #444;
+                    cursor: pointer;
+                    padding: 18px;
+                    width: 100%;
+                    border: none;
+                    text-align: left;
+                    outline: none;
+                    font-size: 15px;
+                    position: relative;
+                }}
+                .collapsible .icon {{
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #777;
+                }}
+                .collapsible.active, .collapsible:hover {{
+                    background-color: #ddd;
+                }}
+                .inmuebles-content {{
+                    display: none;
+                    overflow: hidden;
+                    background-color: #f1f1f1;
+                }}
+                .inmuebles-content.show {{
+                    display: block;
+                }}
+            </style>
+
+            <script>
+                var coll = document.getElementById("collapsible-{obj.id}");
+                coll.addEventListener("click", function() {{
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    content.classList.toggle("show");
+                    var icon = this.querySelector(".icon");
+                    if(icon.classList.contains("fa-plus")){{
+                        icon.classList.remove("fa-plus");
+                        icon.classList.add("fa-minus");
+                    }} else {{
+                        icon.classList.remove("fa-minus");
+                        icon.classList.add("fa-plus");
+                    }}
+                }});
+            </script>
+        """)
 
     get_tipos_inmuebles.short_description = "Inmuebles"
     get_tipos_inmuebles.allow_tags = True
@@ -275,6 +336,7 @@ class InmueblesAdmin(admin.ModelAdmin):
     list_filter = ("empresa",)
     ordering = ("empresa",)
     list_display_links = ("empresa",)
+    actions = [generar_reporte_inmuebles_pdf]
 
 
 @admin.register(PlanDeMantenimiento)
