@@ -192,9 +192,9 @@ class PlanMateriaPrimaAdmin(admin.ModelAdmin):
         return mark_safe("<br>\n".join(entidades))
 
     get_tipos_materia_prima.short_description = "Materias Primas"
-    list_display = ("empresa", "plan", "get_tipos_materia_prima")
-    list_filter = ("empresa", "plan")
-    ordering = ("empresa", "plan")
+    list_display = ("empresa",  "get_tipos_materia_prima")
+    list_filter = ("empresa", )
+    ordering = ("empresa", )
     list_display_links = list(list_display).copy()
     inlines = [TipoMateriaPrimaInline]
 

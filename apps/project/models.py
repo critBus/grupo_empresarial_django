@@ -8,7 +8,20 @@ User = get_user_model()
 ROL_NAME_ADMIN = "admin"
 ROL_NAME_SECRETARIA = "secretaria"
 ROL_NAME_DIRECTORA = "directora"
-
+MESES_ESPANOL = {
+        1: _('Enero'),
+        2: _('Febrero'),
+        3: _('Marzo'),
+        4: _('Abril'),
+        5: _('Mayo'),
+        6: _('Junio'),
+        7: _('Julio'),
+        8: _('Agosto'),
+        9: _('Septiembre'),
+        10: _('Octubre'),
+        11: _('Noviembre'),
+        12: _('Diciembre'),
+    }
 
 class Empresa(models.Model):
     codigo = models.CharField(max_length=10, verbose_name="Código", unique=True)
@@ -131,20 +144,6 @@ class Delitos(models.Model):
 
 
 class PlanRecape(models.Model):
-    MESES_ESPANOL = {
-        1: _('Enero'),
-        2: _('Febrero'),
-        3: _('Marzo'),
-        4: _('Abril'),
-        5: _('Mayo'),
-        6: _('Junio'),
-        7: _('Julio'),
-        8: _('Agosto'),
-        9: _('Septiembre'),
-        10: _('Octubre'),
-        11: _('Noviembre'),
-        12: _('Diciembre'),
-    }
     plan = models.IntegerField(verbose_name="Plan")
     mes = models.IntegerField(
         verbose_name="Mes",
@@ -165,14 +164,23 @@ class PlanRecape(models.Model):
         unique_together = ('mes', 'anno', 'empresa')
 
     def __str__(self):
-        return f"Plan Recape {self.MESES_ESPANOL.get(self.mes, self.mes)}/{self.anno} - {self.empresa.nombre}"
+        return f"Plan Recape {MESES_ESPANOL.get(self.mes, self.mes)}/{self.anno} - {self.empresa.nombre}"
 
     def get_mes_display(self):
-        return self.MESES_ESPANOL.get(self.mes, self.mes)
+        return MESES_ESPANOL.get(self.mes, self.mes)
 
 
 class PlanMateriaPrima(models.Model):
-    plan = models.IntegerField(verbose_name="Plan")
+    mes = models.IntegerField(
+        verbose_name="Mes",
+        choices=[(k, v) for k, v in MESES_ESPANOL.items()],
+        validators=[
+            MinValueValidator(1, message="El mes debe estar entre 1 y 12"),
+            MaxValueValidator(12, message="El mes debe estar entre 1 y 12")
+        ]
+    )
+    anno = models.IntegerField(verbose_name="Año")
+    
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
@@ -182,8 +190,10 @@ class PlanMateriaPrima(models.Model):
         verbose_name_plural = "Planes de Materia Prima"
 
     def __str__(self):
-        return f"Plan Materia Prima - {self.empresa.nombre}"
+        return f"Plan Materia Prima - {MESES_ESPANOL.get(self.mes, self.mes)}/{self.anno} - {self.empresa.nombre}"
 
+    def get_mes_display(self):
+        return MESES_ESPANOL.get(self.mes, self.mes)
 
 class TipoMateriaPrima(models.Model):
     TIPOS_MATERIALES = [
