@@ -22,6 +22,7 @@ Cuadro "1" -- "*" CargoSinCubrir
 
 class AtencionPoblacion {
     quejas: integer(10)
+    denuncias: integer(10)
     peticiones: integer(10)
     termino: varchar(10)
     empresa_id: integer(10)
@@ -34,9 +35,7 @@ class CapitalHumano {
     mujeres: integer(10)
     empresa_id: integer(10)
 }
-
 Empresa "1" -- "1" CapitalHumano
-
 
 class Interruptos {
     total: integer(10)
@@ -48,6 +47,7 @@ class Interruptos {
 Empresa "1" -- "1" Interruptos
 
 class Delitos {
+    no_denuncia: integer(10)
     denuncia: integer(10)
     municipio: varchar(50)
     fecha: date()
@@ -58,7 +58,7 @@ class Delitos {
     medidasTomadas: varchar(50)
     empresa_id: integer(10)
 }
-Empresa "1" -- "1" Delitos
+Empresa "1" -- "*" Delitos
 
 class PlanRecape {
     plan: integer(10)
@@ -66,28 +66,26 @@ class PlanRecape {
     anno: integer(10)
     empresa_id: integer(10)
 }
-Empresa "1" -- "1" PlanRecape
+Empresa "1" -- "*" PlanRecape
 
 class PlanMateriaPrima {
-    plan: integer(10)
+    anno: integer(10)
+    papel_carton: integer(10)
+    chatarra_acero: integer(10)
+    envase_textil: integer(10)
+    chatarra_aluminio: integer(10)
+    chatarra_plomo: integer(10)
+    polietileno: integer(10)
     empresa_id: integer(10)
 }
-Empresa "1" -- "1" PlanMateriaPrima
-
-class TipoMateriaPrima{
-    plan_materia_prima_id: integer(10)
-    tipo: varchar(10)
-    cantidad: integer(10)
-}
-PlanMateriaPrima "1"--"*" TipoMateriaPrima
-
+Empresa "1" -- "*" PlanMateriaPrima
 
 class Inmuebles {
     tipo: varchar(255)
     cantidad: integer(10)
     empresa_id: integer(10)
 }
-Empresa "1" -- "*" Inmuebles
+Empresa "1" -- "1" Inmuebles
 
 class PlanDeMantenimiento {
     plan: integer(10)
@@ -103,17 +101,16 @@ class Inversiones {
     real: integer(10)
     porciento: integer(10)
     tipo: varchar(70)
-    Empresacodigo: varchar(10)
+    empresa_id: integer(10)
 }
 Empresa "1" -- "1" Inversiones
-
 
 class IndicadorGeneral {
     plan: integer(10)
     real: integer(10)
     porciento: integer(10)
     tipo: varchar(70)
-    Empresacodigo: varchar(10)
+    empresa_id: integer(10)
 }
 Empresa "1" -- "1" IndicadorGeneral
 
@@ -124,7 +121,6 @@ class Deficiencias {
     empresa_id: integer(10)
 }
 Empresa "1" -- "1" Deficiencias
-
 
 class UEBperdidas {
     cantidadUEB: integer(10)
@@ -148,6 +144,7 @@ class CuentasCobrar {
     empresa_id: integer(10)
 }
 Empresa "1" -- "1" CuentasCobrar
+
 class CuentasPagar {
     inicio_anno: float()
     mes_anterior: float()
@@ -162,7 +159,5 @@ class CuentasPagar {
     empresa_id: integer(10)
 }
 Empresa "1" -- "1" CuentasPagar
-
-
 
 @enduml
