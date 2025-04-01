@@ -184,6 +184,31 @@ class PlanMateriaPrima(models.Model):
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
+    
+    papel_carton = models.IntegerField(
+        verbose_name="Papel y Cartón",
+        default=0
+    )
+    chatarra_acero = models.IntegerField(
+        verbose_name="Chatarra de acero",
+        default=0
+    )
+    envase_textil = models.IntegerField(
+        verbose_name="Envase Textil",
+        default=0
+    )
+    chatarra_aluminio = models.IntegerField(
+        verbose_name="Chatarra aluminio",
+        default=0
+    )
+    chatarra_plomo = models.IntegerField(
+        verbose_name="Chatarra Plomo",
+        default=0
+    )
+    polietileno = models.IntegerField(
+        verbose_name="Polietileno",
+        default=0
+    )
 
     class Meta:
         verbose_name = "Plan de Materia Prima"
@@ -195,37 +220,25 @@ class PlanMateriaPrima(models.Model):
     def get_mes_display(self):
         return MESES_ESPANOL.get(self.mes, self.mes)
 
-class TipoMateriaPrima(models.Model):
-    TIPOS_MATERIALES = [
-        ('Papel y Cartón', 'Papel y Cartón'),
-        ('Chatarra de acero', 'Chatarra de acero'),
-        ('Envase Textil', 'Envase Textil'),
-        ('Chatarra aluminio', 'Chatarra aluminio'),
-        ('Chatarra Plomo', 'Chatarra Plomo'),
-        ( 'Polietileno', 'Polietileno'),
-    ]
+    def get_total(self):
+        return (
+            self.papel_carton +
+            self.chatarra_acero +
+            self.envase_textil +
+            self.chatarra_aluminio +
+            self.chatarra_plomo +
+            self.polietileno
+        )
 
-    plan_materia_prima = models.ForeignKey(
-        PlanMateriaPrima,
-        on_delete=models.CASCADE,
-        verbose_name="Plan de Materia Prima",
-    )
-    tipo = models.CharField(
-        max_length=20,
-        verbose_name="Tipo",
-        choices=TIPOS_MATERIALES
-    )
-    cantidad = models.IntegerField(verbose_name="Cantidad")
-
-    class Meta:
-        verbose_name = "Tipo de Materia Prima"
-        verbose_name_plural = "Tipos de Materia Prima"
-
-    def __str__(self):
-        return f"{self.get_tipo_display()} - {self.cantidad}"
-
-    def get_tipo_display(self):
-        return dict(self.TIPOS_MATERIALES).get(self.tipo)
+    def get_materiales(self):
+        return [
+            ("Papel y Cartón", self.papel_carton),
+            ("Chatarra de acero", self.chatarra_acero),
+            ("Envase Textil", self.envase_textil),
+            ("Chatarra aluminio", self.chatarra_aluminio),
+            ("Chatarra Plomo", self.chatarra_plomo),
+            ("Polietileno", self.polietileno),
+        ]
 
 
 class Inmuebles(models.Model):

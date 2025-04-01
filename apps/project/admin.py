@@ -19,7 +19,6 @@ from .models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    TipoMateriaPrima,
     UEBperdidas,
 )
 from .utils.reportes import (
@@ -177,11 +176,6 @@ class PlanRecapeAdmin(admin.ModelAdmin):
     actions = [generar_reporte_planes_recape_pdf]
 
 
-class TipoMateriaPrimaInline(admin.TabularInline):
-    model = TipoMateriaPrima
-    extra = 1  # Number of empty forms to display
-
-
 @admin.register(PlanMateriaPrima)
 class PlanMateriaPrimaAdmin(admin.ModelAdmin):
     def get_tipos_materia_prima(self, obj):
@@ -196,15 +190,7 @@ class PlanMateriaPrimaAdmin(admin.ModelAdmin):
     list_filter = ("empresa", )
     ordering = ("empresa", )
     list_display_links = list(list_display).copy()
-    inlines = [TipoMateriaPrimaInline]
 
-
-@admin.register(TipoMateriaPrima)
-class TipoMateriaPrimaAdmin(admin.ModelAdmin):
-    list_display = ("plan_materia_prima", "tipo", "cantidad")
-    list_filter = ("plan_materia_prima", "tipo", "cantidad")
-    ordering = list(list_display).copy()
-    list_display_links = list(list_display).copy()
 
 
 @admin.register(Inmuebles)

@@ -22,7 +22,7 @@ from apps.project.models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    TipoMateriaPrima,
+    
     UEBperdidas,
 )
 from config.utils.utils_permission import crear_rol
@@ -55,7 +55,6 @@ def crear_roles_django_default():
             Delitos,
             PlanRecape,
             PlanMateriaPrima,
-            TipoMateriaPrima,
             Inmuebles,
             PlanDeMantenimiento,
             Inversiones,
@@ -79,7 +78,6 @@ def crear_roles_django_default():
             Delitos,
             PlanRecape,
             PlanMateriaPrima,
-            TipoMateriaPrima,
             Inmuebles,
             PlanDeMantenimiento,
             Inversiones,
