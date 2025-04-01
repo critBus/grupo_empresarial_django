@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 ROL_NAME_ADMIN = "admin"
@@ -130,8 +131,29 @@ class Delitos(models.Model):
 
 
 class PlanRecape(models.Model):
+    MESES_ESPANOL = {
+        1: _('Enero'),
+        2: _('Febrero'),
+        3: _('Marzo'),
+        4: _('Abril'),
+        5: _('Mayo'),
+        6: _('Junio'),
+        7: _('Julio'),
+        8: _('Agosto'),
+        9: _('Septiembre'),
+        10: _('Octubre'),
+        11: _('Noviembre'),
+        12: _('Diciembre'),
+    }
     plan = models.IntegerField(verbose_name="Plan")
-    mes = models.IntegerField(verbose_name="Mes")
+    mes = models.IntegerField(
+        verbose_name="Mes",
+        choices=[(k, v) for k, v in MESES_ESPANOL.items()],
+        validators=[
+            MinValueValidator(1, message="El mes debe estar entre 1 y 12"),
+            MaxValueValidator(12, message="El mes debe estar entre 1 y 12")
+        ]
+    )
     anno = models.IntegerField(verbose_name="Año")
     empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
@@ -143,7 +165,10 @@ class PlanRecape(models.Model):
         unique_together = ('mes', 'anno', 'empresa')
 
     def __str__(self):
-        return f"Plan Recape {self.mes}/{self.anno} - {self.empresa.nombre}"
+        return f"Plan Recape {self.MESES_ESPANOL.get(self.mes, self.mes)}/{self.anno} - {self.empresa.nombre}"
+
+    def get_mes_display(self):
+        return self.MESES_ESPANOL.get(self.mes, self.mes)
 
 
 class PlanMateriaPrima(models.Model):
@@ -257,8 +282,10 @@ class Deficiencias(models.Model):
     class Meta:
         verbose_name = "Deficiencia"
         verbose_name_plural = "Deficiencias"
+
     def __str__(self):
         return f"Deficiencias - {self.empresa.nombre}"
+
     def clean(self):
         super().clean()
         # Validar que el total sea igual a resueltas + pendientes
