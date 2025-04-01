@@ -186,12 +186,25 @@ class PlanMateriaPrima(models.Model):
 
 
 class TipoMateriaPrima(models.Model):
+    TIPOS_MATERIALES = [
+        ('papel_carton', 'Papel y Cartón'),
+        ('chatarra_acero', 'Chatarra de acero'),
+        ('envase_textil', 'Envase Textil'),
+        ('chatarra_aluminio', 'Chatarra aluminio'),
+        ('chatarra_plomo', 'Chatarra Plomo'),
+        ('polietileno', 'Polietileno'),
+    ]
+
     plan_materia_prima = models.ForeignKey(
         PlanMateriaPrima,
         on_delete=models.CASCADE,
         verbose_name="Plan de Materia Prima",
     )
-    tipo = models.CharField(max_length=10, verbose_name="Tipo")
+    tipo = models.CharField(
+        max_length=20,
+        verbose_name="Tipo",
+        choices=TIPOS_MATERIALES
+    )
     cantidad = models.IntegerField(verbose_name="Cantidad")
 
     class Meta:
@@ -199,7 +212,10 @@ class TipoMateriaPrima(models.Model):
         verbose_name_plural = "Tipos de Materia Prima"
 
     def __str__(self):
-        return f"{self.tipo} - {self.cantidad}"
+        return f"{self.get_tipo_display()} - {self.cantidad}"
+
+    def get_tipo_display(self):
+        return dict(self.TIPOS_MATERIALES).get(self.tipo)
 
 
 class Inmuebles(models.Model):
