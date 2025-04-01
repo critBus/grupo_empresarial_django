@@ -1,23 +1,17 @@
-from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
+from django.test import TestCase
+
 from apps.project.models import (
-    Empresa,
-    Cuadro,
     AtencionPoblacion,
     CapitalHumano,
-    Interruptos,
-    Delitos,
-    PlanRecape,
-    PlanMateriaPrima,
-    PlanDeMantenimiento,
-    Inversiones,
-    IndicadorGeneral,
+    Cuadro,
     Deficiencias,
-    UEBperdidas,
-    CuentasCobrar,
-    CuentasPagar,
+    Delitos,
+    Empresa,
     Inmuebles,
+    Interruptos,
+    UEBperdidas,
 )
 
 
@@ -34,9 +28,7 @@ class OneToOneRelationsTest(TestCase):
     @transaction.atomic
     def test_cuadro_one_to_one(self):
         # Crear primer cuadro
-        cuadro1 = Cuadro.objects.create(
-            aprobada=10, cubierta=8, empresa=self.empresa1
-        )
+        Cuadro.objects.create(aprobada=10, cubierta=8, empresa=self.empresa1)
 
         # Intentar crear otro cuadro para la misma empresa debe fallar
         with transaction.atomic():
@@ -50,7 +42,7 @@ class OneToOneRelationsTest(TestCase):
 
     @transaction.atomic
     def test_atencion_poblacion_one_to_one(self):
-        atencion1 = AtencionPoblacion.objects.create(
+        AtencionPoblacion.objects.create(
             quejas=5, peticiones=10, termino="Q1", empresa=self.empresa1
         )
 
@@ -62,7 +54,7 @@ class OneToOneRelationsTest(TestCase):
 
     @transaction.atomic
     def test_capital_humano_one_to_one(self):
-        capital1 = CapitalHumano.objects.create(
+        CapitalHumano.objects.create(
             plantillaAprobada=100,
             plantillaCubierta=90,
             mujeres=45,
@@ -80,7 +72,7 @@ class OneToOneRelationsTest(TestCase):
 
     @transaction.atomic
     def test_interruptos_one_to_one(self):
-        interruptos1 = Interruptos.objects.create(
+        Interruptos.objects.create(
             total=20,
             equiposRotos=8,
             faltaPiezas=7,
@@ -100,7 +92,7 @@ class OneToOneRelationsTest(TestCase):
 
     @transaction.atomic
     def test_delitos_one_to_one(self):
-        delitos1 = Delitos.objects.create(
+        Delitos.objects.create(
             denuncia=1,
             municipio="Test",
             fecha="2025-03-28",
@@ -128,7 +120,7 @@ class OneToOneRelationsTest(TestCase):
 
     @transaction.atomic
     def test_deficiencias_one_to_one(self):
-        deficiencias1 = Deficiencias.objects.create(
+        Deficiencias.objects.create(
             total=10, resueltas=6, pendientes=4, empresa=self.empresa1
         )
 
@@ -140,7 +132,7 @@ class OneToOneRelationsTest(TestCase):
 
     @transaction.atomic
     def test_ueb_perdidas_one_to_one(self):
-        ueb1 = UEBperdidas.objects.create(
+        UEBperdidas.objects.create(
             cantidadUEB=5,
             nombre="UEB Test",
             municipio="Municipio Test",
@@ -158,7 +150,7 @@ class OneToOneRelationsTest(TestCase):
 
     @transaction.atomic
     def test_inmuebles_one_to_one(self):
-        inmuebles1 = Inmuebles.objects.create(
+        Inmuebles.objects.create(
             tipo="Tipo Test", cantidad=10, empresa=self.empresa1
         )
 

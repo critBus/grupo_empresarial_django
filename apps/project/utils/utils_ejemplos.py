@@ -1,33 +1,29 @@
 import random
-from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django.utils import timezone
-from django.utils.datetime_safe import datetime
 from faker import Faker
+
 from ..models import (
-    Empresa,
-    Cuadro,
-    CargoSinCubrir,
+    ROL_NAME_DIRECTORA,
+    ROL_NAME_SECRETARIA,
     AtencionPoblacion,
     CapitalHumano,
-    Interruptos,
-    Delitos,
-    PlanRecape,
-    PlanMateriaPrima,
-    TipoMateriaPrima,
-    Inmuebles,
-    PlanDeMantenimiento,
-    Inversiones,
-    IndicadorGeneral,
-    Deficiencias,
-    UEBperdidas,
+    CargoSinCubrir,
+    Cuadro,
     CuentasCobrar,
     CuentasPagar,
-    ROL_NAME_ADMIN,
-    ROL_NAME_SECRETARIA,
-    ROL_NAME_DIRECTORA,
+    Deficiencias,
+    Delitos,
+    Empresa,
+    IndicadorGeneral,
+    Inmuebles,
+    Interruptos,
+    Inversiones,
+    PlanDeMantenimiento,
+    PlanMateriaPrima,
+    PlanRecape,
+    UEBperdidas,
 )
 
 User = get_user_model()
@@ -109,6 +105,7 @@ def crear_datos_random():
             empresa=empresa,
             quejas=random.randint(0, 50),
             peticiones=random.randint(10, 100),
+            denuncias=random.randint(10, 100),
             termino=random.choice(["Enero", "Febrero", "Marzo"]),
         )
 
@@ -131,37 +128,54 @@ def crear_datos_random():
             otrasCausas=random.randint(2, 15),
         )
 
-        # Crear Delitos (uno por empresa)
-        Delitos.objects.create(
-            empresa=empresa,
-            denuncia=random.randint(1, 100),
-            municipio=random.choice(municipios),
-            fecha=fake.date_between(start_date="-1y", end_date="today"),
-            unidad=fake.company(),
-            tipocidad=random.choice(["Robo", "Hurto", "Vandalismo"]),
-            productosSustraidos=fake.text(max_nb_chars=50),
-            valorPerdidas=round(random.uniform(100, 10000), 2),
-            medidasTomadas=random.choice(["Preventiva", "Correctiva", "Legal"]),
-        )
+        for i in range(random.randint(1, 10)):
+            no_denuncia = random.randint(1, 1000)
+            if not Delitos.objects.filter(
+                no_denuncia=no_denuncia, empresa=empresa
+            ).exists():
+                # Crear Delitos
+                Delitos.objects.create(
+                    no_denuncia=no_denuncia,
+                    empresa=empresa,
+                    denuncia=random.randint(1, 100),
+                    municipio=random.choice(municipios),
+                    fecha=fake.date_between(start_date="-1y", end_date="today"),
+                    unidad=fake.company(),
+                    tipocidad=random.choice(["Robo", "Hurto", "Vandalismo"]),
+                    productosSustraidos=fake.text(max_nb_chars=50),
+                    valorPerdidas=round(random.uniform(100, 10000), 2),
+                    medidasTomadas=random.choice(
+                        ["Preventiva", "Correctiva", "Legal"]
+                    ),
+                )
 
         # Crear PlanRecape
-        PlanRecape.objects.create(
-            empresa=empresa,
-            plan=random.randint(1000, 5000),
-            mes=random.randint(1, 12),
-            anno=2024,
-        )
+        # Generar planes para los últimos 3 años
+        current_year = 2024
+        for year in range(current_year - 2, current_year + 1):
+            # Para cada mes del año
+            for month in range(1, 13):
+                PlanRecape.objects.create(
+                    empresa=empresa,
+                    plan=random.randint(1000, 5000),
+                    mes=month,
+                    anno=year,
+                )
 
-        # Crear PlanMateriaPrima y TipoMateriaPrima
-        plan_mp = PlanMateriaPrima.objects.create(
-            empresa=empresa, plan=random.randint(1000, 5000)
-        )
-        for tipo in tipos_materia_prima:
-            TipoMateriaPrima.objects.create(
-                plan_materia_prima=plan_mp,
-                tipo=tipo,
-                cantidad=random.randint(100, 1000),
-            )
+        # Crear PlanMateriaPrima
+        current_year = 2024
+        for year in range(current_year - 2, current_year + 1):
+            PlanMateriaPrima.objects.create(
+                    empresa=empresa,
+                    anno=year,
+                    papel_carton=random.randint(0, 1000),
+                    chatarra_acero=random.randint(0, 1000),
+                    envase_textil=random.randint(0, 1000),
+                    chatarra_aluminio=random.randint(0, 1000),
+                    chatarra_plomo=random.randint(0, 1000),
+                    polietileno=random.randint(0, 1000),
+                )
+                
 
         # Crear Inmuebles (uno por empresa)
         Inmuebles.objects.create(

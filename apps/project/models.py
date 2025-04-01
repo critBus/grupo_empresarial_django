@@ -1,18 +1,30 @@
-from typing import Dict, List
-
 from django.contrib.auth import get_user_model
-from django.db import models
-from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 ROL_NAME_ADMIN = "admin"
 ROL_NAME_SECRETARIA = "secretaria"
 ROL_NAME_DIRECTORA = "directora"
-
+MESES_ESPANOL = {
+        1: _('Enero'),
+        2: _('Febrero'),
+        3: _('Marzo'),
+        4: _('Abril'),
+        5: _('Mayo'),
+        6: _('Junio'),
+        7: _('Julio'),
+        8: _('Agosto'),
+        9: _('Septiembre'),
+        10: _('Octubre'),
+        11: _('Noviembre'),
+        12: _('Diciembre'),
+    }
 
 class Empresa(models.Model):
-    codigo = models.CharField(max_length=10, verbose_name="Código")
+    codigo = models.CharField(max_length=10, verbose_name="Código", unique=True)
     nombre = models.CharField(max_length=255, verbose_name="Nombre")
 
     class Meta:
@@ -54,6 +66,7 @@ class CargoSinCubrir(models.Model):
 
 class AtencionPoblacion(models.Model):
     quejas = models.IntegerField(verbose_name="Quejas")
+    denuncias = models.IntegerField(verbose_name="Denuncias", default=0)
     peticiones = models.IntegerField(verbose_name="Peticiones")
     termino = models.CharField(max_length=10, verbose_name="Término")
     empresa = models.OneToOneField(
@@ -102,9 +115,12 @@ class Interruptos(models.Model):
 
 
 class Delitos(models.Model):
+    no_denuncia = models.IntegerField(
+        max_length=10, verbose_name="Código", validators=[MinValueValidator(1)]
+    )
     denuncia = models.IntegerField(verbose_name="Número de Denuncia")
     municipio = models.CharField(max_length=50, verbose_name="Municipio")
-    fecha = models.DateField(verbose_name="Fecha", auto_now=True)
+    fecha = models.DateField(verbose_name="Fecha")
     unidad = models.CharField(max_length=50, verbose_name="Unidad")
     tipocidad = models.CharField(max_length=50, verbose_name="Tipicidad")
     productosSustraidos = models.CharField(
@@ -114,13 +130,14 @@ class Delitos(models.Model):
     medidasTomadas = models.CharField(
         max_length=50, verbose_name="Medidas Tomadas"
     )
-    empresa = models.OneToOneField(
+    empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
 
     class Meta:
         verbose_name = "Delito"
         verbose_name_plural = "Delitos"
+        unique_together = ["no_denuncia", "empresa"]
 
     def __str__(self):
         return f"Delito en {self.unidad} - {self.fecha}"
@@ -128,49 +145,92 @@ class Delitos(models.Model):
 
 class PlanRecape(models.Model):
     plan = models.IntegerField(verbose_name="Plan")
-    mes = models.IntegerField(verbose_name="Mes")
+    mes = models.IntegerField(
+        verbose_name="Mes",
+        choices=[(k, v) for k, v in MESES_ESPANOL.items()],
+        validators=[
+            MinValueValidator(1, message="El mes debe estar entre 1 y 12"),
+            MaxValueValidator(12, message="El mes debe estar entre 1 y 12")
+        ]
+    )
     anno = models.IntegerField(verbose_name="Año")
-    empresa = models.OneToOneField(
+    empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
 
     class Meta:
         verbose_name = "Plan de Recape"
         verbose_name_plural = "Planes de Recape"
+        unique_together = ('mes', 'anno', 'empresa')
 
     def __str__(self):
-        return f"Plan Recape {self.mes}/{self.anno} - {self.empresa.nombre}"
+        return f"Plan Recape {MESES_ESPANOL.get(self.mes, self.mes)}/{self.anno} - {self.empresa.nombre}"
+
+    def get_mes_display(self):
+        return MESES_ESPANOL.get(self.mes, self.mes)
 
 
 class PlanMateriaPrima(models.Model):
-    plan = models.IntegerField(verbose_name="Plan")
-    empresa = models.OneToOneField(
+    anno = models.IntegerField(verbose_name="Año")
+    
+    empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    
+    papel_carton = models.IntegerField(
+        verbose_name="Papel y Cartón",
+        default=0
+    )
+    chatarra_acero = models.IntegerField(
+        verbose_name="Chatarra de acero",
+        default=0
+    )
+    envase_textil = models.IntegerField(
+        verbose_name="Envase Textil",
+        default=0
+    )
+    chatarra_aluminio = models.IntegerField(
+        verbose_name="Chatarra aluminio",
+        default=0
+    )
+    chatarra_plomo = models.IntegerField(
+        verbose_name="Chatarra Plomo",
+        default=0
+    )
+    polietileno = models.IntegerField(
+        verbose_name="Polietileno",
+        default=0
     )
 
     class Meta:
         verbose_name = "Plan de Materia Prima"
         verbose_name_plural = "Planes de Materia Prima"
+        unique_together = ( 'anno', 'empresa')
 
     def __str__(self):
-        return f"Plan Materia Prima - {self.empresa.nombre}"
+        return f"Plan Materia Prima - {self.anno} - {self.empresa.nombre}"
 
+    
 
-class TipoMateriaPrima(models.Model):
-    plan_materia_prima = models.ForeignKey(
-        PlanMateriaPrima,
-        on_delete=models.CASCADE,
-        verbose_name="Plan de Materia Prima",
-    )
-    tipo = models.CharField(max_length=10, verbose_name="Tipo")
-    cantidad = models.IntegerField(verbose_name="Cantidad")
+    def get_total(self):
+        return (
+            self.papel_carton +
+            self.chatarra_acero +
+            self.envase_textil +
+            self.chatarra_aluminio +
+            self.chatarra_plomo +
+            self.polietileno
+        )
 
-    class Meta:
-        verbose_name = "Tipo de Materia Prima"
-        verbose_name_plural = "Tipos de Materia Prima"
-
-    def __str__(self):
-        return f"{self.tipo} - {self.cantidad}"
+    def get_materiales(self):
+        return [
+            ("Papel y Cartón", self.papel_carton),
+            ("Chatarra de acero", self.chatarra_acero),
+            ("Envase Textil", self.envase_textil),
+            ("Chatarra aluminio", self.chatarra_aluminio),
+            ("Chatarra Plomo", self.chatarra_plomo),
+            ("Polietileno", self.polietileno),
+        ]
 
 
 class Inmuebles(models.Model):
@@ -254,6 +314,9 @@ class Deficiencias(models.Model):
         verbose_name = "Deficiencia"
         verbose_name_plural = "Deficiencias"
 
+    def __str__(self):
+        return f"Deficiencias - {self.empresa.nombre}"
+
     def clean(self):
         super().clean()
         # Validar que el total sea igual a resueltas + pendientes
@@ -261,9 +324,6 @@ class Deficiencias(models.Model):
             raise ValidationError(
                 "El total debe ser igual a la suma de resueltas y pendientes."
             )
-
-    def __str__(self):
-        return f"Deficiencias - {self.empresa.nombre}"
 
 
 class UEBperdidas(models.Model):

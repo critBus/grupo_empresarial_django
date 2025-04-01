@@ -1,26 +1,35 @@
 # Register your models here.
 from django.contrib import admin
+from django.utils.safestring import mark_safe
+
 from .models import (
-    Empresa,
-    Cuadro,
-    CargoSinCubrir,
     AtencionPoblacion,
     CapitalHumano,
-    Interruptos,
-    Delitos,
-    PlanRecape,
-    PlanMateriaPrima,
-    TipoMateriaPrima,
-    Inmuebles,
-    PlanDeMantenimiento,
-    Inversiones,
-    IndicadorGeneral,
-    Deficiencias,
-    UEBperdidas,
+    CargoSinCubrir,
+    Cuadro,
     CuentasCobrar,
     CuentasPagar,
+    Deficiencias,
+    Delitos,
+    Empresa,
+    IndicadorGeneral,
+    Inmuebles,
+    Interruptos,
+    Inversiones,
+    PlanDeMantenimiento,
+    PlanMateriaPrima,
+    PlanRecape,
+    UEBperdidas,
 )
-from django.utils.safestring import mark_safe
+from .utils.reportes import (
+    generar_atencion_poblacion_pdf,
+    generar_capital_humano_pdf,
+    generar_reporte_cuadros_pdf,
+    generar_reporte_delitos_pdf,
+    generar_reporte_interruptos_pdf,
+    generar_reporte_planes_materia_prima_pdf,
+    generar_reporte_planes_recape_pdf,
+)
 
 
 @admin.register(Empresa)
@@ -58,6 +67,7 @@ class CuadroAdmin(admin.ModelAdmin):
         "cargosincubrir__cargo",
     )
     inlines = [CargoSinCubrirInline]
+    actions = [generar_reporte_cuadros_pdf]
 
 
 @admin.register(CargoSinCubrir)
@@ -74,15 +84,23 @@ class CargoSinCubrirAdmin(admin.ModelAdmin):
 
 @admin.register(AtencionPoblacion)
 class AtencionPoblacionAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "quejas", "peticiones", "termino")
+    list_display = (
+        "empresa",
+        "quejas",
+        "peticiones",
+        "denuncias",
+        "termino",
+    )
     search_fields = ("termino",)
     list_filter = (
         "empresa",
         "quejas",
         "peticiones",
+        "denuncias",
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_atencion_poblacion_pdf]
 
 
 @admin.register(CapitalHumano)
@@ -101,6 +119,7 @@ class CapitalHumanoAdmin(admin.ModelAdmin):
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_capital_humano_pdf]
 
 
 @admin.register(Interruptos)
@@ -121,6 +140,7 @@ class InterruptosAdmin(admin.ModelAdmin):
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_interruptos_pdf]
 
 
 @admin.register(Delitos)
@@ -145,6 +165,7 @@ class DelitosAdmin(admin.ModelAdmin):
     date_hierarchy = "fecha"
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_delitos_pdf]
 
 
 @admin.register(PlanRecape)
@@ -153,36 +174,39 @@ class PlanRecapeAdmin(admin.ModelAdmin):
     list_filter = ("empresa", "plan", "mes", "anno")
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
-
-
-class TipoMateriaPrimaInline(admin.TabularInline):
-    model = TipoMateriaPrima
-    extra = 1  # Number of empty forms to display
+    actions = [generar_reporte_planes_recape_pdf]
 
 
 @admin.register(PlanMateriaPrima)
 class PlanMateriaPrimaAdmin(admin.ModelAdmin):
     def get_tipos_materia_prima(self, obj):
-        entidades = [
-            f"{materia_prima.tipo} | {materia_prima.cantidad}"
-            for materia_prima in obj.tipomateriaprima_set.all()
-        ]
-        return mark_safe("<br>\n".join(entidades))
+        # Create a list of formatted strings
+        entidades = []
+        for field in obj._meta.fields:
+            if field.name in [
+                'papel_carton', 'chatarra_acero', 'envase_textil',
+                'chatarra_aluminio', 'chatarra_plomo', 'polietileno'
+            ]:
+                entidades.append(
+                    f'<tr><td style="width: 200px; text-align: right; padding-right: 10px;">{field.verbose_name}</td>'
+                    f'<td>{getattr(obj, field.name)}</td></tr>'
+                )
+        
+        return mark_safe(
+            '<table style="border-collapse: collapse; width: 100%;">' +
+            '<tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>'
+            '<th>Cantidad</th></tr>' +
+            ''.join(entidades) +
+            '</table>'
+        )
 
     get_tipos_materia_prima.short_description = "Materias Primas"
-    list_display = ("empresa", "plan", "get_tipos_materia_prima")
-    list_filter = ("empresa", "plan")
-    ordering = ("empresa", "plan")
-    list_display_links = list(list_display).copy()
-    inlines = [TipoMateriaPrimaInline]
-
-
-@admin.register(TipoMateriaPrima)
-class TipoMateriaPrimaAdmin(admin.ModelAdmin):
-    list_display = ("plan_materia_prima", "tipo", "cantidad")
-    list_filter = ("plan_materia_prima", "tipo", "cantidad")
-    ordering = list(list_display).copy()
-    list_display_links = list(list_display).copy()
+    get_tipos_materia_prima.allow_tags = True
+    list_display = ("empresa",  "anno","get_tipos_materia_prima")
+    list_filter = ("empresa", "anno")
+    ordering = ("empresa", "anno" )
+    list_display_links = ("empresa", "anno" )
+    actions =[generar_reporte_planes_materia_prima_pdf]
 
 
 @admin.register(Inmuebles)
