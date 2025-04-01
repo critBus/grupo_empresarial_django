@@ -265,7 +265,6 @@ def generar_reporte_planes_materia_prima_pdf(modeladmin, request, queryset):
     elementos: List[PlanMateriaPrima] = queryset
     
     # Organizar datos por empresa y año
-    data_by_empresa_año = {}
     years = set()
     lista = []
     for plan in elementos:

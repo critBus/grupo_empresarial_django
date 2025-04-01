@@ -165,10 +165,8 @@ def crear_datos_random():
         # Crear PlanMateriaPrima
         current_year = 2024
         for year in range(current_year - 2, current_year + 1):
-            for month in range(1, 13):
-                plan_materia_prima = PlanMateriaPrima.objects.create(
+            PlanMateriaPrima.objects.create(
                     empresa=empresa,
-                    mes=month,
                     anno=year,
                     papel_carton=random.randint(0, 1000),
                     chatarra_acero=random.randint(0, 1000),
@@ -177,6 +175,7 @@ def crear_datos_random():
                     chatarra_plomo=random.randint(0, 1000),
                     polietileno=random.randint(0, 1000),
                 )
+                
 
         # Crear Inmuebles (uno por empresa)
         Inmuebles.objects.create(

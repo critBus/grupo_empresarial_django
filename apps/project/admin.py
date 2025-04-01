@@ -202,10 +202,10 @@ class PlanMateriaPrimaAdmin(admin.ModelAdmin):
 
     get_tipos_materia_prima.short_description = "Materias Primas"
     get_tipos_materia_prima.allow_tags = True
-    list_display = ("empresa",  "mes", "anno","get_tipos_materia_prima")
-    list_filter = ("empresa", "mes", "anno")
-    ordering = ("empresa","mes", "anno" )
-    list_display_links = ("empresa","mes", "anno" )
+    list_display = ("empresa",  "anno","get_tipos_materia_prima")
+    list_filter = ("empresa", "anno")
+    ordering = ("empresa", "anno" )
+    list_display_links = ("empresa", "anno" )
     actions =[generar_reporte_planes_materia_prima_pdf]
 
 

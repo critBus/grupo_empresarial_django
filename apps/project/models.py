@@ -171,14 +171,6 @@ class PlanRecape(models.Model):
 
 
 class PlanMateriaPrima(models.Model):
-    mes = models.IntegerField(
-        verbose_name="Mes",
-        choices=[(k, v) for k, v in MESES_ESPANOL.items()],
-        validators=[
-            MinValueValidator(1, message="El mes debe estar entre 1 y 12"),
-            MaxValueValidator(12, message="El mes debe estar entre 1 y 12")
-        ]
-    )
     anno = models.IntegerField(verbose_name="Año")
     
     empresa = models.ForeignKey(
@@ -213,13 +205,12 @@ class PlanMateriaPrima(models.Model):
     class Meta:
         verbose_name = "Plan de Materia Prima"
         verbose_name_plural = "Planes de Materia Prima"
-        unique_together = ('mes', 'anno', 'empresa')
+        unique_together = ( 'anno', 'empresa')
 
     def __str__(self):
-        return f"Plan Materia Prima - {MESES_ESPANOL.get(self.mes, self.mes)}/{self.anno} - {self.empresa.nombre}"
+        return f"Plan Materia Prima - {self.anno} - {self.empresa.nombre}"
 
-    def get_mes_display(self):
-        return MESES_ESPANOL.get(self.mes, self.mes)
+    
 
     def get_total(self):
         return (
