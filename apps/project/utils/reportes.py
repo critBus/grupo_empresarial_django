@@ -347,10 +347,12 @@ def generar_reporte_inmuebles_pdf(modeladmin, request, queryset):
         "lista": lista,
     }
     return custom_export_report_by_name(
-        "Inmuebles",
+        "Red de Inmuebles",
         data,
         file="reporte_inmuebles",
     )
 
 
-generar_reporte_inmuebles_pdf.short_description = "Generar Reporte Inmuebles PDF"
+generar_reporte_inmuebles_pdf.short_description = (
+    "Generar Reporte Inmuebles PDF"
+)

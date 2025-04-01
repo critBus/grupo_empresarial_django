@@ -26,10 +26,10 @@ from .utils.reportes import (
     generar_capital_humano_pdf,
     generar_reporte_cuadros_pdf,
     generar_reporte_delitos_pdf,
+    generar_reporte_inmuebles_pdf,
     generar_reporte_interruptos_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
-    generar_reporte_inmuebles_pdf,
 )
 
 
@@ -263,7 +263,7 @@ class InmueblesAdmin(admin.ModelAdmin):
                     f"<td>{getattr(obj, field.name)}</td></tr>"
                 )
 
-        return mark_safe(f'''
+        return mark_safe(f"""
             <div class="collapsible-container">
                 <button id="collapsible-{obj.id}" 
                 class="collapsible" 
@@ -274,7 +274,7 @@ class InmueblesAdmin(admin.ModelAdmin):
                     style="border-collapse: collapse; width: 100%;">
                         <tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>
                         <th>Cantidad</th></tr>
-                        {''.join(entidades)}
+                        {"".join(entidades)}
                     </table>
                 </div>
             </div>
@@ -327,7 +327,8 @@ class InmueblesAdmin(admin.ModelAdmin):
                     }}
                 }});
             </script>
-        ''')
+        """)
+
     get_tipos_inmuebles.short_description = "Inmuebles"
     get_tipos_inmuebles.allow_tags = True
 
