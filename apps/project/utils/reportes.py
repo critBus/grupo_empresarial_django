@@ -7,6 +7,7 @@ from apps.project.models import (
     Cuadro,
     Delitos,
     Interruptos,
+    PlanMateriaPrima,
     PlanRecape,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
@@ -257,3 +258,43 @@ def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
 
 
 generar_reporte_planes_recape_pdf.short_description = "Generar Reporte Recape PDF"
+
+
+
+def generar_reporte_planes_materia_prima_pdf(modeladmin, request, queryset):
+    elementos: List[PlanMateriaPrima] = queryset
+    
+    # Organizar datos por empresa y año
+    data_by_empresa_año = {}
+    years = set()
+    lista = []
+    for plan in elementos:
+        year = plan.anno
+        years.add(year)
+        lista.append({
+            "empresa": plan.empresa.nombre,
+            "anno": str(year),
+            "papel_carton": str(plan.papel_carton),
+            "chatarra_acero": str(plan.chatarra_acero),
+            "envase_textil": str(plan.envase_textil),
+            "chatarra_aluminio": str(plan.chatarra_aluminio),
+            "chatarra_plomo": str(plan.chatarra_plomo),
+            "polietileno": str(plan.polietileno)
+        })
+    
+    # Ordenar la lista primero por año y luego por empresa
+    lista = sorted(lista, key=lambda x: (int(x["anno"]), x["empresa"]))
+    
+    data = {
+        "lista": lista,
+        "mostrar_anno": len(years) > 1
+    }
+    
+    return custom_export_report_by_name(
+        "Plan de Materia Prima",
+        data,
+        file="reporte_planes_materia_prima"
+    )
+
+
+generar_reporte_planes_materia_prima_pdf.short_description = "Generar Reporte Materia Prima PDF"

@@ -27,6 +27,7 @@ from .utils.reportes import (
     generar_reporte_cuadros_pdf,
     generar_reporte_delitos_pdf,
     generar_reporte_interruptos_pdf,
+    generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
 )
 
@@ -205,6 +206,7 @@ class PlanMateriaPrimaAdmin(admin.ModelAdmin):
     list_filter = ("empresa", "mes", "anno")
     ordering = ("empresa","mes", "anno" )
     list_display_links = ("empresa","mes", "anno" )
+    actions =[generar_reporte_planes_materia_prima_pdf]
 
 
 @admin.register(Inmuebles)
