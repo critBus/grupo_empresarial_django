@@ -234,8 +234,44 @@ class PlanMateriaPrima(models.Model):
 
 
 class Inmuebles(models.Model):
-    tipo = models.CharField(max_length=255, verbose_name="Tipo")
-    cantidad = models.IntegerField(verbose_name="Cantidad")
+    loc_oficina = models.PositiveIntegerField(verbose_name="Loc. oficina", default=0)
+    cpl = models.PositiveIntegerField(verbose_name="CPL", default=0)
+    almacenes = models.PositiveIntegerField(verbose_name="almacenes", default=0)
+    farmacias_opticas = models.PositiveIntegerField(verbose_name="farmacias y opticas / C. auditivo", default=0)
+    taller = models.PositiveIntegerField(verbose_name="taller", default=0)
+    poncheras = models.PositiveIntegerField(verbose_name="Poncheras", default=0)
+    plantas_fre = models.PositiveIntegerField(verbose_name="Plantas Fre", default=0)
+    top = models.PositiveIntegerField(verbose_name="TOP", default=0)
+    nave_pasaje = models.PositiveIntegerField(verbose_name="nave pasaje", default=0)
+    funeraria = models.PositiveIntegerField(verbose_name="Funeraria", default=0)
+    floristeria = models.PositiveIntegerField(verbose_name="Floristería", default=0)
+    banos_p = models.PositiveIntegerField(verbose_name="baños P", default=0)
+    tienda = models.PositiveIntegerField(verbose_name="tienda", default=0)
+    base_carga = models.PositiveIntegerField(verbose_name="base carga", default=0)
+    circulos_s = models.PositiveIntegerField(verbose_name="Círculos .S", default=0)
+    capillas = models.PositiveIntegerField(verbose_name="Capillas", default=0)
+    comedores = models.PositiveIntegerField(verbose_name="comedores", default=0)
+    panaderias = models.PositiveIntegerField(verbose_name="panaderías", default=0)
+    dulcerias = models.PositiveIntegerField(verbose_name="dulcerías", default=0)
+    pana_dulc = models.PositiveIntegerField(verbose_name="Pana / dulc", default=0)
+    bodegas = models.PositiveIntegerField(verbose_name="Bodegas", default=0)
+    minitalleres = models.PositiveIntegerField(verbose_name="minitalleres", default=0)
+    fabricas = models.PositiveIntegerField(verbose_name="fabricas", default=0)
+    carnicerias = models.PositiveIntegerField(verbose_name="Carnicerías", default=0)
+    m_ideal = models.PositiveIntegerField(verbose_name="M. Ideal", default=0)
+    mais = models.PositiveIntegerField(verbose_name="MAIS", default=0)
+    tmc = models.PositiveIntegerField(verbose_name="TMC", default=0)
+    bar = models.PositiveIntegerField(verbose_name="Bar", default=0)
+    c_elaboracion = models.PositiveIntegerField(verbose_name="C. Elabor.", default=0)
+    restaurant = models.PositiveIntegerField(verbose_name="Restaurant", default=0)
+    cafeterias = models.PositiveIntegerField(verbose_name="Cafeterías", default=0)
+    c_nocturno = models.PositiveIntegerField(verbose_name="C Nocturno", default=0)
+    cabaret = models.PositiveIntegerField(verbose_name="Cabaret", default=0)
+    merendero = models.PositiveIntegerField(verbose_name="Merendero", default=0)
+    heladerias = models.PositiveIntegerField(verbose_name="Heladerías", default=0)
+    alojamiento = models.PositiveIntegerField(verbose_name="Alojamiento", default=0)
+    servicios = models.PositiveIntegerField(verbose_name="Servicios", default=0)
+    incinerador = models.PositiveIntegerField(verbose_name="Incinerador", default=0)
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
@@ -245,7 +281,7 @@ class Inmuebles(models.Model):
         verbose_name_plural = "Inmuebles"
 
     def __str__(self):
-        return f"{self.tipo} - {self.empresa.nombre}"
+        return f"Inmuebles - {self.empresa.nombre}"
 
 
 class PlanDeMantenimiento(models.Model):

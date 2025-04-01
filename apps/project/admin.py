@@ -211,10 +211,42 @@ class PlanMateriaPrimaAdmin(admin.ModelAdmin):
 
 @admin.register(Inmuebles)
 class InmueblesAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "tipo", "cantidad")
-    list_filter = ("empresa", "tipo", "cantidad")
-    ordering = list(list_display).copy()
-    list_display_links = list(list_display).copy()
+    def get_tipos_inmuebles(self, obj):
+        # Create a list of formatted strings
+        entidades = []
+        for field in obj._meta.fields:
+            if field.name in [
+                'loc_oficina', 'cpl', 'almacenes', 'farmacias_opticas',
+                'taller', 'poncheras', 'plantas_fre', 'top',
+                'nave_pasaje', 'funeraria', 'floristeria', 'banos_p',
+                'tienda', 'base_carga', 'circulos_s', 'capillas',
+                'comedores', 'panaderias', 'dulcerias', 'pana_dulc',
+                'bodegas', 'minitalleres', 'fabricas', 'carnicerias',
+                'm_ideal', 'mais', 'tmc', 'bar',
+                'c_elaboracion', 'restaurant', 'cafeterias', 'c_nocturno',
+                'cabaret', 'merendero', 'heladerias', 'alojamiento',
+                'servicios', 'incinerador'
+            ]:
+                entidades.append(
+                    f'<tr><td style="width: 200px; text-align: right; padding-right: 10px;">{field.verbose_name}</td>'
+                    f'<td>{getattr(obj, field.name)}</td></tr>'
+                )
+        
+        return mark_safe(
+            '<table style="border-collapse: collapse; width: 100%;">' +
+            '<tr><th style="width: 200px; text-align: right; padding-right: 10px;">Material</th>'
+            '<th>Cantidad</th></tr>' +
+            ''.join(entidades) +
+            '</table>'
+        )
+
+    get_tipos_inmuebles.short_description = "Inmuebles"
+    get_tipos_inmuebles.allow_tags = True
+    
+    list_display = ("empresa", "get_tipos_inmuebles")
+    list_filter = ("empresa",)
+    ordering = ("empresa",)
+    list_display_links = ("empresa",)
 
 
 @admin.register(PlanDeMantenimiento)
