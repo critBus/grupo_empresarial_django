@@ -10,6 +10,7 @@ from apps.project.models import (
     Inmuebles,
     Interruptos,
     Inversiones,
+    MaterialPlasticoReciclado,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -496,4 +497,36 @@ def generar_reporte_ueb_perdidas_pdf(modeladmin, request, queryset):
 
 generar_reporte_ueb_perdidas_pdf.short_description = (
     "Generar Reporte Pérdidas UEB PDF"
+)
+
+
+def generar_reporte_material_plastico_recilcado_pdf(
+    modeladmin, request, queryset
+):
+    elementos: List[MaterialPlasticoReciclado] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "no": str(elemento.no_material),
+                "nombre": str(elemento.materia),
+                "unidad_de_medida": str(elemento.unidad_de_medida),
+                "plan": str(elemento.plan),
+                "real": str(elemento.real),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Material Plástico Reciclado",
+        data,
+        file="reporte_material_plastico_reciclado",
+    )
+
+
+generar_reporte_material_plastico_recilcado_pdf.short_description = (
+    "Generar Reporte Material Plástico Reciclado  PDF"
 )
