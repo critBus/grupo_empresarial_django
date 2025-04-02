@@ -8,6 +8,7 @@ from apps.project.models import (
     Delitos,
     Inmuebles,
     Interruptos,
+    PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
 )
@@ -355,4 +356,39 @@ def generar_reporte_inmuebles_pdf(modeladmin, request, queryset):
 
 generar_reporte_inmuebles_pdf.short_description = (
     "Generar Reporte Inmuebles PDF"
+)
+
+
+def generar_reporte_plan_de_mantenimiento_pdf(modeladmin, request, queryset):
+    elementos: List[PlanDeMantenimiento] = queryset
+
+    # Organizar datos por empresa y año
+    years = set()
+    lista = []
+    for plan in elementos:
+        year = plan.anno
+        years.add(year)
+        lista.append(
+            {
+                "empresa": plan.empresa.nombre,
+                "anno": str(year),
+                "cantidad_de_obras_anual": str(plan.cantidad_de_obras_anual),
+                "importe_total_anual": str(plan.importe_total_anual),
+                "cantidad_de_obras_real": str(plan.cantidad_de_obras_real),
+                "importe_total_real": str(plan.importe_total_real),
+            }
+        )
+
+    # Ordenar la lista primero por año y luego por empresa
+    lista = sorted(lista, key=lambda x: (int(x["anno"]), x["empresa"]))
+
+    data = {"lista": lista, "mostrar_anno": len(years) > 1}
+
+    return custom_export_report_by_name(
+        "Plan de Mantenimiento", data, file="reporte_planes_mantenimento"
+    )
+
+
+generar_reporte_plan_de_mantenimiento_pdf.short_description = (
+    "Generar Reporte Plan Mantenimiento PDF"
 )

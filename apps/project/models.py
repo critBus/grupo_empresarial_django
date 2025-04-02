@@ -308,11 +308,24 @@ class Inmuebles(models.Model):
 
 
 class PlanDeMantenimiento(models.Model):
-    plan = models.IntegerField(verbose_name="Plan")
-    real = models.IntegerField(verbose_name="Real")
-    porciento = models.IntegerField(verbose_name="Porcentaje")
-    tipo = models.CharField(max_length=70, verbose_name="Tipo")
-    empresa = models.OneToOneField(
+    anno = models.PositiveIntegerField(verbose_name="Año", default=2025)
+    cantidad_de_obras_anual = models.PositiveIntegerField(
+        verbose_name="Cantidad De Obras Anual", default=0
+    )
+    importe_total_anual = models.FloatField(
+        verbose_name="Importe Total Anual",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    cantidad_de_obras_real = models.PositiveIntegerField(
+        verbose_name="Cantidad De Obras Real", default=0
+    )
+    importe_total_real = models.FloatField(
+        verbose_name="Importe Total Real",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
 

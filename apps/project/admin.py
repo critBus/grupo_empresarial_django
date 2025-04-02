@@ -28,6 +28,7 @@ from .utils.reportes import (
     generar_reporte_delitos_pdf,
     generar_reporte_inmuebles_pdf,
     generar_reporte_interruptos_pdf,
+    generar_reporte_plan_de_mantenimiento_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
 )
@@ -341,10 +342,25 @@ class InmueblesAdmin(admin.ModelAdmin):
 
 @admin.register(PlanDeMantenimiento)
 class PlanDeMantenimientoAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "porciento", "tipo")
-    list_filter = ("empresa", "plan", "real", "porciento", "tipo")
+    list_display = (
+        "empresa",
+        "anno",
+        "cantidad_de_obras_anual",
+        "importe_total_anual",
+        "cantidad_de_obras_real",
+        "importe_total_real",
+    )
+    list_filter = (
+        "empresa",
+        "anno",
+        "cantidad_de_obras_anual",
+        "importe_total_anual",
+        "cantidad_de_obras_real",
+        "importe_total_real",
+    )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_plan_de_mantenimiento_pdf]
 
 
 @admin.register(Inversiones)

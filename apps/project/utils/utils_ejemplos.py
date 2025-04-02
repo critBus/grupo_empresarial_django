@@ -77,7 +77,6 @@ def crear_datos_random():
         empresas.append(empresa)
 
     # Tipos comunes para varias entidades
-    tipos_mantenimiento = ["Preventivo", "Correctivo", "Predictivo"]
     municipios = [
         "Pinar del Río",
         "San Luis",
@@ -221,15 +220,18 @@ def crear_datos_random():
         inmueble.save()
 
         # Crear PlanDeMantenimiento
-        plan = random.randint(1000, 5000)
-        real = random.randint(int(plan * 0.7), plan)
-        PlanDeMantenimiento.objects.create(
-            empresa=empresa,
-            plan=plan,
-            real=real,
-            porciento=int((real / plan) * 100),
-            tipo=random.choice(tipos_mantenimiento),
-        )
+        current_year = 2024
+        for year in range(current_year - 2, current_year + 1):
+            # Para cada mes del año
+
+            PlanDeMantenimiento.objects.create(
+                anno=year,
+                empresa=empresa,
+                cantidad_de_obras_anual=random.randint(0, 1000),
+                importe_total_anual=random.randint(0, 1000),
+                cantidad_de_obras_real=random.randint(0, 1000),
+                importe_total_real=random.randint(0, 1000),
+            )
 
         # Crear Inversiones
         plan_inv = random.randint(10000, 50000)
