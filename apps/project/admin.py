@@ -19,7 +19,7 @@ from .models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    UEBperdidas,
+    UEBperdidas, MaterialPlasticoReciclado,
 )
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,
@@ -499,6 +499,28 @@ class CuentasPagarAdmin(admin.ModelAdmin):
         "mes_actual_vencidas",
         "indice_gestion_cloro",
         "ciclo_cobros_dias",
+    )
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+
+
+@admin.register(MaterialPlasticoReciclado)
+class MaterialPlasticoRecicladoAdmin(admin.ModelAdmin):
+    list_display = (
+        "empresa",
+        "no_material",
+        "materia",
+        "unidad_de_medida",
+        "plan",
+        "real",
+    )
+    list_filter = (
+        "empresa",
+        "no_material",
+        "materia",
+        "unidad_de_medida",
+        "plan",
+        "real",
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
