@@ -338,10 +338,33 @@ class PlanDeMantenimiento(models.Model):
 
 
 class Inversiones(models.Model):
-    plan = models.IntegerField(verbose_name="Plan")
-    real = models.IntegerField(verbose_name="Real")
-    porciento = models.IntegerField(verbose_name="Porcentaje")
-    tipo = models.CharField(max_length=70, verbose_name="Tipo")
+    plan_obra = models.IntegerField(
+        verbose_name="Preparación de obra: Plan", default=0
+    )
+    real_obra = models.IntegerField(
+        verbose_name="Preparación de obra: Real", default=0
+    )
+    porciento_obra = models.IntegerField(
+        verbose_name="Preparación de obra: Porcentaje", default=0
+    )
+    plan_no_nominales = models.IntegerField(
+        verbose_name="Inversiones no nominales: Plan", default=0
+    )
+    real_no_nominales = models.IntegerField(
+        verbose_name="Inversiones no nominales: Real", default=0
+    )
+    porciento_no_nominales = models.IntegerField(
+        verbose_name="Inversiones no nominales: Porcentaje", default=0
+    )
+    plan_resto = models.IntegerField(
+        verbose_name="Resto de inversiones no nominales: Plan", default=0
+    )
+    real_resto = models.IntegerField(
+        verbose_name="Resto de inversiones no nominales: Real", default=0
+    )
+    porciento_resto = models.IntegerField(
+        verbose_name="Resto de inversiones no nominales: Porcentaje", default=0
+    )
     empresa = models.OneToOneField(
         Empresa,
         on_delete=models.CASCADE,

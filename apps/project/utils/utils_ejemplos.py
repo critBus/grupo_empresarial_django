@@ -58,16 +58,16 @@ def crear_datos_random():
 
     # Lista de empresas predefinidas
     empresas_nombres = [
-        "Empresa Provincial de Construcción y Mantenimiento",
-        "Empresa Provincial de Comunales",
-        "Empresa Provincial de Farmacias y Ópticas",
-        "Empresa Provincial de Transporte",
-        "Empresa Provincial de Seguridad y Protección",
-        "Empresa Provincial de Comercio, Gastronomía y Servicios",
-        "Empresa Provincial de Mantenimiento Vial y Construcción",
-        "Empresa Provincial de Logística",
-        "Empresa Provincial de Alimentos y Producciones Varias",
-        "Empresa Provincial de Servicios Técnicos del Arquitecto de la Comunidad",
+        "Provincial de Construcción y Mantenimiento",
+        "Provincial de Comunales",
+        "Provincial de Farmacias y Ópticas",
+        "Provincial de Transporte",
+        "Provincial de Seguridad y Protección",
+        "Provincial de Comercio, Gastronomía y Servicios",
+        "Provincial de Mantenimiento Vial y Construcción",
+        "Provincial de Logística",
+        "Provincial de Alimentos y Producciones Varias",
+        "Provincial de Servicios Técnicos del Arquitecto de la Comunidad",
     ]
 
     # Crear empresas
@@ -234,16 +234,17 @@ def crear_datos_random():
             )
 
         # Crear Inversiones
-        plan_inv = random.randint(10000, 50000)
-        real_inv = random.randint(int(plan_inv * 0.7), plan_inv)
         Inversiones.objects.create(
             empresa=empresa,
-            plan=plan_inv,
-            real=real_inv,
-            porciento=int((real_inv / plan_inv) * 100),
-            tipo=random.choice(
-                ["Construcción", "Equipamiento", "Infraestructura"]
-            ),
+            plan_obra=random.randint(10000, 50000),
+            real_obra=random.randint(10000, 50000),
+            porciento_obra=random.randint(10000, 50000),
+            plan_no_nominales=random.randint(10000, 50000),
+            real_no_nominales=random.randint(10000, 50000),
+            porciento_no_nominales=random.randint(10000, 50000),
+            plan_resto=random.randint(10000, 50000),
+            real_resto=random.randint(10000, 50000),
+            porciento_resto=random.randint(10000, 50000),
         )
 
         # Crear IndicadorGeneral

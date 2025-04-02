@@ -28,6 +28,7 @@ from .utils.reportes import (
     generar_reporte_delitos_pdf,
     generar_reporte_inmuebles_pdf,
     generar_reporte_interruptos_pdf,
+    generar_reporte_inversiones_pdf,
     generar_reporte_plan_de_mantenimiento_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
@@ -365,10 +366,47 @@ class PlanDeMantenimientoAdmin(admin.ModelAdmin):
 
 @admin.register(Inversiones)
 class InversionesAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "porciento", "tipo")
-    list_filter = ("empresa", "plan", "real", "porciento", "tipo")
-    ordering = list(list_display).copy()
-    list_display_links = list(list_display).copy()
+    def get_preparacion_de_obra(self, obj):
+        data = [
+            f"Plan: {obj.plan_obra}",
+            f"Real: {obj.real_obra}",
+            f"Porcentaje: {obj.porciento_obra}",
+        ]
+        return mark_safe("<br>\n".join(data))
+
+    get_preparacion_de_obra.short_description = "Preparación de Obra"
+
+    def get_inversiones_no_nominales(self, obj):
+        data = [
+            f"Plan: {obj.plan_no_nominales}",
+            f"Real: {obj.real_no_nominales}",
+            f"Porcentaje: {obj.porciento_no_nominales}",
+        ]
+        return mark_safe("<br>\n".join(data))
+
+    get_inversiones_no_nominales.short_description = "Inversiones no nominales"
+
+    def get_resto_de_inversiones_no_nominales(self, obj):
+        data = [
+            f"Plan: {obj.plan_resto}",
+            f"Real: {obj.real_resto}",
+            f"Porcentaje: {obj.porciento_resto}",
+        ]
+        return mark_safe("<br>\n".join(data))
+
+    get_resto_de_inversiones_no_nominales.short_description = (
+        "Resto de inversiones no nominales"
+    )
+
+    list_display = (
+        "empresa",
+        "get_preparacion_de_obra",
+        "get_inversiones_no_nominales",
+    )
+    list_filter = ("empresa",)
+    ordering = ("empresa",)
+    list_display_links = ("empresa",)
+    actions = [generar_reporte_inversiones_pdf]
 
 
 @admin.register(IndicadorGeneral)

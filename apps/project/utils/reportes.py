@@ -8,6 +8,7 @@ from apps.project.models import (
     Delitos,
     Inmuebles,
     Interruptos,
+    Inversiones,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -391,4 +392,41 @@ def generar_reporte_plan_de_mantenimiento_pdf(modeladmin, request, queryset):
 
 generar_reporte_plan_de_mantenimiento_pdf.short_description = (
     "Generar Reporte Plan Mantenimiento PDF"
+)
+
+
+def generar_reporte_inversiones_pdf(modeladmin, request, queryset):
+    elementos: List[Inversiones] = queryset
+
+    # Organizar datos por empresa y año
+    lista = []
+    for plan in elementos:
+        lista.append(
+            {
+                "empresa": plan.empresa.nombre,
+                "plan_obra": format_float(plan.plan_obra),
+                "real_obra": format_float(plan.real_obra),
+                "porciento_obra": format_float(plan.porciento_obra),
+                "plan_no_nominales": format_float(plan.plan_no_nominales),
+                "real_no_nominales": format_float(plan.real_no_nominales),
+                "porciento_no_nominales": format_float(
+                    plan.porciento_no_nominales
+                ),
+                "plan_resto": format_float(plan.plan_resto),
+                "real_resto": format_float(plan.real_resto),
+                "porciento_resto": format_float(plan.porciento_resto),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+
+    return custom_export_report_by_name(
+        "Inversiones", data, file="reporte_inversiones"
+    )
+
+
+generar_reporte_inversiones_pdf.short_description = (
+    "Generar Reporte Inversiones PDF"
 )
