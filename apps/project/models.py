@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -412,13 +411,13 @@ class Deficiencias(models.Model):
     def __str__(self):
         return f"Deficiencias - {self.empresa.nombre}"
 
-    def clean(self):
-        super().clean()
-        # Validar que el total sea igual a resueltas + pendientes
-        if self.total != (self.resueltas + self.pendientes):
-            raise ValidationError(
-                "El total debe ser igual a la suma de resueltas y pendientes."
-            )
+    # def clean(self):
+    #     super().clean()
+    #     # Validar que el total sea igual a resueltas + pendientes
+    #     if self.total != (self.resueltas + self.pendientes):
+    #         raise ValidationError(
+    #             "El total debe ser igual a la suma de resueltas y pendientes."
+    #         )
 
 
 class UEBperdidas(models.Model):

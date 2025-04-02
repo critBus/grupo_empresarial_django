@@ -5,6 +5,7 @@ from apps.project.models import (
     CapitalHumano,
     CargoSinCubrir,
     Cuadro,
+    Deficiencias,
     Delitos,
     Inmuebles,
     Interruptos,
@@ -429,4 +430,41 @@ def generar_reporte_inversiones_pdf(modeladmin, request, queryset):
 
 generar_reporte_inversiones_pdf.short_description = (
     "Generar Reporte Inversiones PDF"
+)
+
+
+def generar_reporte_deficiencias_pdf(modeladmin, request, queryset):
+    elementos: List[Deficiencias] = queryset
+    lista = []
+    suma_total = 0
+    total_resueltas = 0
+    total_pendientes = 0
+    for elemento in elementos:
+        suma_total += elemento.total
+        total_resueltas += elemento.resueltas
+        total_pendientes += elemento.pendientes
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "total": str(elemento.total),
+                "resueltas": str(elemento.resueltas),
+                "pendientes": str(elemento.pendientes),
+            }
+        )
+
+    data = {
+        "lista": lista,
+        "suma_total": str(suma_total),
+        "total_resueltas": str(total_resueltas),
+        "total_pendientes": str(total_pendientes),
+    }
+    return custom_export_report_by_name(
+        "Deficiencias Detectadas por el INRE",
+        data,
+        file="reporte_deficiencias",
+    )
+
+
+generar_reporte_deficiencias_pdf.short_description = (
+    "Generar Reporte Deficiencias Detectadas por el INRE PDF"
 )
