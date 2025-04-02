@@ -33,6 +33,7 @@ from .utils.reportes import (
     generar_reporte_plan_de_mantenimiento_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
+    generar_reporte_ueb_perdidas_pdf,
 )
 
 
@@ -435,6 +436,7 @@ class UEBperdidasAdmin(admin.ModelAdmin):
     search_fields = ("nombre",)
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_ueb_perdidas_pdf]
 
 
 @admin.register(CuentasCobrar)

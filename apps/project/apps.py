@@ -6,4 +6,4 @@ class ProjectConfig(AppConfig):
     name = "apps.project"
 
     def ready(self):
-        from . import signals # noqa
+        from . import signals  # noqa

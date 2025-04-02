@@ -13,6 +13,7 @@ from apps.project.models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
+    UEBperdidas,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -467,4 +468,32 @@ def generar_reporte_deficiencias_pdf(modeladmin, request, queryset):
 
 generar_reporte_deficiencias_pdf.short_description = (
     "Generar Reporte Deficiencias Detectadas por el INRE PDF"
+)
+
+
+def generar_reporte_ueb_perdidas_pdf(modeladmin, request, queryset):
+    elementos: List[UEBperdidas] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "cantidadUEB": str(elemento.cantidadUEB),
+                "nombre": str(elemento.nombre),
+                "municipio": str(elemento.municipio),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Pérdidas UEB",
+        data,
+        file="reporte_perdidas",
+    )
+
+
+generar_reporte_ueb_perdidas_pdf.short_description = (
+    "Generar Reporte Pérdidas UEB PDF"
 )

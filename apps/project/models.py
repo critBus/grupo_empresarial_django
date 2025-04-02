@@ -411,14 +411,6 @@ class Deficiencias(models.Model):
     def __str__(self):
         return f"Deficiencias - {self.empresa.nombre}"
 
-    # def clean(self):
-    #     super().clean()
-    #     # Validar que el total sea igual a resueltas + pendientes
-    #     if self.total != (self.resueltas + self.pendientes):
-    #         raise ValidationError(
-    #             "El total debe ser igual a la suma de resueltas y pendientes."
-    #         )
-
 
 class UEBperdidas(models.Model):
     cantidadUEB = models.IntegerField(verbose_name="Cantidad de UEB")
