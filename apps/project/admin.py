@@ -16,10 +16,11 @@ from .models import (
     Inmuebles,
     Interruptos,
     Inversiones,
+    MaterialPlasticoReciclado,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    UEBperdidas, MaterialPlasticoReciclado,
+    UEBperdidas,
 )
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,

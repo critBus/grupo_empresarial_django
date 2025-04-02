@@ -489,17 +489,24 @@ class CuentasPagar(models.Model):
     def __str__(self):
         return f"Cuentas por Pagar - {self.empresa.nombre}"
 
+
 class MaterialPlasticoReciclado(models.Model):
     no_material = models.IntegerField(
         max_length=10, verbose_name="No.", validators=[MinValueValidator(1)]
     )
     materia = models.CharField(max_length=255, verbose_name="Material")
-    unidad_de_medida = models.CharField(max_length=255, verbose_name="Unidad de Medida")
+    unidad_de_medida = models.CharField(
+        max_length=255, verbose_name="Unidad de Medida"
+    )
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
     empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
+
     class Meta:
         verbose_name = "Material Plástico Reciclado"
         verbose_name_plural = "Materiales Plásticos Reciclados"
+
+    def __str__(self):
+        return f"{self.materia} - {self.empresa.nombre}"

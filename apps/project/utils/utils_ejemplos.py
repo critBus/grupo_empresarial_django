@@ -20,6 +20,7 @@ from ..models import (
     Inmuebles,
     Interruptos,
     Inversiones,
+    MaterialPlasticoReciclado,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -57,6 +58,7 @@ def crear_datos_random():
     directora_user.groups.add(directora_group)
 
     # Lista de empresas predefinidas
+    nombre_empresa_producciones_varias = "Empresa de Producciones Varias"
     empresas_nombres = [
         "Provincial de Construcción y Mantenimiento",
         "Provincial de Comunales",
@@ -68,6 +70,7 @@ def crear_datos_random():
         "Provincial de Logística",
         "Provincial de Alimentos y Producciones Varias",
         "Provincial de Servicios Técnicos del Arquitecto de la Comunidad",
+        nombre_empresa_producciones_varias,
     ]
 
     # Crear empresas
@@ -172,6 +175,43 @@ def crear_datos_random():
                 chatarra_plomo=random.randint(0, 1000),
                 polietileno=random.randint(0, 1000),
             )
+        if empresa.nombre == nombre_empresa_producciones_varias:
+            # Crear MaterialPlasticoReciclado para Producciones Varias
+            materiales = [
+                r"Mangueras plásticas flexibles ½\"",
+                r"Mangueras plásticas flexibles ¾\"",
+                r"Mangueras plásticas flexibles 1\"",
+                r"Tubos plásticos eléctricos ½\"",
+                r"Tubos plásticos eléctricos ¾\"",
+                r"Tubos plásticos eléctricos 1\"",
+                "Codo",
+                "Y",
+                "Unión (Nudo)",
+                r"Conexiones plásticas eléctricas ¾\"",
+                r"Conexiones plásticas eléctricas 1\"",
+                r"Conexiones plásticas hidráulicas ¾\"",
+                "Llaves plásticas para agua",
+                r"Cajas plásticas eléctricas de 2\" x 4\"",
+                r"Cajas plásticas eléctricas de 4\" x 4\"",
+            ]
+
+            # Crear registros para cada material
+            for i, material in enumerate(materiales, 1):
+                # Asignar unidad de medida basada en el tipo de material
+                unidad = (
+                    "Km"
+                    if "Mangueras" in material or "Tubos" in material
+                    else "Mu"
+                )
+
+                MaterialPlasticoReciclado.objects.create(
+                    empresa=empresa,
+                    no_material=i,
+                    materia=material,
+                    unidad_de_medida=unidad,
+                    plan=random.randint(100, 500),
+                    real=random.randint(80, 400),
+                )
 
         # Crear Inmuebles (uno por empresa)
         inmueble = Inmuebles.objects.create(
