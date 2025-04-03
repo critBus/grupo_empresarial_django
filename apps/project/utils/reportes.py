@@ -14,7 +14,7 @@ from apps.project.models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    UEBperdidas,
+    UEBperdidas, MaterialDeConstruccion,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -529,4 +529,37 @@ def generar_reporte_material_plastico_recilcado_pdf(
 
 generar_reporte_material_plastico_recilcado_pdf.short_description = (
     "Generar Reporte Material Plástico Reciclado  PDF"
+)
+
+
+
+
+def generar_reporte_material_de_construccion_pdf(
+    modeladmin, request, queryset
+):
+    elementos: List[MaterialDeConstruccion] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "nombre": str(elemento.material),
+                "unidad_de_medida": str(elemento.unidad_de_medida),
+                "plan": str(elemento.plan),
+                "real": str(elemento.real),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Materiales de Construcción",
+        data,
+        file="reporte_material_de_contruccion",
+    )
+
+
+generar_reporte_material_de_construccion_pdf.short_description = (
+    "Generar Reporte Materiales de Construcción  PDF"
 )

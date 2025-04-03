@@ -510,3 +510,23 @@ class MaterialPlasticoReciclado(models.Model):
 
     def __str__(self):
         return f"{self.materia} - {self.empresa.nombre}"
+
+
+
+class MaterialDeConstruccion(models.Model):
+    material = models.CharField(max_length=255, verbose_name="Material")
+    unidad_de_medida = models.CharField(
+        max_length=255, verbose_name="Unidad de Medida"
+    )
+    plan = models.IntegerField(verbose_name="Plan")
+    real = models.IntegerField(verbose_name="Real")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Material de Construcción"
+        verbose_name_plural = "Materiales de Construcción"
+
+    def __str__(self):
+        return f"{self.material} - {self.empresa.nombre}"
