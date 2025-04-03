@@ -5,6 +5,7 @@ from apps.project.models import (
     CapitalHumano,
     CargoSinCubrir,
     Cuadro,
+    CuentasPagar,
     Deficiencias,
     Delitos,
     Inmuebles,
@@ -559,4 +560,50 @@ def generar_reporte_material_de_construccion_pdf(modeladmin, request, queryset):
 
 generar_reporte_material_de_construccion_pdf.short_description = (
     "Generar Reporte Materiales de Construcción  PDF"
+)
+
+
+def generar_reporte_cuentas_por_pagar_pdf(modeladmin, request, queryset):
+    elementos: List[CuentasPagar] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "inicio_anno": format_float(elemento.inicio_anno),
+                "mes_anterior": format_float(elemento.mes_anterior),
+                "mes_actual": format_float(elemento.mes_actual),
+                "diferencia_incio_anno": format_float(
+                    elemento.diferencia_incio_anno
+                ),
+                "diferencia_mes_anterior": format_float(
+                    elemento.diferencia_mes_anterior
+                ),
+                "saldo_al_inicio": format_float(elemento.saldo_al_inicio),
+                "mes_anterior_vencidas": format_float(
+                    elemento.mes_anterior_vencidas
+                ),
+                "mes_actual_vencidas": format_float(
+                    elemento.mes_actual_vencidas
+                ),
+                "indice_gestion_pago": format_float(
+                    elemento.indice_gestion_pago
+                ),
+                "ciclo_pagos_dias": format_float(elemento.ciclo_pagos_dias),
+                "efectos_por_pagar": format_float(elemento.efectos_por_pagar),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Cuentas por Pagar",
+        data,
+        file="reporte_cuentas_por_pagar",
+    )
+
+
+generar_reporte_cuentas_por_pagar_pdf.short_description = (
+    "Generar Reporte Cuentas por Pagar  PDF"
 )

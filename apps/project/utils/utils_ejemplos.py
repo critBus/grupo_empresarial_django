@@ -346,8 +346,9 @@ def crear_datos_random():
             saldo_al_inicio=valor_base,
             mes_anterior_vencidas=valor_base * 0.3,
             mes_actual_vencidas=valor_base * 0.25,
-            indice_gestion_cloro=random.uniform(0.7, 1.0),
-            ciclo_cobros_dias=random.randint(30, 90),
+            indice_gestion_pago=random.uniform(0.7, 1.0),
+            ciclo_pagos_dias=random.randint(30, 90),
+            efectos_por_pagar=random.randint(30, 90),
         )
 
     # Crear MaterialDeConstruccion solo para la empresa de Construcción

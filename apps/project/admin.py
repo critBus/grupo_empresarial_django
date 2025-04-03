@@ -27,6 +27,7 @@ from .utils.reportes import (
     generar_atencion_poblacion_pdf,
     generar_capital_humano_pdf,
     generar_reporte_cuadros_pdf,
+    generar_reporte_cuentas_por_pagar_pdf,
     generar_reporte_deficiencias_pdf,
     generar_reporte_delitos_pdf,
     generar_reporte_inmuebles_pdf,
@@ -488,8 +489,9 @@ class CuentasPagarAdmin(admin.ModelAdmin):
         "saldo_al_inicio",
         "mes_anterior_vencidas",
         "mes_actual_vencidas",
-        "indice_gestion_cloro",
-        "ciclo_cobros_dias",
+        "indice_gestion_pago",
+        "ciclo_pagos_dias",
+        "efectos_por_pagar",
     )
     list_filter = (
         "empresa",
@@ -501,11 +503,13 @@ class CuentasPagarAdmin(admin.ModelAdmin):
         "saldo_al_inicio",
         "mes_anterior_vencidas",
         "mes_actual_vencidas",
-        "indice_gestion_cloro",
-        "ciclo_cobros_dias",
+        "indice_gestion_pago",
+        "ciclo_pagos_dias",
+        "efectos_por_pagar",
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_cuentas_por_pagar_pdf]
 
 
 @admin.register(MaterialPlasticoReciclado)

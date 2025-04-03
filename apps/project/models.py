@@ -460,24 +460,59 @@ class CuentasCobrar(models.Model):
 
 
 class CuentasPagar(models.Model):
-    inicio_anno = models.FloatField(verbose_name="Inicio de Año")
-    mes_anterior = models.FloatField(verbose_name="Mes Anterior")
-    mes_actual = models.FloatField(verbose_name="Mes Actual")
+    inicio_anno = models.FloatField(
+        verbose_name="Inicio de Año",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    mes_anterior = models.FloatField(
+        verbose_name="Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    mes_actual = models.FloatField(
+        verbose_name="Mes Actual", validators=[MinValueValidator(0)], default=0
+    )
     diferencia_incio_anno = models.FloatField(
-        verbose_name="Diferencia con Inicio de Año"
+        verbose_name="Diferencia con Inicio de Año",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
     diferencia_mes_anterior = models.FloatField(
-        verbose_name="Diferencia con Mes Anterior"
+        verbose_name="Diferencia con Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    saldo_al_inicio = models.FloatField(verbose_name="Saldo al Inicio")
+    saldo_al_inicio = models.FloatField(
+        verbose_name="Saldo al Inicio",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     mes_anterior_vencidas = models.FloatField(
-        verbose_name="Vencidas Mes Anterior"
+        verbose_name="Vencidas Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    mes_actual_vencidas = models.FloatField(verbose_name="Vencidas Mes Actual")
-    indice_gestion_cloro = models.FloatField(
-        verbose_name="Índice Gestión Cloro"
+    mes_actual_vencidas = models.FloatField(
+        verbose_name="Vencidas Mes Actual",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    ciclo_cobros_dias = models.FloatField(verbose_name="Ciclo de Cobros (Días)")
+    indice_gestion_pago = models.FloatField(
+        verbose_name="Índice Gestión Pago",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    ciclo_pagos_dias = models.FloatField(
+        verbose_name="Ciclo de Cobros (Días)",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    efectos_por_pagar = models.FloatField(
+        verbose_name="Efectos Por Pagar",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
