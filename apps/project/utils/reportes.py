@@ -10,11 +10,12 @@ from apps.project.models import (
     Inmuebles,
     Interruptos,
     Inversiones,
+    MaterialDeConstruccion,
     MaterialPlasticoReciclado,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    UEBperdidas, MaterialDeConstruccion,
+    UEBperdidas,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -532,11 +533,7 @@ generar_reporte_material_plastico_recilcado_pdf.short_description = (
 )
 
 
-
-
-def generar_reporte_material_de_construccion_pdf(
-    modeladmin, request, queryset
-):
+def generar_reporte_material_de_construccion_pdf(modeladmin, request, queryset):
     elementos: List[MaterialDeConstruccion] = queryset
     lista = []
     for elemento in elementos:

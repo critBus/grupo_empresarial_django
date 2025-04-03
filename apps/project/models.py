@@ -512,7 +512,6 @@ class MaterialPlasticoReciclado(models.Model):
         return f"{self.materia} - {self.empresa.nombre}"
 
 
-
 class MaterialDeConstruccion(models.Model):
     material = models.CharField(max_length=255, verbose_name="Material")
     unidad_de_medida = models.CharField(

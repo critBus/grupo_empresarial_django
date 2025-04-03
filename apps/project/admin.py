@@ -16,11 +16,12 @@ from .models import (
     Inmuebles,
     Interruptos,
     Inversiones,
+    MaterialDeConstruccion,
     MaterialPlasticoReciclado,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
-    UEBperdidas, MaterialDeConstruccion,
+    UEBperdidas,
 )
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,
@@ -31,11 +32,12 @@ from .utils.reportes import (
     generar_reporte_inmuebles_pdf,
     generar_reporte_interruptos_pdf,
     generar_reporte_inversiones_pdf,
+    generar_reporte_material_de_construccion_pdf,
     generar_reporte_material_plastico_recilcado_pdf,
     generar_reporte_plan_de_mantenimiento_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
-    generar_reporte_ueb_perdidas_pdf, generar_reporte_material_de_construccion_pdf,
+    generar_reporte_ueb_perdidas_pdf,
 )
 
 
@@ -527,6 +529,7 @@ class MaterialPlasticoRecicladoAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_material_plastico_recilcado_pdf]
+
 
 @admin.register(MaterialDeConstruccion)
 class MaterialDeConstruccionAdmin(admin.ModelAdmin):

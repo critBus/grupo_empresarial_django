@@ -20,6 +20,7 @@ from ..models import (
     Inmuebles,
     Interruptos,
     Inversiones,
+    MaterialDeConstruccion,
     MaterialPlasticoReciclado,
     PlanDeMantenimiento,
     PlanMateriaPrima,
@@ -59,8 +60,9 @@ def crear_datos_random():
 
     # Lista de empresas predefinidas
     nombre_empresa_producciones_varias = "Empresa de Producciones Varias"
+    nombre_empresa_construccion = "Provincial de Construcción y Mantenimiento"
     empresas_nombres = [
-        "Provincial de Construcción y Mantenimiento",
+        nombre_empresa_construccion,
         "Provincial de Comunales",
         "Provincial de Farmacias y Ópticas",
         "Provincial de Transporte",
@@ -347,3 +349,43 @@ def crear_datos_random():
             indice_gestion_cloro=random.uniform(0.7, 1.0),
             ciclo_cobros_dias=random.randint(30, 90),
         )
+
+    # Crear MaterialDeConstruccion solo para la empresa de Construcción
+
+    empresa_construccion = Empresa.objects.filter(
+        nombre=nombre_empresa_construccion
+    ).first()
+
+    if empresa_construccion:
+        # Lista de materiales de construcción
+        materiales_construccion = [
+            "Bloques hormigón",
+            "Ladrillo prensado",
+            "Adocreto",
+            "Losetas hidráulicas",
+            "Baldosas de terrazo",
+            "Viguetas hormigón",
+            "Placas hormigón",
+            "Losa canal hormigón",
+            "Marcos de puertas hormigón",
+            "Marquetería de hormigón",
+            "Mesetas hormigón",
+            "Fregaderos hormigón",
+            "Lavaderos hormigón",
+            "Tanques de hormigón",
+            "Cimientos, columnas y paneles de vivienda",
+        ]
+
+        # Crear registros para cada material
+        for i, material in enumerate(materiales_construccion, 1):
+            # Asignar unidad de medida basada en el tipo de material
+            unidad = "Mu" if i % 2 == 0 else "mm"  # Alternar entre Mu y mm
+
+            # Crear el registro de MaterialDeConstruccion
+            MaterialDeConstruccion.objects.create(
+                material=material,
+                unidad_de_medida=unidad,
+                plan=random.randint(100, 500),  # Valor aleatorio para el plan
+                real=random.randint(80, 400),  # Valor aleatorio para el real
+                empresa=empresa_construccion,
+            )
