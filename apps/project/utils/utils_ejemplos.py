@@ -332,6 +332,18 @@ def crear_datos_random():
             mes_actual_vencidas=valor_base * 0.25,
             indice_gestion_cloro=random.uniform(0.7, 1.0),
             ciclo_cobros_dias=random.randint(30, 90),
+            por_cobrar_total=random.randint(1000, 90000),
+            vencidas_total=random.randint(1000, 90000),
+            porcentage_total=random.randint(1000, 90000),
+            por_cobrar_a_terceros=random.randint(1000, 90000),
+            vencidas_a_terceros=random.randint(1000, 90000),
+            porcentage_a_terceros=random.randint(1000, 90000),
+            por_cobrar_u_admin=random.randint(1000, 90000),
+            vencidas_u_admin=random.randint(1000, 90000),
+            porcentage_u_admin=random.randint(1000, 90000),
+            por_cobrar_grupo=random.randint(1000, 90000),
+            vencidas_grupo=random.randint(1000, 90000),
+            porcentage_grupo=random.randint(1000, 90000),
         )
 
         # Crear CuentasPagar

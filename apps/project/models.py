@@ -429,26 +429,115 @@ class UEBperdidas(models.Model):
 
 
 class CuentasCobrar(models.Model):
-    inicio_anno = models.FloatField(verbose_name="Inicio de Año")
-    mes_anterior = models.FloatField(verbose_name="Mes Anterior")
-    mes_actual = models.FloatField(verbose_name="Mes Actual")
+    inicio_anno = models.FloatField(
+        verbose_name="Inicio de Año",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    mes_anterior = models.FloatField(
+        verbose_name="Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    mes_actual = models.FloatField(
+        verbose_name="Mes Actual", validators=[MinValueValidator(0)], default=0
+    )
     diferencia_incio_anno = models.FloatField(
-        verbose_name="Diferencia con Inicio de Año"
+        verbose_name="Diferencia con Inicio de Año",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
     diferencia_mes_anterior = models.FloatField(
-        verbose_name="Diferencia con Mes Anterior"
+        verbose_name="Diferencia con Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    saldo_al_inicio = models.FloatField(verbose_name="Saldo al Inicio")
+    saldo_al_inicio = models.FloatField(
+        verbose_name="Saldo al Inicio",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     mes_anterior_vencidas = models.FloatField(
-        verbose_name="Vencidas Mes Anterior"
+        verbose_name="Vencidas Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    mes_actual_vencidas = models.FloatField(verbose_name="Vencidas Mes Actual")
+    mes_actual_vencidas = models.FloatField(
+        verbose_name="Vencidas Mes Actual",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     indice_gestion_cloro = models.FloatField(
-        verbose_name="Índice Gestión Cloro"
+        verbose_name="Índice Gestión Cloro",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    ciclo_cobros_dias = models.FloatField(verbose_name="Ciclo de Cobros (Días)")
+    ciclo_cobros_dias = models.FloatField(
+        verbose_name="Ciclo de Cobros (Días)",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    por_cobrar_total = models.FloatField(
+        verbose_name="Por Cobrar: Total",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    vencidas_total = models.FloatField(
+        verbose_name="Vencidas: Total",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    porcentage_total = models.FloatField(
+        verbose_name="%: Total", validators=[MinValueValidator(0)], default=0
+    )
+
+    por_cobrar_a_terceros = models.FloatField(
+        verbose_name="Por Cobrar: a Terceros",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    vencidas_a_terceros = models.FloatField(
+        verbose_name="Vencidas: a Terceros",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    porcentage_a_terceros = models.FloatField(
+        verbose_name="%: a Terceros",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+
+    por_cobrar_u_admin = models.FloatField(
+        verbose_name="Por Cobrar: Unidad Adminstrativa",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    vencidas_u_admin = models.FloatField(
+        verbose_name="Vencidas: Unidad Adminstrativa",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    porcentage_u_admin = models.FloatField(
+        verbose_name="%: Unidad Adminstrativa",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+
+    por_cobrar_grupo = models.FloatField(
+        verbose_name="Por Cobrar: Grupo",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    vencidas_grupo = models.FloatField(
+        verbose_name="Vencidas: Grupo",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    porcentage_grupo = models.FloatField(
+        verbose_name="%: Grupo", validators=[MinValueValidator(0)], default=0
     )
 
     class Meta:
