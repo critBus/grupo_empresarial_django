@@ -42,6 +42,89 @@ from .utils.reportes import (
 )
 
 
+def get_table_row(title, id, lista_de_columnas):
+    def table_row(obj):
+        # Create a list of formatted strings
+        entidades = []
+        for field in obj._meta.fields:
+            if field.name in lista_de_columnas:
+                entidades.append(
+                    f'<tr><td style="width: 200px; text-align: right; padding-right: 10px;">{field.verbose_name}</td>'
+                    f"<td>{getattr(obj, field.name)}</td></tr>"
+                )
+
+        return mark_safe(f"""
+            <div class="collapsible-container">
+                <button id="collapsible-{id}-{obj.id}" 
+                class="collapsible" 
+                type="button"
+                >
+                <i class="fas fa-plus icon"></i>
+                
+                </button>
+                <div class="inmuebles-content">
+                    <table 
+                    style="border-collapse: collapse; width: 100%;">
+                    
+                        {"".join(entidades)}
+                    </table>
+                </div>
+            </div>
+            <style>
+            
+                .collapsible {{
+                    background-color: #eee;
+                    color: #444;
+                    cursor: pointer;
+                    padding: 18px;
+                    width: 100%;
+                    border: none;
+                    text-align: left;
+                    outline: none;
+                    font-size: 15px;
+                    position: relative;
+                }}
+                .collapsible .icon {{
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #777;
+                }}
+                .collapsible.active, .collapsible:hover {{
+                    background-color: #ddd;
+                }}
+                .inmuebles-content {{
+                    display: none;
+                    overflow: hidden;
+                    background-color: #f1f1f1;
+                }}
+                .inmuebles-content.show {{
+                    display: block;
+                }}
+            </style>
+
+            <script>
+                var coll = document.getElementById("collapsible-{id}-{obj.id}");
+                coll.addEventListener("click", function() {{
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    content.classList.toggle("show");
+                    var icon = this.querySelector(".icon");
+                    if(icon.classList.contains("fa-plus")){{
+                        icon.classList.remove("fa-plus");
+                        icon.classList.add("fa-minus");
+                    }} else {{
+                        icon.classList.remove("fa-minus");
+                        icon.classList.add("fa-plus");
+                    }}
+                }});
+            </script>
+        """)
+
+    return table_row
+
+
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
     list_display = ("codigo", "nombre")
@@ -446,35 +529,95 @@ class UEBperdidasAdmin(admin.ModelAdmin):
 
 @admin.register(CuentasCobrar)
 class CuentasCobrarAdmin(admin.ModelAdmin):
+    def get_cuentas_por_cobrar_cup(self, obj):
+        return get_table_row(
+            title="CUP",
+            id="cup",
+            lista_de_columnas=[
+                "inicio_anno",
+                "mes_anterior",
+                "mes_actual",
+                "diferencia_incio_anno",
+                "diferencia_mes_anterior",
+                "saldo_al_inicio",
+                "mes_anterior_vencidas",
+                "mes_actual_vencidas",
+                "indice_gestion_cloro",
+                "ciclo_cobros_dias",
+            ],
+        )(obj)
+
+    get_cuentas_por_cobrar_cup.short_description = "CUP"
+    get_cuentas_por_cobrar_cup.allow_tags = True
+
+    def get_cuentas_por_cobrar_total(self, obj):
+        return get_table_row(
+            title="Total",
+            id="total",
+            lista_de_columnas=[
+                "por_cobrar_total",
+                "vencidas_total",
+                "porcentage_total",
+            ],
+        )(obj)
+
+    get_cuentas_por_cobrar_total.short_description = "CUP"
+    get_cuentas_por_cobrar_total.allow_tags = True
+
+    def get_cuentas_por_cobrar_a_terceros(self, obj):
+        return get_table_row(
+            title="Terceros",
+            id="Terceros",
+            lista_de_columnas=[
+                "por_cobrar_a_terceros",
+                "vencidas_a_terceros",
+                "porcentage_a_terceros",
+            ],
+        )(obj)
+
+    get_cuentas_por_cobrar_a_terceros.short_description = "Terceros"
+    get_cuentas_por_cobrar_a_terceros.allow_tags = True
+
+    def get_cuentas_por_cobrar_admin(self, obj):
+        return get_table_row(
+            title="Unidad Adminstrativa",
+            id="u_a",
+            lista_de_columnas=[
+                "por_cobrar_u_admin",
+                "vencidas_u_admin",
+                "porcentage_u_admin",
+            ],
+        )(obj)
+
+    get_cuentas_por_cobrar_admin.short_description = "Unidad Adminstrativa"
+    get_cuentas_por_cobrar_admin.allow_tags = True
+
+    def get_cuentas_por_cobrar_grupo(self, obj):
+        return get_table_row(
+            title="Grupo",
+            id="grupo",
+            lista_de_columnas=[
+                "por_cobrar_grupo",
+                "vencidas_grupo",
+                "porcentage_grupo",
+            ],
+        )(obj)
+
+    get_cuentas_por_cobrar_grupo.short_description = "Grupo"
+    get_cuentas_por_cobrar_grupo.allow_tags = True
+
     list_display = (
         "empresa",
-        "inicio_anno",
-        "mes_anterior",
-        "mes_actual",
-        "diferencia_incio_anno",
-        "diferencia_mes_anterior",
-        "saldo_al_inicio",
-        "mes_anterior_vencidas",
-        "mes_actual_vencidas",
-        "indice_gestion_cloro",
-        "ciclo_cobros_dias",
+        "get_cuentas_por_cobrar_cup",
+        "get_cuentas_por_cobrar_total",
+        "get_cuentas_por_cobrar_a_terceros",
+        "get_cuentas_por_cobrar_admin",
+        "get_cuentas_por_cobrar_grupo",
     )
 
-    list_filter = (
-        "empresa",
-        "inicio_anno",
-        "mes_anterior",
-        "mes_actual",
-        "diferencia_incio_anno",
-        "diferencia_mes_anterior",
-        "saldo_al_inicio",
-        "mes_anterior_vencidas",
-        "mes_actual_vencidas",
-        "indice_gestion_cloro",
-        "ciclo_cobros_dias",
-    )
-    ordering = list(list_display).copy()
-    list_display_links = list(list_display).copy()
+    list_filter = ("empresa",)
+    ordering = ("empresa",)
+    list_display_links = ("empresa",)
 
 
 @admin.register(CuentasPagar)
