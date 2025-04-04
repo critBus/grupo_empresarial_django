@@ -2,6 +2,7 @@ from typing import List
 
 from apps.project.models import (
     AtencionPoblacion,
+    Bancarizacion,
     CapitalHumano,
     CargoSinCubrir,
     Cuadro,
@@ -700,4 +701,38 @@ def generar_reporte_soberania_alimentaria_pdf(modeladmin, request, queryset):
 
 generar_reporte_soberania_alimentaria_pdf.short_description = (
     "Generar Reporte Soberanía Alimentaria  PDF"
+)
+
+
+def generar_reporte_bancarizacion_pdf(modeladmin, request, queryset):
+    elementos: List[Bancarizacion] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "establecimientos": str(elemento.establecimientos),
+                "total_unidades": str(elemento.total_unidades),
+                "solicitadas": str(elemento.solicitadas),
+                "aprobados_enzona": str(elemento.aprobados_enzona),
+                "aprobados_transfermovil": str(
+                    elemento.aprobados_transfermovil
+                ),
+                "importe_acumulado": format_float(elemento.importe_acumulado),
+                "operaciones_acumuladas": str(elemento.operaciones_acumuladas),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Bancarización",
+        data,
+        file="reporte_material_bancarizacion",
+    )
+
+
+generar_reporte_bancarizacion_pdf.short_description = (
+    "Generar Reporte Bancarización  PDF"
 )

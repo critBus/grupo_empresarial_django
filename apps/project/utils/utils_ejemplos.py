@@ -8,6 +8,7 @@ from ..models import (
     ROL_NAME_DIRECTORA,
     ROL_NAME_SECRETARIA,
     AtencionPoblacion,
+    Bancarizacion,
     CapitalHumano,
     CargoSinCubrir,
     Cuadro,
@@ -370,6 +371,17 @@ def crear_datos_random():
             canteros=random.randint(0, 100),  # Número aleatorio de canteros
             tierras=random.randint(0, 200),  # Número aleatorio de tierras
             empresa=empresa,  # Relación con la empresa
+        )
+
+        Bancarizacion.objects.create(
+            empresa=empresa,
+            establecimientos=random.randint(1, 10),
+            total_unidades=random.randint(50, 200),
+            solicitadas=random.randint(30, 150),
+            aprobados_enzona=random.randint(20, 100),
+            aprobados_transfermovil=random.randint(20, 100),
+            operaciones_acumuladas=random.randint(100, 500),
+            importe_acumulado=round(random.uniform(1000, 10000), 2),
         )
 
     # Crear MaterialDeConstruccion solo para la empresa de Construcción

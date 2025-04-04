@@ -680,3 +680,39 @@ class SoberaniaAlimentaria(models.Model):
 
     def __str__(self):
         return f"Soberanía Alimentaria - {self.empresa.nombre}"
+
+
+class Bancarizacion(models.Model):
+    empresa = models.OneToOneField(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    establecimientos = models.PositiveIntegerField(
+        verbose_name="Establecimientos", default=0
+    )
+    total_unidades = models.PositiveIntegerField(
+        verbose_name="Total Unidades", default=0
+    )
+    solicitadas = models.PositiveIntegerField(
+        verbose_name="Solicitadas", default=0
+    )
+    aprobados_enzona = models.PositiveIntegerField(
+        verbose_name="Aprobados Enzona", default=0
+    )
+    aprobados_transfermovil = models.PositiveIntegerField(
+        verbose_name="Aprobados Transfermóvil", default=0
+    )
+    operaciones_acumuladas = models.PositiveIntegerField(
+        verbose_name="Operaciones Acumuladas", default=0
+    )
+    importe_acumulado = models.FloatField(
+        verbose_name="Importe Acumulado",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+
+    class Meta:
+        verbose_name = "Bancarización"
+        verbose_name_plural = "Bancarizaciones"
+
+    def __str__(self):
+        return f"Bancarización - {self.empresa.nombre}"

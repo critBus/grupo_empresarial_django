@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 
 from .models import (
     AtencionPoblacion,
+    Bancarizacion,
     CapitalHumano,
     CargoSinCubrir,
     Cuadro,
@@ -27,6 +28,7 @@ from .models import (
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,
     generar_capital_humano_pdf,
+    generar_reporte_bancarizacion_pdf,
     generar_reporte_cuadros_pdf,
     generar_reporte_cuentas_por_cobrar_pdf,
     generar_reporte_cuentas_por_pagar_pdf,
@@ -721,3 +723,29 @@ class SoberaniaAlimentariaAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_soberania_alimentaria_pdf]
+
+
+@admin.register(Bancarizacion)
+class BancarizacionAdmin(admin.ModelAdmin):
+    list_display = (
+        "empresa",
+        "establecimientos",
+        "total_unidades",
+        "solicitadas",
+        "aprobados_enzona",
+        "aprobados_transfermovil",
+        "operaciones_acumuladas",
+        "importe_acumulado",
+    )
+    list_filter = (
+        "establecimientos",
+        "total_unidades",
+        "solicitadas",
+        "aprobados_enzona",
+        "aprobados_transfermovil",
+        "operaciones_acumuladas",
+        "importe_acumulado",
+    )
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    actions = [generar_reporte_bancarizacion_pdf]
