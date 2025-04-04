@@ -653,3 +653,30 @@ class MaterialDeConstruccion(models.Model):
 
     def __str__(self):
         return f"{self.material} - {self.empresa.nombre}"
+
+
+class SoberaniaAlimentaria(models.Model):
+    unidad = models.CharField(max_length=50, verbose_name="Unidad")
+    huertos = models.PositiveIntegerField(
+        verbose_name="Huertos",
+        default=0,
+    )
+    canteros = models.PositiveIntegerField(
+        verbose_name="Canteros",
+        default=0,
+    )
+    tierras = models.PositiveIntegerField(
+        verbose_name="Tierras",
+        default=0,
+    )
+
+    empresa = models.OneToOneField(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Soberanía Alimentaria"
+        verbose_name_plural = "Soberanias Alimentarias"
+
+    def __str__(self):
+        return f"Soberanía Alimentaria - {self.empresa.nombre}"

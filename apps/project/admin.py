@@ -21,6 +21,7 @@ from .models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
+    SoberaniaAlimentaria,
     UEBperdidas,
 )
 from .utils.reportes import (
@@ -39,6 +40,7 @@ from .utils.reportes import (
     generar_reporte_plan_de_mantenimiento_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
+    generar_reporte_soberania_alimentaria_pdf,
     generar_reporte_ueb_perdidas_pdf,
 )
 
@@ -699,3 +701,23 @@ class MaterialDeConstruccionAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_material_de_construccion_pdf]
+
+
+@admin.register(SoberaniaAlimentaria)
+class SoberaniaAlimentariaAdmin(admin.ModelAdmin):
+    list_display = (
+        "empresa",
+        "huertos",
+        "canteros",
+        "tierras",
+    )
+    list_filter = (
+        "empresa",
+        "huertos",
+        "canteros",
+        "tierras",
+    )
+    search_fields = ("unidad",)
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    actions = [generar_reporte_soberania_alimentaria_pdf]

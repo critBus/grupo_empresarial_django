@@ -25,6 +25,7 @@ from ..models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
+    SoberaniaAlimentaria,
     UEBperdidas,
 )
 
@@ -361,6 +362,14 @@ def crear_datos_random():
             indice_gestion_pago=random.uniform(0.7, 1.0),
             ciclo_pagos_dias=random.randint(30, 90),
             efectos_por_pagar=random.randint(30, 90),
+        )
+
+        SoberaniaAlimentaria.objects.create(
+            unidad=random.choice(["Km", "Ha", "m²"]),  # Unidad aleatoria
+            huertos=random.randint(0, 50),  # Número aleatorio de huertos
+            canteros=random.randint(0, 100),  # Número aleatorio de canteros
+            tierras=random.randint(0, 200),  # Número aleatorio de tierras
+            empresa=empresa,  # Relación con la empresa
         )
 
     # Crear MaterialDeConstruccion solo para la empresa de Construcción

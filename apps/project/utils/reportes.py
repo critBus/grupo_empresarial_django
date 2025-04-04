@@ -17,6 +17,7 @@ from apps.project.models import (
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
+    SoberaniaAlimentaria,
     UEBperdidas,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
@@ -670,4 +671,33 @@ def generar_reporte_cuentas_por_cobrar_pdf(modeladmin, request, queryset):
 
 generar_reporte_cuentas_por_cobrar_pdf.short_description = (
     "Generar Reporte Cuentas por Cobrar  PDF"
+)
+
+
+def generar_reporte_soberania_alimentaria_pdf(modeladmin, request, queryset):
+    elementos: List[SoberaniaAlimentaria] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "unidad": str(elemento.unidad),
+                "huertos": format_float(elemento.huertos),
+                "canteros": format_float(elemento.canteros),
+                "tierras": format_float(elemento.tierras),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Soberanía Alimentaria",
+        data,
+        file="reporte_material_de_soberiania_alimentaria",
+    )
+
+
+generar_reporte_soberania_alimentaria_pdf.short_description = (
+    "Generar Reporte Soberanía Alimentaria  PDF"
 )
