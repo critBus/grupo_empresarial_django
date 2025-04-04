@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 from .models import (
+    AtencionALaFamilia,
     AtencionPoblacion,
     Bancarizacion,
     CapitalHumano,
@@ -28,6 +29,7 @@ from .models import (
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,
     generar_capital_humano_pdf,
+    generar_reporte_atencion_a_la_familia_pdf,
     generar_reporte_bancarizacion_pdf,
     generar_reporte_cuadros_pdf,
     generar_reporte_cuentas_por_cobrar_pdf,
@@ -749,3 +751,33 @@ class BancarizacionAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_bancarizacion_pdf]
+
+
+@admin.register(AtencionALaFamilia)
+class AtencionALaFamiliaAdmin(admin.ModelAdmin):
+    list_display = (
+        "empresa",
+        "fecha",
+        "total_saf",
+        "beneficiados_conciliacion",
+        "servicio_diario",
+        "almuerzan_unidades",
+        "mensajeria",
+        "llevan_en_cantina",
+        "total_beneficiarios",
+    )
+    list_filter = (
+        "empresa",
+        "fecha",
+        "total_saf",
+        "beneficiados_conciliacion",
+        "servicio_diario",
+        "almuerzan_unidades",
+        "mensajeria",
+        "llevan_en_cantina",
+        "total_beneficiarios",
+    )
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    date_hierarchy = "fecha"
+    actions = [generar_reporte_atencion_a_la_familia_pdf]

@@ -1,12 +1,15 @@
 import random
+from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.utils import timezone
 from faker import Faker
 
 from ..models import (
     ROL_NAME_DIRECTORA,
     ROL_NAME_SECRETARIA,
+    AtencionALaFamilia,
     AtencionPoblacion,
     Bancarizacion,
     CapitalHumano,
@@ -38,6 +41,7 @@ def crear_datos_random():
         return
 
     fake = Faker("es_ES")
+    today = timezone.now().date()
 
     # Crear usuarios para cada rol
     secretaria_user = User.objects.create_user(
@@ -383,6 +387,20 @@ def crear_datos_random():
             operaciones_acumuladas=random.randint(100, 500),
             importe_acumulado=round(random.uniform(1000, 10000), 2),
         )
+
+        for i in range(30):  # Crear datos para los últimos 30 días
+            fecha = today - timedelta(days=i)
+            AtencionALaFamilia.objects.create(
+                empresa=empresa,
+                fecha=fecha,
+                total_saf=random.randint(50, 200),
+                beneficiados_conciliacion=random.randint(100, 300),
+                servicio_diario=random.randint(80, 250),
+                almuerzan_unidades=random.randint(50, 150),
+                mensajeria=random.randint(20, 80),
+                llevan_en_cantina=random.randint(30, 100),
+                total_beneficiarios=random.randint(100, 300),
+            )
 
     # Crear MaterialDeConstruccion solo para la empresa de Construcción
 

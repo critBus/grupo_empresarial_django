@@ -1,6 +1,7 @@
 from typing import List
 
 from apps.project.models import (
+    AtencionALaFamilia,
     AtencionPoblacion,
     Bancarizacion,
     CapitalHumano,
@@ -735,4 +736,39 @@ def generar_reporte_bancarizacion_pdf(modeladmin, request, queryset):
 
 generar_reporte_bancarizacion_pdf.short_description = (
     "Generar Reporte Bancarización  PDF"
+)
+
+
+def generar_reporte_atencion_a_la_familia_pdf(modeladmin, request, queryset):
+    elementos: List[AtencionALaFamilia] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "fecha": str(elemento.fecha),
+                "total_saf": str(elemento.total_saf),
+                "beneficiados_conciliacion": str(
+                    elemento.beneficiados_conciliacion
+                ),
+                "servicio_diario": str(elemento.servicio_diario),
+                "almuerzan_unidades": str(elemento.almuerzan_unidades),
+                "mensajeria": format_float(elemento.mensajeria),
+                "llevan_en_cantina": str(elemento.llevan_en_cantina),
+                "total_beneficiarios": str(elemento.total_beneficiarios),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Atención a la Familia",
+        data,
+        file="reporte_atencion_a_la_familia",
+    )
+
+
+generar_reporte_atencion_a_la_familia_pdf.short_description = (
+    "Generar Reporte Atención a la Familia  PDF"
 )

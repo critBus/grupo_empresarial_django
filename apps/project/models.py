@@ -716,3 +716,39 @@ class Bancarizacion(models.Model):
 
     def __str__(self):
         return f"Bancarización - {self.empresa.nombre}"
+
+
+class AtencionALaFamilia(models.Model):
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    fecha = models.DateField(verbose_name="Fecha")
+    total_saf = models.PositiveIntegerField(
+        verbose_name="Total de SAF", default=0
+    )
+    beneficiados_conciliacion = models.PositiveIntegerField(
+        verbose_name="Beneficiados (según conciliación)", default=0
+    )
+    servicio_diario = models.PositiveIntegerField(
+        verbose_name="Servicio Diario", default=0
+    )
+    almuerzan_unidades = models.PositiveIntegerField(
+        verbose_name="Almuerzan Unidades", default=0
+    )
+    mensajeria = models.PositiveIntegerField(
+        verbose_name="Mensajería", default=0
+    )
+    llevan_en_cantina = models.PositiveIntegerField(
+        verbose_name="Llevan en cantina", default=0
+    )
+    total_beneficiarios = models.PositiveIntegerField(
+        verbose_name="Total Beneficiarios", default=0
+    )
+
+    class Meta:
+        verbose_name = "Atención a la Familia"
+        verbose_name_plural = "Atenciones a la familia"
+        unique_together = [["empresa", "fecha"]]
+
+    def __str__(self):
+        return f"Atención a la Familia - {self.empresa.nombre} ({self.fecha})"
