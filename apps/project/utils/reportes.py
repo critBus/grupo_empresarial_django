@@ -5,6 +5,7 @@ from apps.project.models import (
     CapitalHumano,
     CargoSinCubrir,
     Cuadro,
+    CuentasCobrar,
     CuentasPagar,
     Deficiencias,
     Delitos,
@@ -606,4 +607,67 @@ def generar_reporte_cuentas_por_pagar_pdf(modeladmin, request, queryset):
 
 generar_reporte_cuentas_por_pagar_pdf.short_description = (
     "Generar Reporte Cuentas por Pagar  PDF"
+)
+
+
+def generar_reporte_cuentas_por_cobrar_pdf(modeladmin, request, queryset):
+    elementos: List[CuentasCobrar] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "inicio_anno": format_float(elemento.inicio_anno),
+                "mes_anterior": format_float(elemento.mes_anterior),
+                "mes_actual": format_float(elemento.mes_actual),
+                "diferencia_incio_anno": format_float(
+                    elemento.diferencia_incio_anno
+                ),
+                "diferencia_mes_anterior": format_float(
+                    elemento.diferencia_mes_anterior
+                ),
+                "saldo_al_inicio": format_float(elemento.saldo_al_inicio),
+                "mes_anterior_vencidas": format_float(
+                    elemento.mes_anterior_vencidas
+                ),
+                "mes_actual_vencidas": format_float(
+                    elemento.mes_actual_vencidas
+                ),
+                "indice_gestion_cobro": format_float(
+                    elemento.indice_gestion_cobro
+                ),
+                "ciclo_cobros_dias": format_float(elemento.ciclo_cobros_dias),
+                "por_cobrar_total": format_float(elemento.por_cobrar_total),
+                "vencidas_total": format_float(elemento.vencidas_total),
+                "porcentage_total": format_float(elemento.porcentage_total),
+                "por_cobrar_a_terceros": format_float(
+                    elemento.por_cobrar_a_terceros
+                ),
+                "vencidas_a_terceros": format_float(
+                    elemento.vencidas_a_terceros
+                ),
+                "porcentage_a_terceros": format_float(
+                    elemento.porcentage_a_terceros
+                ),
+                "por_cobrar_u_admin": format_float(elemento.por_cobrar_u_admin),
+                "vencidas_u_admin": format_float(elemento.vencidas_u_admin),
+                "porcentage_u_admin": format_float(elemento.porcentage_u_admin),
+                "por_cobrar_grupo": format_float(elemento.por_cobrar_grupo),
+                "vencidas_grupo": format_float(elemento.vencidas_grupo),
+                "porcentage_grupo": format_float(elemento.porcentage_grupo),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Cuentas por Cobrar",
+        data,
+        file="reporte_cuentas_por_cobrar",
+    )
+
+
+generar_reporte_cuentas_por_cobrar_pdf.short_description = (
+    "Generar Reporte Cuentas por Cobrar  PDF"
 )

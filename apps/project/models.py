@@ -467,8 +467,8 @@ class CuentasCobrar(models.Model):
         validators=[MinValueValidator(0)],
         default=0,
     )
-    indice_gestion_cloro = models.FloatField(
-        verbose_name="Índice Gestión Cloro",
+    indice_gestion_cobro = models.FloatField(
+        verbose_name="Índice Gestión Cobro",
         validators=[MinValueValidator(0)],
         default=0,
     )

@@ -330,7 +330,7 @@ def crear_datos_random():
             saldo_al_inicio=valor_base,
             mes_anterior_vencidas=valor_base * 0.3,
             mes_actual_vencidas=valor_base * 0.25,
-            indice_gestion_cloro=random.uniform(0.7, 1.0),
+            indice_gestion_cobro=random.uniform(0.7, 1.0),
             ciclo_cobros_dias=random.randint(30, 90),
             por_cobrar_total=random.randint(1000, 90000),
             vencidas_total=random.randint(1000, 90000),

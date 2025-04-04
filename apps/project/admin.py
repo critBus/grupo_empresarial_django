@@ -27,6 +27,7 @@ from .utils.reportes import (
     generar_atencion_poblacion_pdf,
     generar_capital_humano_pdf,
     generar_reporte_cuadros_pdf,
+    generar_reporte_cuentas_por_cobrar_pdf,
     generar_reporte_cuentas_por_pagar_pdf,
     generar_reporte_deficiencias_pdf,
     generar_reporte_delitos_pdf,
@@ -542,7 +543,7 @@ class CuentasCobrarAdmin(admin.ModelAdmin):
                 "saldo_al_inicio",
                 "mes_anterior_vencidas",
                 "mes_actual_vencidas",
-                "indice_gestion_cloro",
+                "indice_gestion_cobro",
                 "ciclo_cobros_dias",
             ],
         )(obj)
@@ -618,6 +619,7 @@ class CuentasCobrarAdmin(admin.ModelAdmin):
     list_filter = ("empresa",)
     ordering = ("empresa",)
     list_display_links = ("empresa",)
+    actions = [generar_reporte_cuentas_por_cobrar_pdf]
 
 
 @admin.register(CuentasPagar)
