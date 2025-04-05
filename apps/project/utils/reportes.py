@@ -16,6 +16,7 @@ from apps.project.models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    Perdida,
     PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
     PlanMateriaPrima,
@@ -819,3 +820,30 @@ def generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf(
 
 
 generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf.short_description = "Generar Reporte Perfeccionamiento de Comercio y Gastronomía  PDF"
+
+
+def generar_reporte_perdidas_pdf(modeladmin, request, queryset):
+    elementos: List[Perdida] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "indicador": str(elemento.indicador),
+                "plan": str(elemento.plan),
+                "real": str(elemento.real),
+                "porciento": str(elemento.porciento),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Perdida",
+        data,
+        file="reporte_perdidas",
+    )
+
+
+generar_reporte_perdidas_pdf.short_description = "Generar Reporte Perdidas  PDF"

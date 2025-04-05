@@ -344,7 +344,9 @@ class Inversiones(models.Model):
         verbose_name="Preparación de obra: Real", default=0
     )
     porciento_obra = models.IntegerField(
-        verbose_name="Preparación de obra: Porcentaje", default=0
+        verbose_name="Preparación de obra: Porcentaje",
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     plan_no_nominales = models.IntegerField(
         verbose_name="Inversiones no nominales: Plan", default=0
@@ -353,7 +355,9 @@ class Inversiones(models.Model):
         verbose_name="Inversiones no nominales: Real", default=0
     )
     porciento_no_nominales = models.IntegerField(
-        verbose_name="Inversiones no nominales: Porcentaje", default=0
+        verbose_name="Inversiones no nominales: Porcentaje",
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     plan_resto = models.IntegerField(
         verbose_name="Resto de inversiones no nominales: Plan", default=0
@@ -361,8 +365,10 @@ class Inversiones(models.Model):
     real_resto = models.IntegerField(
         verbose_name="Resto de inversiones no nominales: Real", default=0
     )
-    porciento_resto = models.IntegerField(
-        verbose_name="Resto de inversiones no nominales: Porcentaje", default=0
+    porciento_resto = models.PositiveIntegerField(
+        verbose_name="Resto de inversiones no nominales: Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=0,
     )
     empresa = models.OneToOneField(
         Empresa,
@@ -382,7 +388,10 @@ class Inversiones(models.Model):
 class IndicadorGeneral(models.Model):
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
-    porciento = models.IntegerField(verbose_name="Porcentaje")
+    porciento = models.PositiveIntegerField(
+        verbose_name="Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
     tipo = models.CharField(max_length=70, verbose_name="Tipo")
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
@@ -825,3 +834,24 @@ class PerfeccionamientoComercioGastronomia(models.Model):
 
     def __str__(self):
         return f"Indicadores de Comercio y Gastronomía - {self.empresa.nombre} ({self.anno})"
+
+
+class Perdida(models.Model):
+    plan = models.PositiveIntegerField(verbose_name="Plan")
+    real = models.PositiveIntegerField(verbose_name="Real")
+    porciento = models.PositiveIntegerField(
+        verbose_name="Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    indicador = models.CharField(max_length=256, verbose_name="Indicadores")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Perdida"
+        verbose_name_plural = "Perdidas"
+        unique_together = [["empresa", "indicador"]]
+
+    def __str__(self):
+        return f"Perdidas - {self.empresa.nombre} {self.indicador}"

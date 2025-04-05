@@ -20,6 +20,7 @@ from .models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    Perdida,
     PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
     PlanMateriaPrima,
@@ -42,6 +43,7 @@ from .utils.reportes import (
     generar_reporte_inversiones_pdf,
     generar_reporte_material_de_construccion_pdf,
     generar_reporte_material_plastico_recilcado_pdf,
+    generar_reporte_perdidas_pdf,
     generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf,
     generar_reporte_plan_de_mantenimiento_pdf,
     generar_reporte_planes_materia_prima_pdf,
@@ -826,3 +828,12 @@ class PerfeccionamientoComercioGastronomiaAdmin(admin.ModelAdmin):
         "estado",
     )
     actions = [generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf]
+
+
+@admin.register(Perdida)
+class PerdidaAdmin(admin.ModelAdmin):
+    list_display = ("empresa", "plan", "real", "porciento", "indicador")
+    list_filter = ("empresa", "plan", "real", "porciento", "indicador")
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    actions = [generar_reporte_perdidas_pdf]

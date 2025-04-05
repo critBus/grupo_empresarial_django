@@ -26,6 +26,7 @@ from ..models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    Perdida,
     PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
     PlanMateriaPrima,
@@ -68,10 +69,11 @@ def crear_datos_random():
     # Lista de empresas predefinidas
     nombre_empresa_producciones_varias = "Empresa de Producciones Varias"
     nombre_empresa_construccion = "Provincial de Construcción y Mantenimiento"
+    nombre_empresa_farmacia_opticas = "Provincial de Farmacias y Ópticas"
     empresas_nombres = [
         nombre_empresa_construccion,
         "Provincial de Comunales",
-        "Provincial de Farmacias y Ópticas",
+        nombre_empresa_farmacia_opticas,
         "Provincial de Transporte",
         "Provincial de Seguridad y Protección",
         "Provincial de Comercio, Gastronomía y Servicios",
@@ -423,6 +425,23 @@ def crear_datos_random():
                 estado=random.choice(
                     ["Cumplido", "Incumplido", "Pendiente", "Con pérdida"]
                 ),
+            )
+
+    empresa_farmacia = Empresa.objects.filter(
+        nombre=nombre_empresa_farmacia_opticas
+    ).first()
+
+    if empresa_farmacia:
+        indicadores = ["Producción", "Servicios", "Ventas"]
+        for indicador in indicadores:
+            plan_ind = random.randint(1000, 5000)
+            real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+            Perdida.objects.create(
+                empresa=empresa_farmacia,
+                plan=plan_ind,
+                real=real_ind,
+                porciento=int((real_ind / plan_ind) * 100),
+                indicador=indicador,
             )
 
     # Crear MaterialDeConstruccion solo para la empresa de Construcción
