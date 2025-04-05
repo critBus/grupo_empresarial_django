@@ -20,6 +20,7 @@ from apps.project.models import (
     Medicamento,
     Perdida,
     PerfeccionamientoComercioGastronomia,
+    PlanDeConstruccion,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -972,4 +973,33 @@ def generar_reporte_informacion_general_pdf(modeladmin, request, queryset):
 
 generar_reporte_informacion_general_pdf.short_description = (
     "Generar Reporte Información General PDF"
+)
+
+
+def generar_reporte_plan_de_construccion_pdf(modeladmin, request, queryset):
+    elementos: List[PlanDeConstruccion] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "nombre": str(elemento.nombre),
+                "plan": str(elemento.plan),
+                "real": str(elemento.real),
+                "donde_se_incumple": str(elemento.donde_se_incumple),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Plan de Construcción",
+        data,
+        file="reporte_plan_de_construccion",
+    )
+
+
+generar_reporte_plan_de_construccion_pdf.short_description = (
+    "Generar Reporte Plan de Construcción PDF"
 )

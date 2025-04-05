@@ -30,6 +30,7 @@ from ..models import (
     Medicamento,
     Perdida,
     PerfeccionamientoComercioGastronomia,
+    PlanDeConstruccion,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -71,7 +72,6 @@ def crear_datos_random():
     directora_user.groups.add(directora_group)
 
     # Lista de empresas predefinidas
-    nombre_empresa_producciones_varias = "Empresa de Producciones Varias"
     nombre_empresa_construccion = "Provincial de Construcción y Mantenimiento"
     nombre_empresa_farmacia_opticas = "Provincial de Farmacias y Ópticas"
     nombre_empresa_producciones_varias = (
@@ -91,7 +91,6 @@ def crear_datos_random():
         "Provincial de Logística",
         nombre_empresa_producciones_varias,
         "Provincial de Servicios Técnicos del Arquitecto de la Comunidad",
-        nombre_empresa_producciones_varias,
     ]
 
     # Crear empresas
@@ -522,6 +521,22 @@ def crear_datos_random():
             MaterialDeConstruccion.objects.create(
                 material=material,
                 unidad_de_medida=unidad,
+                plan=random.randint(100, 500),  # Valor aleatorio para el plan
+                real=random.randint(80, 400),  # Valor aleatorio para el real
+                empresa=empresa_construccion,
+            )
+
+        datos_planes = [
+            ["Inversiones", ""],
+            ["Inicio y Desarrollo", ""],
+            ["Operativo", ""],
+            ["TOM", "Las dos obras que faltan se terminan este mes"],
+            ["Mezcla fria", "Igual porque este mes no se produjo"],
+        ]
+        for dato_plan in datos_planes:
+            PlanDeConstruccion.objects.create(
+                nombre=dato_plan[0],
+                donde_se_incumple=dato_plan[1],
                 plan=random.randint(100, 500),  # Valor aleatorio para el plan
                 real=random.randint(80, 400),  # Valor aleatorio para el real
                 empresa=empresa_construccion,

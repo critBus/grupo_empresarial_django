@@ -947,3 +947,23 @@ class InformacionGeneral(models.Model):
 
     def __str__(self):
         return f"InformacionGeneral - {self.empresa.nombre} {self.dato}"
+
+
+class PlanDeConstruccion(models.Model):
+    plan = models.PositiveIntegerField(verbose_name="Plan")
+    real = models.PositiveIntegerField(verbose_name="Real")
+    donde_se_incumple = models.TextField(
+        verbose_name="Donde se Incumple", blank=True, null=True
+    )
+    nombre = models.CharField(max_length=256, verbose_name="Nombre Del Plan")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Plan de Construcción"
+        verbose_name_plural = "Planes de Construcción"
+        unique_together = [["empresa", "nombre"]]
+
+    def __str__(self):
+        return f"Plan de Construcción - {self.empresa.nombre} {self.nombre}"

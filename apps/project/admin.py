@@ -24,6 +24,7 @@ from .models import (
     Medicamento,
     Perdida,
     PerfeccionamientoComercioGastronomia,
+    PlanDeConstruccion,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -51,6 +52,7 @@ from .utils.reportes import (
     generar_reporte_medicamentos_pdf,
     generar_reporte_perdidas_pdf,
     generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf,
+    generar_reporte_plan_de_construccion_pdf,
     generar_reporte_plan_de_mantenimiento_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
@@ -921,3 +923,13 @@ class InformacionGeneralAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_informacion_general_pdf]
+
+
+@admin.register(PlanDeConstruccion)
+class PlanDeConstruccionAdmin(admin.ModelAdmin):
+    list_display = ("empresa", "plan", "real", "nombre", "donde_se_incumple")
+    list_filter = ("empresa", "plan", "real", "nombre")
+    search_fields = ("donde_se_incumple",)
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    actions = [generar_reporte_plan_de_construccion_pdf]
