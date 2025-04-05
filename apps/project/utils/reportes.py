@@ -11,6 +11,7 @@ from apps.project.models import (
     CuentasPagar,
     Deficiencias,
     Delitos,
+    InformacionGeneral,
     Inmuebles,
     Interruptos,
     Inversiones,
@@ -940,4 +941,35 @@ def generar_reporte_medicamentos_pdf(modeladmin, request, queryset):
 
 generar_reporte_medicamentos_pdf.short_description = (
     "Generar Reporte Medicamentos PDF"
+)
+
+
+def generar_reporte_informacion_general_pdf(modeladmin, request, queryset):
+    elementos: List[InformacionGeneral] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "dato": str(elemento.dato),
+                "total": str(elemento.total),
+                "cubiertos": str(elemento.cubiertos),
+                "desglosados_gobierno": str(elemento.desglosados_gobierno),
+                "desglosados_tercero": str(elemento.desglosados_tercero),
+                "fluctuacion": format_float(elemento.fluctuacion),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Información General",
+        data,
+        file="reporte_informacion_general",
+    )
+
+
+generar_reporte_informacion_general_pdf.short_description = (
+    "Generar Reporte Información General PDF"
 )

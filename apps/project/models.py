@@ -920,3 +920,30 @@ class Medicamento(models.Model):
 
     def __str__(self):
         return f"Medicamento - {self.empresa.nombre} {self.medicamento}"
+
+
+class InformacionGeneral(models.Model):
+    total = models.PositiveIntegerField(verbose_name="Total")
+    cubiertos = models.PositiveIntegerField(verbose_name="Cubiertos")
+    desglosados_gobierno = models.PositiveIntegerField(
+        verbose_name="Desglosados Gobierno"
+    )
+    desglosados_tercero = models.PositiveIntegerField(
+        verbose_name="Desglosados Tercero"
+    )
+    fluctuacion = models.FloatField(
+        verbose_name="Fluctuación",
+        validators=[MinValueValidator(0), MaxValueValidator(1)],
+    )
+    dato = models.CharField(max_length=256, verbose_name="Dato")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Información General"
+        verbose_name_plural = "Informaciones Generales"
+        unique_together = [["empresa", "dato"]]
+
+    def __str__(self):
+        return f"InformacionGeneral - {self.empresa.nombre} {self.dato}"

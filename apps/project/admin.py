@@ -15,6 +15,7 @@ from .models import (
     Delitos,
     Empresa,
     IndicadorGeneral,
+    InformacionGeneral,
     Inmuebles,
     Interruptos,
     Inversiones,
@@ -41,6 +42,7 @@ from .utils.reportes import (
     generar_reporte_cuentas_por_pagar_pdf,
     generar_reporte_deficiencias_pdf,
     generar_reporte_delitos_pdf,
+    generar_reporte_informacion_general_pdf,
     generar_reporte_inmuebles_pdf,
     generar_reporte_interruptos_pdf,
     generar_reporte_inversiones_pdf,
@@ -894,3 +896,28 @@ class MedicamentoAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_medicamentos_pdf]
+
+
+@admin.register(InformacionGeneral)
+class InformacionGeneralAdmin(admin.ModelAdmin):
+    list_display = (
+        "empresa",
+        "total",
+        "cubiertos",
+        "desglosados_gobierno",
+        "desglosados_tercero",
+        "fluctuacion",
+        "dato",
+    )
+    list_filter = (
+        "empresa",
+        "total",
+        "cubiertos",
+        "desglosados_gobierno",
+        "desglosados_tercero",
+        "fluctuacion",
+        "dato",
+    )
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    actions = [generar_reporte_informacion_general_pdf]

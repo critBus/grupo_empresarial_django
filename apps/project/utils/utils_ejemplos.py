@@ -21,6 +21,7 @@ from ..models import (
     Delitos,
     Empresa,
     IndicadorGeneral,
+    InformacionGeneral,
     Inmuebles,
     Interruptos,
     Inversiones,
@@ -76,12 +77,15 @@ def crear_datos_random():
     nombre_empresa_producciones_varias = (
         "Provincial de Alimentos y Producciones Varias"
     )
+    nombre_empresa_seguridad_y_proteccion = (
+        "Provincial de Seguridad y Protección"
+    )
     empresas_nombres = [
         nombre_empresa_construccion,
         "Provincial de Comunales",
         nombre_empresa_farmacia_opticas,
         "Provincial de Transporte",
-        "Provincial de Seguridad y Protección",
+        nombre_empresa_seguridad_y_proteccion,
         "Provincial de Comercio, Gastronomía y Servicios",
         "Provincial de Mantenimiento Vial y Construcción",
         "Provincial de Logística",
@@ -521,6 +525,25 @@ def crear_datos_random():
                 plan=random.randint(100, 500),  # Valor aleatorio para el plan
                 real=random.randint(80, 400),  # Valor aleatorio para el real
                 empresa=empresa_construccion,
+            )
+
+    empresa_seguridad_y_proteccion = Empresa.objects.filter(
+        nombre=nombre_empresa_seguridad_y_proteccion
+    ).first()
+
+    if empresa_seguridad_y_proteccion:
+        datos = ["Objetivos", "Plantilla", "Decreto 200"]
+        for dato in datos:
+            total = random.randint(1000, 5000)
+            cubiertos = random.randint(int(total * 0.7), total)
+            InformacionGeneral.objects.create(
+                empresa=empresa_seguridad_y_proteccion,
+                total=total,
+                cubiertos=cubiertos,
+                desglosados_gobierno=random.randint(1000, 5000),
+                desglosados_tercero=random.randint(1000, 5000),
+                fluctuacion=total / cubiertos,
+                dato=dato,
             )
 
 
