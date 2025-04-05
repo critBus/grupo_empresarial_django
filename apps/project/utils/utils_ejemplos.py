@@ -73,6 +73,9 @@ def crear_datos_random():
     nombre_empresa_producciones_varias = "Empresa de Producciones Varias"
     nombre_empresa_construccion = "Provincial de Construcción y Mantenimiento"
     nombre_empresa_farmacia_opticas = "Provincial de Farmacias y Ópticas"
+    nombre_empresa_producciones_varias = (
+        "Provincial de Alimentos y Producciones Varias"
+    )
     empresas_nombres = [
         nombre_empresa_construccion,
         "Provincial de Comunales",
@@ -82,7 +85,7 @@ def crear_datos_random():
         "Provincial de Comercio, Gastronomía y Servicios",
         "Provincial de Mantenimiento Vial y Construcción",
         "Provincial de Logística",
-        "Provincial de Alimentos y Producciones Varias",
+        nombre_empresa_producciones_varias,
         "Provincial de Servicios Técnicos del Arquitecto de la Comunidad",
         nombre_empresa_producciones_varias,
     ]
@@ -454,22 +457,19 @@ def crear_datos_random():
                 carga=carga,
             )
 
+    empresa_producciones_varias = Empresa.objects.filter(
+        nombre=nombre_empresa_producciones_varias
+    ).first()
+
+    if empresa_producciones_varias:
+        agregar_perdidas(empresa_producciones_varias)
+
     empresa_farmacia = Empresa.objects.filter(
         nombre=nombre_empresa_farmacia_opticas
     ).first()
 
     if empresa_farmacia:
-        indicadores = ["Producción", "Servicios", "Ventas"]
-        for indicador in indicadores:
-            plan_ind = random.randint(1000, 5000)
-            real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
-            Perdida.objects.create(
-                empresa=empresa_farmacia,
-                plan=plan_ind,
-                real=real_ind,
-                porciento=int((real_ind / plan_ind) * 100),
-                indicador=indicador,
-            )
+        agregar_perdidas(empresa_farmacia)
 
         medicamentos = ["Antibiotico", "Aspirina", "Vitamina C"]
         for medicamento in medicamentos:
@@ -522,3 +522,17 @@ def crear_datos_random():
                 real=random.randint(80, 400),  # Valor aleatorio para el real
                 empresa=empresa_construccion,
             )
+
+
+def agregar_perdidas(empresa: Empresa):
+    indicadores = ["Producción", "Servicios", "Ventas"]
+    for indicador in indicadores:
+        plan_ind = random.randint(1000, 5000)
+        real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+        Perdida.objects.create(
+            empresa=empresa,
+            plan=plan_ind,
+            real=real_ind,
+            porciento=int((real_ind / plan_ind) * 100),
+            indicador=indicador,
+        )
