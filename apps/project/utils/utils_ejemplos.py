@@ -26,6 +26,7 @@ from ..models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    Medicamento,
     Perdida,
     PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
@@ -468,6 +469,18 @@ def crear_datos_random():
                 real=real_ind,
                 porciento=int((real_ind / plan_ind) * 100),
                 indicador=indicador,
+            )
+
+        medicamentos = ["Antibiotico", "Aspirina", "Vitamina C"]
+        for medicamento in medicamentos:
+            plan_ind = random.randint(1000, 5000)
+            real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+            Medicamento.objects.create(
+                empresa=empresa_farmacia,
+                plan=plan_ind,
+                en_falta=real_ind,
+                porciento_de_afectacion=int((real_ind / plan_ind) * 100),
+                medicamento=medicamento,
             )
 
     # Crear MaterialDeConstruccion solo para la empresa de Construcción

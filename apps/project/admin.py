@@ -20,6 +20,7 @@ from .models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    Medicamento,
     Perdida,
     PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
@@ -45,6 +46,7 @@ from .utils.reportes import (
     generar_reporte_inversiones_pdf,
     generar_reporte_material_de_construccion_pdf,
     generar_reporte_material_plastico_recilcado_pdf,
+    generar_reporte_medicamentos_pdf,
     generar_reporte_perdidas_pdf,
     generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf,
     generar_reporte_plan_de_mantenimiento_pdf,
@@ -871,3 +873,24 @@ class TransportacionDeCargaAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_transportacion_de_cargas_pdf]
+
+
+@admin.register(Medicamento)
+class MedicamentoAdmin(admin.ModelAdmin):
+    list_display = (
+        "empresa",
+        "plan",
+        "en_falta",
+        "porciento_de_afectacion",
+        "medicamento",
+    )
+    list_filter = (
+        "empresa",
+        "plan",
+        "en_falta",
+        "porciento_de_afectacion",
+        "medicamento",
+    )
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    actions = [generar_reporte_medicamentos_pdf]

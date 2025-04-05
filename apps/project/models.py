@@ -899,3 +899,24 @@ class TransportacionDeCarga(models.Model):
 
     def __str__(self):
         return f"Perdidas - {self.empresa.nombre} {self.carga}"
+
+
+class Medicamento(models.Model):
+    plan = models.PositiveIntegerField(verbose_name="Plan")
+    en_falta = models.PositiveIntegerField(verbose_name="En Falta")
+    porciento_de_afectacion = models.PositiveIntegerField(
+        verbose_name="Porcentaje de Afectación",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    medicamento = models.CharField(max_length=256, verbose_name="Medicamento")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Medicamento"
+        verbose_name_plural = "Medicamentos"
+        unique_together = [["empresa", "medicamento"]]
+
+    def __str__(self):
+        return f"Medicamento - {self.empresa.nombre} {self.medicamento}"

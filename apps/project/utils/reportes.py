@@ -16,6 +16,7 @@ from apps.project.models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    Medicamento,
     Perdida,
     PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
@@ -908,4 +909,35 @@ def generar_reporte_transportacion_de_cargas_pdf(modeladmin, request, queryset):
 
 generar_reporte_transportacion_de_cargas_pdf.short_description = (
     "Generar Reporte Transportación de Carga  PDF"
+)
+
+
+def generar_reporte_medicamentos_pdf(modeladmin, request, queryset):
+    elementos: List[Medicamento] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "medicamento": str(elemento.medicamento),
+                "plan": str(elemento.plan),
+                "en_falta": str(elemento.en_falta),
+                "porciento_de_afectacion": str(
+                    elemento.porciento_de_afectacion
+                ),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Medicamentos",
+        data,
+        file="reporte_medicamentos",
+    )
+
+
+generar_reporte_medicamentos_pdf.short_description = (
+    "Generar Reporte Medicamentos PDF"
 )
