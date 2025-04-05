@@ -32,6 +32,7 @@ from ..models import (
     PlanMateriaPrima,
     PlanRecape,
     SoberaniaAlimentaria,
+    TransportacionDePasajeros,
     UEBperdidas,
 )
 
@@ -425,6 +426,18 @@ def crear_datos_random():
                 estado=random.choice(
                     ["Cumplido", "Incumplido", "Pendiente", "Con pérdida"]
                 ),
+            )
+
+        indicadores = ["Pasajeros", "Distancias", "Combustible Consumido"]
+        for indicador in indicadores:
+            plan_ind = random.randint(1000, 5000)
+            real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+            TransportacionDePasajeros.objects.create(
+                empresa=empresa,
+                aprobadas=plan_ind,
+                real_ejecutadas=real_ind,
+                porciento=int((real_ind / plan_ind) * 100),
+                indicador=indicador,
             )
 
     empresa_farmacia = Empresa.objects.filter(

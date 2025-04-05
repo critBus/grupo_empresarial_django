@@ -22,6 +22,7 @@ from apps.project.models import (
     PlanMateriaPrima,
     PlanRecape,
     SoberaniaAlimentaria,
+    TransportacionDePasajeros,
     UEBperdidas,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
@@ -847,3 +848,34 @@ def generar_reporte_perdidas_pdf(modeladmin, request, queryset):
 
 
 generar_reporte_perdidas_pdf.short_description = "Generar Reporte Perdidas  PDF"
+
+
+def generar_reporte_transportacion_de_pasajeros_pdf(
+    modeladmin, request, queryset
+):
+    elementos: List[TransportacionDePasajeros] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "indicador": str(elemento.indicador),
+                "aprobadas": str(elemento.aprobadas),
+                "real_ejecutadas": str(elemento.real_ejecutadas),
+                "porciento": str(elemento.porciento),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Transportación de Pasajeros",
+        data,
+        file="reporte_transportacion_de_pasajeros",
+    )
+
+
+generar_reporte_transportacion_de_pasajeros_pdf.short_description = (
+    "Generar Reporte Transportación de Pasajeros PDF"
+)
