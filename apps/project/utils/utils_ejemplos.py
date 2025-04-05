@@ -26,6 +26,7 @@ from ..models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -400,6 +401,28 @@ def crear_datos_random():
                 mensajeria=random.randint(20, 80),
                 llevan_en_cantina=random.randint(30, 100),
                 total_beneficiarios=random.randint(100, 300),
+            )
+
+        for year in range(current_year - 2, current_year + 1):
+            PerfeccionamientoComercioGastronomia.objects.create(
+                empresa=empresa,
+                anno=year,
+                directores_filiales=random.randint(0, 20),
+                avalados_mercancias=random.randint(0, 500),
+                firma_codigo_conducta=random.randint(0, 1000),
+                proceso_disponibilidad=random.choice(
+                    ["Cumplido", "Incumplido", "N/P"]
+                ),
+                mensajeros_vendedores_ambulantes=random.randint(0, 100),
+                creacion_emp_filiales=random.randint(0, 20),
+                ueb_dl_34=random.choice(["Cumplido", "Incumplido", "N/P"]),
+                manual_identidad_visual=random.randint(0, 500),
+                categorizacion_almacenes=random.randint(0, 200),
+                licencias_sanitarias=random.randint(0, 300),
+                requisitos_calidad_bodegas=fake.text(max_nb_chars=200),
+                estado=random.choice(
+                    ["Cumplido", "Incumplido", "Pendiente", "Con pérdida"]
+                ),
             )
 
     # Crear MaterialDeConstruccion solo para la empresa de Construcción

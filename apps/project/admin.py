@@ -20,6 +20,7 @@ from .models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -41,6 +42,7 @@ from .utils.reportes import (
     generar_reporte_inversiones_pdf,
     generar_reporte_material_de_construccion_pdf,
     generar_reporte_material_plastico_recilcado_pdf,
+    generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf,
     generar_reporte_plan_de_mantenimiento_pdf,
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
@@ -781,3 +783,46 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
     list_display_links = list(list_display).copy()
     date_hierarchy = "fecha"
     actions = [generar_reporte_atencion_a_la_familia_pdf]
+
+
+@admin.register(PerfeccionamientoComercioGastronomia)
+class PerfeccionamientoComercioGastronomiaAdmin(admin.ModelAdmin):
+    def get_data(self, obj):
+        return get_table_row(
+            title="Data",
+            id="data",
+            lista_de_columnas=[
+                "directores_filiales",
+                "avalados_mercancias",
+                "firma_codigo_conducta",
+                "proceso_disponibilidad",
+                "mensajeros_vendedores_ambulantes",
+                "creacion_emp_filiales",
+                "ueb_dl_34",
+                "manual_identidad_visual",
+                "categorizacion_almacenes",
+                "licencias_sanitarias",
+                "requisitos_calidad_bodegas",
+            ],
+        )(obj)
+
+    get_data.short_description = "Data"
+    get_data.allow_tags = True
+
+    list_display = ("empresa", "anno", "estado", "get_data")
+    list_filter = (
+        "empresa",
+        "anno",
+        "estado",
+    )
+    ordering = (
+        "empresa",
+        "anno",
+        "estado",
+    )
+    list_display_links = (
+        "empresa",
+        "anno",
+        "estado",
+    )
+    actions = [generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf]

@@ -16,6 +16,7 @@ from apps.project.models import (
     Inversiones,
     MaterialDeConstruccion,
     MaterialPlasticoReciclado,
+    PerfeccionamientoComercioGastronomia,
     PlanDeMantenimiento,
     PlanMateriaPrima,
     PlanRecape,
@@ -772,3 +773,49 @@ def generar_reporte_atencion_a_la_familia_pdf(modeladmin, request, queryset):
 generar_reporte_atencion_a_la_familia_pdf.short_description = (
     "Generar Reporte Atención a la Familia  PDF"
 )
+
+
+def generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf(
+    modeladmin, request, queryset
+):
+    elementos: List[PerfeccionamientoComercioGastronomia] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "anno": str(elemento.anno),
+                "directores_filiales": str(elemento.directores_filiales),
+                "avalados_mercancias": str(elemento.avalados_mercancias),
+                "firma_codigo_conducta": str(elemento.firma_codigo_conducta),
+                "proceso_disponibilidad": str(elemento.proceso_disponibilidad),
+                "mensajeros_vendedores_ambulantes": str(
+                    elemento.mensajeros_vendedores_ambulantes
+                ),
+                "creacion_emp_filiales": str(elemento.creacion_emp_filiales),
+                "ueb_dl_34": str(elemento.ueb_dl_34),
+                "manual_identidad_visual": str(
+                    elemento.manual_identidad_visual
+                ),
+                "categorizacion_almacenes": str(
+                    elemento.categorizacion_almacenes
+                ),
+                "licencias_sanitarias": str(elemento.licencias_sanitarias),
+                "requisitos_calidad_bodegas": str(
+                    elemento.requisitos_calidad_bodegas
+                ),
+                "estado": str(elemento.estado),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Perfeccionamiento de Comercio y Gastronomía",
+        data,
+        file="reporte_perfeccionamiento_de_comercio_y_gastronomia",
+    )
+
+
+generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf.short_description = "Generar Reporte Perfeccionamiento de Comercio y Gastronomía  PDF"

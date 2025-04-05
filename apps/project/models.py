@@ -752,3 +752,76 @@ class AtencionALaFamilia(models.Model):
 
     def __str__(self):
         return f"Atención a la Familia - {self.empresa.nombre} ({self.fecha})"
+
+
+class PerfeccionamientoComercioGastronomia(models.Model):
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    anno = models.PositiveIntegerField(
+        verbose_name="Año",
+        help_text="Año al que corresponden los datos",
+        default=0,
+    )
+    directores_filiales = models.PositiveIntegerField(
+        verbose_name="Directores E Filiales", default=0
+    )
+    avalados_mercancias = models.PositiveIntegerField(
+        verbose_name="Avalados V Mercancías", default=0
+    )
+    firma_codigo_conducta = models.PositiveIntegerField(
+        verbose_name="Firma del código de conducta", default=0
+    )
+    proceso_disponibilidad = models.CharField(
+        max_length=50,
+        verbose_name="Proceso de disponibilidad",
+        default="N/P",
+        help_text="Especificar si cumple o no ('Cumplido', 'Incumplido', etc.)",
+    )
+    mensajeros_vendedores_ambulantes = models.PositiveIntegerField(
+        verbose_name="Mensajeros y vendedores Ambulantes", default=0
+    )
+    creacion_emp_filiales = models.PositiveIntegerField(
+        verbose_name="Creación Emp. Filiales", default=0
+    )
+    ueb_dl_34 = models.CharField(
+        max_length=50,
+        verbose_name="UEB DL-34",
+        default="N/P",
+        help_text="Especificar si cumple o no ('Cumplido', 'Incumplido', etc.)",
+    )
+    manual_identidad_visual = models.PositiveIntegerField(
+        verbose_name="Manual de Identidad Visual", default=0
+    )
+    categorizacion_almacenes = models.PositiveIntegerField(
+        verbose_name="Categorización de almacenes", default=0
+    )
+    licencias_sanitarias = models.PositiveIntegerField(
+        verbose_name="Licencias Sanitarias", default=0
+    )
+    requisitos_calidad_bodegas = models.TextField(
+        verbose_name="Requisitos de calidad en bodegas",
+        blank=True,
+        null=True,
+        help_text="Detalles sobre el cumplimiento de los requisitos en bodegas",
+        default="",
+    )
+    estado = models.CharField(
+        max_length=50,
+        verbose_name="Estado",
+        choices=[
+            ("Cumplido", "Cumplido"),
+            ("Incumplido", "Incumplido"),
+            ("Pendiente", "Pendiente"),
+            ("Con pérdida", "Con pérdida"),
+        ],
+        default="Pendiente",
+    )
+
+    class Meta:
+        verbose_name = "Perfeccionamiento de Comercio y Gastronomía"
+        verbose_name_plural = "Perfeccionamientos de Comercio y Gastronomía"
+        unique_together = [["empresa", "anno"]]
+
+    def __str__(self):
+        return f"Indicadores de Comercio y Gastronomía - {self.empresa.nombre} ({self.anno})"
