@@ -343,7 +343,7 @@ class Inversiones(models.Model):
     real_obra = models.IntegerField(
         verbose_name="Preparación de obra: Real", default=0
     )
-    porciento_obra = models.IntegerField(
+    porciento_obra = models.FloatField(
         verbose_name="Preparación de obra: Porcentaje",
         default=0,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
@@ -354,7 +354,7 @@ class Inversiones(models.Model):
     real_no_nominales = models.IntegerField(
         verbose_name="Inversiones no nominales: Real", default=0
     )
-    porciento_no_nominales = models.IntegerField(
+    porciento_no_nominales = models.FloatField(
         verbose_name="Inversiones no nominales: Porcentaje",
         default=0,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
@@ -365,7 +365,7 @@ class Inversiones(models.Model):
     real_resto = models.IntegerField(
         verbose_name="Resto de inversiones no nominales: Real", default=0
     )
-    porciento_resto = models.PositiveIntegerField(
+    porciento_resto = models.FloatField(
         verbose_name="Resto de inversiones no nominales: Porcentaje",
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         default=0,
@@ -388,7 +388,7 @@ class Inversiones(models.Model):
 class IndicadorGeneral(models.Model):
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
-    porciento = models.PositiveIntegerField(
+    porciento = models.FloatField(
         verbose_name="Porcentaje",
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
@@ -839,7 +839,7 @@ class PerfeccionamientoComercioGastronomia(models.Model):
 class Perdida(models.Model):
     plan = models.PositiveIntegerField(verbose_name="Plan")
     real = models.PositiveIntegerField(verbose_name="Real")
-    porciento = models.PositiveIntegerField(
+    porciento = models.FloatField(
         verbose_name="Porcentaje",
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
@@ -862,7 +862,7 @@ class TransportacionDePasajeros(models.Model):
     real_ejecutadas = models.PositiveIntegerField(
         verbose_name="Real Ejecutadas"
     )
-    porciento = models.PositiveIntegerField(
+    porciento = models.FloatField(
         verbose_name="Porcentaje",
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
@@ -883,7 +883,7 @@ class TransportacionDePasajeros(models.Model):
 class TransportacionDeCarga(models.Model):
     plan = models.PositiveIntegerField(verbose_name="Plan")
     real = models.PositiveIntegerField(verbose_name="Real")
-    porciento = models.PositiveIntegerField(
+    porciento = models.FloatField(
         verbose_name="Porcentaje",
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
@@ -904,7 +904,7 @@ class TransportacionDeCarga(models.Model):
 class Medicamento(models.Model):
     plan = models.PositiveIntegerField(verbose_name="Plan")
     en_falta = models.PositiveIntegerField(verbose_name="En Falta")
-    porciento_de_afectacion = models.PositiveIntegerField(
+    porciento_de_afectacion = models.FloatField(
         verbose_name="Porcentaje de Afectación",
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
