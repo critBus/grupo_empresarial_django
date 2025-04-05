@@ -26,6 +26,7 @@ from .models import (
     PlanMateriaPrima,
     PlanRecape,
     SoberaniaAlimentaria,
+    TransportacionDeCarga,
     TransportacionDePasajeros,
     UEBperdidas,
 )
@@ -50,6 +51,7 @@ from .utils.reportes import (
     generar_reporte_planes_materia_prima_pdf,
     generar_reporte_planes_recape_pdf,
     generar_reporte_soberania_alimentaria_pdf,
+    generar_reporte_transportacion_de_cargas_pdf,
     generar_reporte_transportacion_de_pasajeros_pdf,
     generar_reporte_ueb_perdidas_pdf,
 )
@@ -860,3 +862,12 @@ class TransportacionDePasajerosAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_transportacion_de_pasajeros_pdf]
+
+
+@admin.register(TransportacionDeCarga)
+class TransportacionDeCargaAdmin(admin.ModelAdmin):
+    list_display = ("empresa", "plan", "real", "porciento", "carga")
+    list_filter = ("empresa", "plan", "real", "porciento", "carga")
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    actions = [generar_reporte_transportacion_de_cargas_pdf]

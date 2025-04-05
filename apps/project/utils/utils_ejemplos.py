@@ -32,6 +32,7 @@ from ..models import (
     PlanMateriaPrima,
     PlanRecape,
     SoberaniaAlimentaria,
+    TransportacionDeCarga,
     TransportacionDePasajeros,
     UEBperdidas,
 )
@@ -438,6 +439,18 @@ def crear_datos_random():
                 real_ejecutadas=real_ind,
                 porciento=int((real_ind / plan_ind) * 100),
                 indicador=indicador,
+            )
+
+        cargas = ["Madera", "Comida", "Plastico"]
+        for carga in cargas:
+            plan_ind = random.randint(1000, 5000)
+            real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+            TransportacionDeCarga.objects.create(
+                empresa=empresa,
+                plan=plan_ind,
+                real=real_ind,
+                porciento=int((real_ind / plan_ind) * 100),
+                carga=carga,
             )
 
     empresa_farmacia = Empresa.objects.filter(

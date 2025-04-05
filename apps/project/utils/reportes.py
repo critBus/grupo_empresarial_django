@@ -22,6 +22,7 @@ from apps.project.models import (
     PlanMateriaPrima,
     PlanRecape,
     SoberaniaAlimentaria,
+    TransportacionDeCarga,
     TransportacionDePasajeros,
     UEBperdidas,
 )
@@ -878,4 +879,33 @@ def generar_reporte_transportacion_de_pasajeros_pdf(
 
 generar_reporte_transportacion_de_pasajeros_pdf.short_description = (
     "Generar Reporte Transportación de Pasajeros PDF"
+)
+
+
+def generar_reporte_transportacion_de_cargas_pdf(modeladmin, request, queryset):
+    elementos: List[TransportacionDeCarga] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "carga": str(elemento.carga),
+                "plan": str(elemento.plan),
+                "real": str(elemento.real),
+                "porciento": str(elemento.porciento),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Transportación de Carga",
+        data,
+        file="reporte_transportacion_de_cargas",
+    )
+
+
+generar_reporte_transportacion_de_cargas_pdf.short_description = (
+    "Generar Reporte Transportación de Carga  PDF"
 )

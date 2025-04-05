@@ -878,3 +878,24 @@ class TransportacionDePasajeros(models.Model):
 
     def __str__(self):
         return f"Transportación de Pasajeros - {self.empresa.nombre} {self.indicador}"
+
+
+class TransportacionDeCarga(models.Model):
+    plan = models.PositiveIntegerField(verbose_name="Plan")
+    real = models.PositiveIntegerField(verbose_name="Real")
+    porciento = models.PositiveIntegerField(
+        verbose_name="Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    carga = models.CharField(max_length=256, verbose_name="Carga")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Transportación de Carga"
+        verbose_name_plural = "Transportaciones de carga"
+        unique_together = [["empresa", "carga"]]
+
+    def __str__(self):
+        return f"Perdidas - {self.empresa.nombre} {self.carga}"
