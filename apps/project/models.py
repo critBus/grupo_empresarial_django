@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -308,11 +307,24 @@ class Inmuebles(models.Model):
 
 
 class PlanDeMantenimiento(models.Model):
-    plan = models.IntegerField(verbose_name="Plan")
-    real = models.IntegerField(verbose_name="Real")
-    porciento = models.IntegerField(verbose_name="Porcentaje")
-    tipo = models.CharField(max_length=70, verbose_name="Tipo")
-    empresa = models.OneToOneField(
+    anno = models.PositiveIntegerField(verbose_name="Año", default=2025)
+    cantidad_de_obras_anual = models.PositiveIntegerField(
+        verbose_name="Cantidad De Obras Anual", default=0
+    )
+    importe_total_anual = models.FloatField(
+        verbose_name="Importe Total Anual",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    cantidad_de_obras_real = models.PositiveIntegerField(
+        verbose_name="Cantidad De Obras Real", default=0
+    )
+    importe_total_real = models.FloatField(
+        verbose_name="Importe Total Real",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
 
@@ -325,10 +337,39 @@ class PlanDeMantenimiento(models.Model):
 
 
 class Inversiones(models.Model):
-    plan = models.IntegerField(verbose_name="Plan")
-    real = models.IntegerField(verbose_name="Real")
-    porciento = models.IntegerField(verbose_name="Porcentaje")
-    tipo = models.CharField(max_length=70, verbose_name="Tipo")
+    plan_obra = models.IntegerField(
+        verbose_name="Preparación de obra: Plan", default=0
+    )
+    real_obra = models.IntegerField(
+        verbose_name="Preparación de obra: Real", default=0
+    )
+    porciento_obra = models.FloatField(
+        verbose_name="Preparación de obra: Porcentaje",
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    plan_no_nominales = models.IntegerField(
+        verbose_name="Inversiones no nominales: Plan", default=0
+    )
+    real_no_nominales = models.IntegerField(
+        verbose_name="Inversiones no nominales: Real", default=0
+    )
+    porciento_no_nominales = models.FloatField(
+        verbose_name="Inversiones no nominales: Porcentaje",
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    plan_resto = models.IntegerField(
+        verbose_name="Resto de inversiones no nominales: Plan", default=0
+    )
+    real_resto = models.IntegerField(
+        verbose_name="Resto de inversiones no nominales: Real", default=0
+    )
+    porciento_resto = models.FloatField(
+        verbose_name="Resto de inversiones no nominales: Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=0,
+    )
     empresa = models.OneToOneField(
         Empresa,
         on_delete=models.CASCADE,
@@ -347,7 +388,10 @@ class Inversiones(models.Model):
 class IndicadorGeneral(models.Model):
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
-    porciento = models.IntegerField(verbose_name="Porcentaje")
+    porciento = models.FloatField(
+        verbose_name="Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
     tipo = models.CharField(max_length=70, verbose_name="Tipo")
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
@@ -376,14 +420,6 @@ class Deficiencias(models.Model):
     def __str__(self):
         return f"Deficiencias - {self.empresa.nombre}"
 
-    def clean(self):
-        super().clean()
-        # Validar que el total sea igual a resueltas + pendientes
-        if self.total != (self.resueltas + self.pendientes):
-            raise ValidationError(
-                "El total debe ser igual a la suma de resueltas y pendientes."
-            )
-
 
 class UEBperdidas(models.Model):
     cantidadUEB = models.IntegerField(verbose_name="Cantidad de UEB")
@@ -402,26 +438,115 @@ class UEBperdidas(models.Model):
 
 
 class CuentasCobrar(models.Model):
-    inicio_anno = models.FloatField(verbose_name="Inicio de Año")
-    mes_anterior = models.FloatField(verbose_name="Mes Anterior")
-    mes_actual = models.FloatField(verbose_name="Mes Actual")
+    inicio_anno = models.FloatField(
+        verbose_name="Inicio de Año",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    mes_anterior = models.FloatField(
+        verbose_name="Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    mes_actual = models.FloatField(
+        verbose_name="Mes Actual", validators=[MinValueValidator(0)], default=0
+    )
     diferencia_incio_anno = models.FloatField(
-        verbose_name="Diferencia con Inicio de Año"
+        verbose_name="Diferencia con Inicio de Año",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
     diferencia_mes_anterior = models.FloatField(
-        verbose_name="Diferencia con Mes Anterior"
+        verbose_name="Diferencia con Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    saldo_al_inicio = models.FloatField(verbose_name="Saldo al Inicio")
+    saldo_al_inicio = models.FloatField(
+        verbose_name="Saldo al Inicio",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     mes_anterior_vencidas = models.FloatField(
-        verbose_name="Vencidas Mes Anterior"
+        verbose_name="Vencidas Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    mes_actual_vencidas = models.FloatField(verbose_name="Vencidas Mes Actual")
-    indice_gestion_cloro = models.FloatField(
-        verbose_name="Índice Gestión Cloro"
+    mes_actual_vencidas = models.FloatField(
+        verbose_name="Vencidas Mes Actual",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    ciclo_cobros_dias = models.FloatField(verbose_name="Ciclo de Cobros (Días)")
+    indice_gestion_cobro = models.FloatField(
+        verbose_name="Índice Gestión Cobro",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    ciclo_cobros_dias = models.FloatField(
+        verbose_name="Ciclo de Cobros (Días)",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    por_cobrar_total = models.FloatField(
+        verbose_name="Por Cobrar: Total",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    vencidas_total = models.FloatField(
+        verbose_name="Vencidas: Total",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    porcentage_total = models.FloatField(
+        verbose_name="%: Total", validators=[MinValueValidator(0)], default=0
+    )
+
+    por_cobrar_a_terceros = models.FloatField(
+        verbose_name="Por Cobrar: a Terceros",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    vencidas_a_terceros = models.FloatField(
+        verbose_name="Vencidas: a Terceros",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    porcentage_a_terceros = models.FloatField(
+        verbose_name="%: a Terceros",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+
+    por_cobrar_u_admin = models.FloatField(
+        verbose_name="Por Cobrar: Unidad Adminstrativa",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    vencidas_u_admin = models.FloatField(
+        verbose_name="Vencidas: Unidad Adminstrativa",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    porcentage_u_admin = models.FloatField(
+        verbose_name="%: Unidad Adminstrativa",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+
+    por_cobrar_grupo = models.FloatField(
+        verbose_name="Por Cobrar: Grupo",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    vencidas_grupo = models.FloatField(
+        verbose_name="Vencidas: Grupo",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    porcentage_grupo = models.FloatField(
+        verbose_name="%: Grupo", validators=[MinValueValidator(0)], default=0
     )
 
     class Meta:
@@ -433,24 +558,59 @@ class CuentasCobrar(models.Model):
 
 
 class CuentasPagar(models.Model):
-    inicio_anno = models.FloatField(verbose_name="Inicio de Año")
-    mes_anterior = models.FloatField(verbose_name="Mes Anterior")
-    mes_actual = models.FloatField(verbose_name="Mes Actual")
+    inicio_anno = models.FloatField(
+        verbose_name="Inicio de Año",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    mes_anterior = models.FloatField(
+        verbose_name="Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    mes_actual = models.FloatField(
+        verbose_name="Mes Actual", validators=[MinValueValidator(0)], default=0
+    )
     diferencia_incio_anno = models.FloatField(
-        verbose_name="Diferencia con Inicio de Año"
+        verbose_name="Diferencia con Inicio de Año",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
     diferencia_mes_anterior = models.FloatField(
-        verbose_name="Diferencia con Mes Anterior"
+        verbose_name="Diferencia con Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    saldo_al_inicio = models.FloatField(verbose_name="Saldo al Inicio")
+    saldo_al_inicio = models.FloatField(
+        verbose_name="Saldo al Inicio",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     mes_anterior_vencidas = models.FloatField(
-        verbose_name="Vencidas Mes Anterior"
+        verbose_name="Vencidas Mes Anterior",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    mes_actual_vencidas = models.FloatField(verbose_name="Vencidas Mes Actual")
-    indice_gestion_cloro = models.FloatField(
-        verbose_name="Índice Gestión Cloro"
+    mes_actual_vencidas = models.FloatField(
+        verbose_name="Vencidas Mes Actual",
+        validators=[MinValueValidator(0)],
+        default=0,
     )
-    ciclo_cobros_dias = models.FloatField(verbose_name="Ciclo de Cobros (Días)")
+    indice_gestion_pago = models.FloatField(
+        verbose_name="Índice Gestión Pago",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    ciclo_pagos_dias = models.FloatField(
+        verbose_name="Ciclo de Cobros (Días)",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    efectos_por_pagar = models.FloatField(
+        verbose_name="Efectos Por Pagar",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
@@ -461,3 +621,377 @@ class CuentasPagar(models.Model):
 
     def __str__(self):
         return f"Cuentas por Pagar - {self.empresa.nombre}"
+
+
+class MaterialPlasticoReciclado(models.Model):
+    no_material = models.IntegerField(
+        max_length=10, verbose_name="No.", validators=[MinValueValidator(1)]
+    )
+    materia = models.CharField(max_length=255, verbose_name="Material")
+    unidad_de_medida = models.CharField(
+        max_length=255, verbose_name="Unidad de Medida"
+    )
+    plan = models.IntegerField(verbose_name="Plan")
+    real = models.IntegerField(verbose_name="Real")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Material Plástico Reciclado"
+        verbose_name_plural = "Materiales Plásticos Reciclados"
+
+    def __str__(self):
+        return f"{self.materia} - {self.empresa.nombre}"
+
+
+class MaterialDeConstruccion(models.Model):
+    material = models.CharField(max_length=255, verbose_name="Material")
+    unidad_de_medida = models.CharField(
+        max_length=255, verbose_name="Unidad de Medida"
+    )
+    plan = models.IntegerField(verbose_name="Plan")
+    real = models.IntegerField(verbose_name="Real")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Material de Construcción"
+        verbose_name_plural = "Materiales de Construcción"
+
+    def __str__(self):
+        return f"{self.material} - {self.empresa.nombre}"
+
+
+class SoberaniaAlimentaria(models.Model):
+    unidad = models.CharField(max_length=50, verbose_name="Unidad")
+    huertos = models.PositiveIntegerField(
+        verbose_name="Huertos",
+        default=0,
+    )
+    canteros = models.PositiveIntegerField(
+        verbose_name="Canteros",
+        default=0,
+    )
+    tierras = models.PositiveIntegerField(
+        verbose_name="Tierras",
+        default=0,
+    )
+
+    empresa = models.OneToOneField(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Soberanía Alimentaria"
+        verbose_name_plural = "Soberanias Alimentarias"
+
+    def __str__(self):
+        return f"Soberanía Alimentaria - {self.empresa.nombre}"
+
+
+class Bancarizacion(models.Model):
+    empresa = models.OneToOneField(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    establecimientos = models.PositiveIntegerField(
+        verbose_name="Establecimientos", default=0
+    )
+    total_unidades = models.PositiveIntegerField(
+        verbose_name="Total Unidades", default=0
+    )
+    solicitadas = models.PositiveIntegerField(
+        verbose_name="Solicitadas", default=0
+    )
+    aprobados_enzona = models.PositiveIntegerField(
+        verbose_name="Aprobados Enzona", default=0
+    )
+    aprobados_transfermovil = models.PositiveIntegerField(
+        verbose_name="Aprobados Transfermóvil", default=0
+    )
+    operaciones_acumuladas = models.PositiveIntegerField(
+        verbose_name="Operaciones Acumuladas", default=0
+    )
+    importe_acumulado = models.FloatField(
+        verbose_name="Importe Acumulado",
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+
+    class Meta:
+        verbose_name = "Bancarización"
+        verbose_name_plural = "Bancarizaciones"
+
+    def __str__(self):
+        return f"Bancarización - {self.empresa.nombre}"
+
+
+class AtencionALaFamilia(models.Model):
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    fecha = models.DateField(verbose_name="Fecha")
+    total_saf = models.PositiveIntegerField(
+        verbose_name="Total de SAF", default=0
+    )
+    beneficiados_conciliacion = models.PositiveIntegerField(
+        verbose_name="Beneficiados (según conciliación)", default=0
+    )
+    servicio_diario = models.PositiveIntegerField(
+        verbose_name="Servicio Diario", default=0
+    )
+    almuerzan_unidades = models.PositiveIntegerField(
+        verbose_name="Almuerzan Unidades", default=0
+    )
+    mensajeria = models.PositiveIntegerField(
+        verbose_name="Mensajería", default=0
+    )
+    llevan_en_cantina = models.PositiveIntegerField(
+        verbose_name="Llevan en cantina", default=0
+    )
+    total_beneficiarios = models.PositiveIntegerField(
+        verbose_name="Total Beneficiarios", default=0
+    )
+
+    class Meta:
+        verbose_name = "Atención a la Familia"
+        verbose_name_plural = "Atenciones a la familia"
+        unique_together = [["empresa", "fecha"]]
+
+    def __str__(self):
+        return f"Atención a la Familia - {self.empresa.nombre} ({self.fecha})"
+
+
+class PerfeccionamientoComercioGastronomia(models.Model):
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    anno = models.PositiveIntegerField(
+        verbose_name="Año",
+        help_text="Año al que corresponden los datos",
+        default=0,
+    )
+    directores_filiales = models.PositiveIntegerField(
+        verbose_name="Directores E Filiales", default=0
+    )
+    avalados_mercancias = models.PositiveIntegerField(
+        verbose_name="Avalados V Mercancías", default=0
+    )
+    firma_codigo_conducta = models.PositiveIntegerField(
+        verbose_name="Firma del código de conducta", default=0
+    )
+    proceso_disponibilidad = models.CharField(
+        max_length=50,
+        verbose_name="Proceso de disponibilidad",
+        default="N/P",
+        help_text="Especificar si cumple o no ('Cumplido', 'Incumplido', etc.)",
+    )
+    mensajeros_vendedores_ambulantes = models.PositiveIntegerField(
+        verbose_name="Mensajeros y vendedores Ambulantes", default=0
+    )
+    creacion_emp_filiales = models.PositiveIntegerField(
+        verbose_name="Creación Emp. Filiales", default=0
+    )
+    ueb_dl_34 = models.CharField(
+        max_length=50,
+        verbose_name="UEB DL-34",
+        default="N/P",
+        help_text="Especificar si cumple o no ('Cumplido', 'Incumplido', etc.)",
+    )
+    manual_identidad_visual = models.PositiveIntegerField(
+        verbose_name="Manual de Identidad Visual", default=0
+    )
+    categorizacion_almacenes = models.PositiveIntegerField(
+        verbose_name="Categorización de almacenes", default=0
+    )
+    licencias_sanitarias = models.PositiveIntegerField(
+        verbose_name="Licencias Sanitarias", default=0
+    )
+    requisitos_calidad_bodegas = models.TextField(
+        verbose_name="Requisitos de calidad en bodegas",
+        blank=True,
+        null=True,
+        help_text="Detalles sobre el cumplimiento de los requisitos en bodegas",
+        default="",
+    )
+    estado = models.CharField(
+        max_length=50,
+        verbose_name="Estado",
+        choices=[
+            ("Cumplido", "Cumplido"),
+            ("Incumplido", "Incumplido"),
+            ("Pendiente", "Pendiente"),
+            ("Con pérdida", "Con pérdida"),
+        ],
+        default="Pendiente",
+    )
+
+    class Meta:
+        verbose_name = "Perfeccionamiento de Comercio y Gastronomía"
+        verbose_name_plural = "Perfeccionamientos de Comercio y Gastronomía"
+        unique_together = [["empresa", "anno"]]
+
+    def __str__(self):
+        return f"Indicadores de Comercio y Gastronomía - {self.empresa.nombre} ({self.anno})"
+
+
+class Perdida(models.Model):
+    plan = models.PositiveIntegerField(verbose_name="Plan")
+    real = models.PositiveIntegerField(verbose_name="Real")
+    porciento = models.FloatField(
+        verbose_name="Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    indicador = models.CharField(max_length=256, verbose_name="Indicador")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Perdida"
+        verbose_name_plural = "Perdidas"
+        unique_together = [["empresa", "indicador"]]
+
+    def __str__(self):
+        return f"Perdidas - {self.empresa.nombre} {self.indicador}"
+
+
+class TransportacionDePasajeros(models.Model):
+    aprobadas = models.PositiveIntegerField(verbose_name="Aprobadas")
+    real_ejecutadas = models.PositiveIntegerField(
+        verbose_name="Real Ejecutadas"
+    )
+    porciento = models.FloatField(
+        verbose_name="Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    indicador = models.CharField(max_length=256, verbose_name="Indicador")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Transportación de Pasajeros"
+        verbose_name_plural = "Transportaciones de Pasajeros"
+        unique_together = [["empresa", "indicador"]]
+
+    def __str__(self):
+        return f"Transportación de Pasajeros - {self.empresa.nombre} {self.indicador}"
+
+
+class TransportacionDeCarga(models.Model):
+    plan = models.PositiveIntegerField(verbose_name="Plan")
+    real = models.PositiveIntegerField(verbose_name="Real")
+    porciento = models.FloatField(
+        verbose_name="Porcentaje",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    carga = models.CharField(max_length=256, verbose_name="Carga")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Transportación de Carga"
+        verbose_name_plural = "Transportaciones de carga"
+        unique_together = [["empresa", "carga"]]
+
+    def __str__(self):
+        return f"Perdidas - {self.empresa.nombre} {self.carga}"
+
+
+class Medicamento(models.Model):
+    plan = models.PositiveIntegerField(verbose_name="Plan")
+    en_falta = models.PositiveIntegerField(verbose_name="En Falta")
+    porciento_de_afectacion = models.FloatField(
+        verbose_name="Porcentaje de Afectación",
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    medicamento = models.CharField(max_length=256, verbose_name="Medicamento")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Medicamento"
+        verbose_name_plural = "Medicamentos"
+        unique_together = [["empresa", "medicamento"]]
+
+    def __str__(self):
+        return f"Medicamento - {self.empresa.nombre} {self.medicamento}"
+
+
+class InformacionGeneral(models.Model):
+    total = models.PositiveIntegerField(verbose_name="Total")
+    cubiertos = models.PositiveIntegerField(verbose_name="Cubiertos")
+    desglosados_gobierno = models.PositiveIntegerField(
+        verbose_name="Desglosados Gobierno"
+    )
+    desglosados_tercero = models.PositiveIntegerField(
+        verbose_name="Desglosados Tercero"
+    )
+    fluctuacion = models.FloatField(
+        verbose_name="Fluctuación",
+        validators=[MinValueValidator(0), MaxValueValidator(1)],
+    )
+    dato = models.CharField(max_length=256, verbose_name="Dato")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Información General"
+        verbose_name_plural = "Informaciones Generales"
+        unique_together = [["empresa", "dato"]]
+
+    def __str__(self):
+        return f"InformacionGeneral - {self.empresa.nombre} {self.dato}"
+
+
+class PlanDeConstruccion(models.Model):
+    plan = models.PositiveIntegerField(verbose_name="Plan")
+    real = models.PositiveIntegerField(verbose_name="Real")
+    donde_se_incumple = models.TextField(
+        verbose_name="Donde se Incumple", blank=True, null=True
+    )
+    nombre = models.CharField(max_length=256, verbose_name="Nombre Del Plan")
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+
+    class Meta:
+        verbose_name = "Plan de Construcción"
+        verbose_name_plural = "Planes de Construcción"
+        unique_together = [["empresa", "nombre"]]
+
+    def __str__(self):
+        return f"Plan de Construcción - {self.empresa.nombre} {self.nombre}"
+
+
+class IndicadorGeneralGM(models.Model):
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    nombre_indicador = models.CharField(
+        max_length=255, verbose_name="Nombre del Indicador"
+    )
+    unidad_medida = models.CharField(
+        max_length=50, verbose_name="Unidad de Medida (UM)"
+    )
+    plan_acumulado = models.DecimalField(
+        max_digits=15, decimal_places=2, verbose_name="Plan Acumulado"
+    )
+    real_acumulado = models.DecimalField(
+        max_digits=15, decimal_places=2, verbose_name="Real Acumulado"
+    )
+    porcentaje_cumplimiento = models.DecimalField(
+        max_digits=5, decimal_places=2, verbose_name="Porcentaje (%)"
+    )
+
+    class Meta:
+        verbose_name = "Indicador General del GM"
+        verbose_name_plural = "Indicadores Generales del GM"
+
+    def __str__(self):
+        return f"{self.nombre_indicador} - {self.empresa.nombre}"

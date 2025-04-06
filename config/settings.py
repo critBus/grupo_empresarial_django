@@ -201,6 +201,19 @@ JAZZMIN_SETTINGS = {
         "project.uebPerdidas": "fas fa-minus-circle",  # Círculo con menos para UEB perdidas
         "project.cuentasCobrar": "fas fa-hand-holding-usd",  # Mano sosteniendo dinero para cuentas por cobrar
         "project.cuentasPagar": "fas fa-money-bill-wave",  # Billete para cuentas por pagar
+        "project.materialPlasticoReciclado": "fas fa-recycle",  # Reciclaje de plástico
+        "project.materialDeConstruccion": "fas fa-hard-hat",  # Materiales de construcción
+        "project.soberaniaAlimentaria": "fas fa-seedling",  # Agricultura/soberanía alimentaria
+        "project.bancarizacion": "fas fa-credit-card",  # Transacciones bancarias
+        "project.atencionALaFamilia": "fas fa-user-friends",  # Familias/usuarios
+        "project.perfeccionamientoComercioGastronomia": "fas fa-utensils",  # Gastronomía
+        "project.perdida": "fas fa-arrow-down",  # Pérdidas (indicador descendente)
+        "project.transportacionDePasajeros": "fas fa-bus",  # Transporte de pasajeros
+        "project.transportacionDeCarga": "fas fa-truck",  # Transporte de carga
+        "project.medicamento": "fas fa-pills",  # Medicamentos
+        "project.informacionGeneral": "fas fa-clipboard-list",  # Información general
+        "project.planDeConstruccion": "fas fa-hard-hat",  # Planes de construcción
+        "project.indicadorGeneralGM": "fas fa-chart-pie",
     },
     "topmenu_links": [
         # Url that gets reversed (Permissions can be added)
