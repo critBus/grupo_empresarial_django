@@ -15,6 +15,7 @@ from .models import (
     Delitos,
     Empresa,
     IndicadorGeneral,
+    IndicadorGeneralGM,
     InformacionGeneral,
     Inmuebles,
     Interruptos,
@@ -43,6 +44,7 @@ from .utils.reportes import (
     generar_reporte_cuentas_por_pagar_pdf,
     generar_reporte_deficiencias_pdf,
     generar_reporte_delitos_pdf,
+    generar_reporte_indicador_general_del_gm_pdf,
     generar_reporte_informacion_general_pdf,
     generar_reporte_inmuebles_pdf,
     generar_reporte_interruptos_pdf,
@@ -933,3 +935,26 @@ class PlanDeConstruccionAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_plan_de_construccion_pdf]
+
+
+@admin.register(IndicadorGeneralGM)
+class IndicadorGeneralGMAdmin(admin.ModelAdmin):
+    list_display = (
+        "empresa",
+        "nombre_indicador",
+        "unidad_medida",
+        "plan_acumulado",
+        "real_acumulado",
+        "porcentaje_cumplimiento",
+    )
+    list_filter = (
+        "empresa",
+        "nombre_indicador",
+        "unidad_medida",
+        "plan_acumulado",
+        "real_acumulado",
+        "porcentaje_cumplimiento",
+    )
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    actions = [generar_reporte_indicador_general_del_gm_pdf]

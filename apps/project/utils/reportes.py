@@ -11,6 +11,7 @@ from apps.project.models import (
     CuentasPagar,
     Deficiencias,
     Delitos,
+    IndicadorGeneralGM,
     InformacionGeneral,
     Inmuebles,
     Interruptos,
@@ -1002,4 +1003,36 @@ def generar_reporte_plan_de_construccion_pdf(modeladmin, request, queryset):
 
 generar_reporte_plan_de_construccion_pdf.short_description = (
     "Generar Reporte Plan de Construcción PDF"
+)
+
+
+def generar_reporte_indicador_general_del_gm_pdf(modeladmin, request, queryset):
+    elementos: List[IndicadorGeneralGM] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "empresa": str(elemento.empresa.nombre),
+                "nombre_indicador": str(elemento.nombre_indicador),
+                "unidad_medida": str(elemento.unidad_medida),
+                "plan_acumulado": str(elemento.plan_acumulado),
+                "real_acumulado": str(elemento.real_acumulado),
+                "porcentaje_cumplimiento": str(
+                    elemento.porcentaje_cumplimiento
+                ),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Indicador General del GM",
+        data,
+        file="reporte_indicador_general_del_gm",
+    )
+
+
+generar_reporte_indicador_general_del_gm_pdf.short_description = (
+    "Generar Reporte Indicador General del GM PDF"
 )

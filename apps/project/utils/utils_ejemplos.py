@@ -21,6 +21,7 @@ from ..models import (
     Delitos,
     Empresa,
     IndicadorGeneral,
+    IndicadorGeneralGM,
     InformacionGeneral,
     Inmuebles,
     Interruptos,
@@ -108,6 +109,53 @@ def crear_datos_random():
         "La Palma",
     ]
 
+    indicadores_generales = [
+        "Circulación Mercantil",
+        "Ventas Totales",
+        "Total de Ingresos",
+        "Total de Gastos",
+        "Utilidad (o Pérdida) del Periodo",
+        "Fondo de Salario Total",
+        "Promedio de trabajadores",
+        "Producción de Bienes y Servicios",
+        "Gasto Material",
+        "Otros Gastos Monetarios",
+        "Financiamiento entregado al OSDE",
+        "Valor Agregado",
+        "Productividad",
+        "Salario Medio",
+        "Gasto total x peso de ingreso total",
+        "Fdo de salario x Peso de Ingreso Total",
+        "Correlación SM/P",
+        "Utilidad o Pérdida Bruta en Ventas",
+        "Utilidad o Pérdida Neta en Vtas",
+        "Utilidad o Pérdida en Operaciones",
+    ]
+
+    # Unidades de medida
+    unidades_medida = {
+        "Circulación Mercantil": "MP",
+        "Ventas Totales": "MP",
+        "Total de Ingresos": "MP",
+        "Total de Gastos": "MP",
+        "Utilidad (o Pérdida) del Periodo": "MP",
+        "Fondo de Salario Total": "MP",
+        "Promedio de trabajadores": "Uno",
+        "Producción de Bienes y Servicios": "MP",
+        "Gasto Material": "MP",
+        "Otros Gastos Monetarios": "MP",
+        "Financiamiento entregado al OSDE": "MP",
+        "Valor Agregado": "MP",
+        "Productividad": "Pesos",
+        "Salario Medio": "Pesos",
+        "Gasto total x peso de ingreso total": "Pesos",
+        "Fdo de salario x Peso de Ingreso Total": "Pesos",
+        "Correlación SM/P": "Índice",
+        "Utilidad o Pérdida Bruta en Ventas": "MP",
+        "Utilidad o Pérdida Neta en Vtas": "MP",
+        "Utilidad o Pérdida en Operaciones": "MP",
+    }
+
     for empresa in empresas:
         # Crear Cuadro
         cuadro = Cuadro.objects.create(
@@ -115,6 +163,26 @@ def crear_datos_random():
             aprobada=random.randint(50, 200),
             cubierta=random.randint(30, 150),
         )
+
+        for nombre_indicador in indicadores_generales:
+            # Generar valores aleatorios
+            plan_acumulado = random.uniform(10000, 1000000)
+            real_acumulado = random.uniform(
+                plan_acumulado * 0.7, plan_acumulado
+            )
+            porcentaje_cumplimiento = round(
+                (real_acumulado / plan_acumulado) * 100, 2
+            )
+
+            # Crear el registro
+            IndicadorGeneralGM.objects.create(
+                empresa=empresa,
+                nombre_indicador=nombre_indicador,
+                unidad_medida=unidades_medida.get(nombre_indicador, "MP"),
+                plan_acumulado=plan_acumulado,
+                real_acumulado=real_acumulado,
+                porcentaje_cumplimiento=porcentaje_cumplimiento,
+            )
 
         # Crear CargoSinCubrir
         for _ in range(random.randint(2, 5)):

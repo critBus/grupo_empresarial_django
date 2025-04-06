@@ -967,3 +967,31 @@ class PlanDeConstruccion(models.Model):
 
     def __str__(self):
         return f"Plan de Construcción - {self.empresa.nombre} {self.nombre}"
+
+
+class IndicadorGeneralGM(models.Model):
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
+    nombre_indicador = models.CharField(
+        max_length=255, verbose_name="Nombre del Indicador"
+    )
+    unidad_medida = models.CharField(
+        max_length=50, verbose_name="Unidad de Medida (UM)"
+    )
+    plan_acumulado = models.DecimalField(
+        max_digits=15, decimal_places=2, verbose_name="Plan Acumulado"
+    )
+    real_acumulado = models.DecimalField(
+        max_digits=15, decimal_places=2, verbose_name="Real Acumulado"
+    )
+    porcentaje_cumplimiento = models.DecimalField(
+        max_digits=5, decimal_places=2, verbose_name="Porcentaje (%)"
+    )
+
+    class Meta:
+        verbose_name = "Indicador General del GM"
+        verbose_name_plural = "Indicadores Generales del GM"
+
+    def __str__(self):
+        return f"{self.nombre_indicador} - {self.empresa.nombre}"
