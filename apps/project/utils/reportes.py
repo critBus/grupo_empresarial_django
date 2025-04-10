@@ -232,7 +232,7 @@ def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
         if key not in data_by_empresa_año:
             data_by_empresa_año[key] = {
                 "empresa": plan.empresa.nombre,
-                "año": year,
+                "año": str(year),
                 "meses": {mes: 0 for mes in range(1, 13)},
                 "total": 0,
             }
@@ -265,7 +265,7 @@ def generar_reporte_planes_recape_pdf(modeladmin, request, queryset):
     # Ordenar la lista primero por año y luego por empresa
     lista = sorted(lista, key=lambda x: (int(x["anno"]), x["empresa"]))
 
-    data = {"lista": lista, "mostrar_anno": len(years) > 1}
+    data = {"lista": lista, "mostrar_anno": str(len(years) > 1)}
 
     return custom_export_report_by_name(
         "Plan de Recape", data, file="reporte_planes_recape"

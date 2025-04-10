@@ -584,7 +584,7 @@ class CuentasCobrarAdmin(admin.ModelAdmin):
             ],
         )(obj)
 
-    get_cuentas_por_cobrar_total.short_description = "CUP"
+    get_cuentas_por_cobrar_total.short_description = "Total"
     get_cuentas_por_cobrar_total.allow_tags = True
 
     def get_cuentas_por_cobrar_a_terceros(self, obj):
