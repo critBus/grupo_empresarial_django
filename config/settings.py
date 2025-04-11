@@ -214,6 +214,8 @@ JAZZMIN_SETTINGS = {
         "project.informacionGeneral": "fas fa-clipboard-list",  # Información general
         "project.planDeConstruccion": "fas fa-hard-hat",  # Planes de construcción
         "project.indicadorGeneralGM": "fas fa-chart-pie",
+        "project.vehiculoscumnales": "fas fa-car",  # Icono para VehiculosCumnales
+        "project.comunales": "fas fa-building",
     },
     "topmenu_links": [
         # Url that gets reversed (Permissions can be added)

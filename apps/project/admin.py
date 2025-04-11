@@ -8,6 +8,7 @@ from .models import (
     Bancarizacion,
     CapitalHumano,
     CargoSinCubrir,
+    Comunales,
     Cuadro,
     CuentasCobrar,
     CuentasPagar,
@@ -33,6 +34,7 @@ from .models import (
     TransportacionDeCarga,
     TransportacionDePasajeros,
     UEBperdidas,
+    VehiculosCumnales,
 )
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,
@@ -584,7 +586,7 @@ class CuentasCobrarAdmin(admin.ModelAdmin):
             ],
         )(obj)
 
-    get_cuentas_por_cobrar_total.short_description = "CUP"
+    get_cuentas_por_cobrar_total.short_description = "Total"
     get_cuentas_por_cobrar_total.allow_tags = True
 
     def get_cuentas_por_cobrar_a_terceros(self, obj):
@@ -958,3 +960,38 @@ class IndicadorGeneralGMAdmin(admin.ModelAdmin):
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_indicador_general_del_gm_pdf]
+
+
+@admin.register(VehiculosCumnales)
+class VehiculosCumnalesAdmin(admin.ModelAdmin):
+    list_display = (
+        "tipo",
+        "cantidad",
+        "activo",
+        "municipio",
+    )
+    list_filter = (
+        "tipo",
+        "cantidad",
+        "activo",
+        "municipio",
+    )
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+
+
+@admin.register(Comunales)
+class ComunalesAdmin(admin.ModelAdmin):
+    list_display = (
+        "empresa",
+        "plan",
+        "real",
+    )
+    list_filter = (
+        "empresa",
+        "plan",
+        "real",
+    )
+    ordering = list(list_display).copy()
+    list_display_links = list(list_display).copy()
+    filter_horizontal = ["vehiculos"]

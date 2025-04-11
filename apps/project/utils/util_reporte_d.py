@@ -51,7 +51,7 @@ def customReportPDF(
         return HttpResponse("An error occurred while processing the report")
 
 
-def load_json(filename):
+def load_json(filename, force=False):
     actual = timezone.now()
     file = json.load(open(filename, "r"))
     name = file["name"]
@@ -63,6 +63,21 @@ def load_json(filename):
             last_modified_at=actual,
         )
         print(f"reporte cargado: {name}")
+    elif force:
+        ReportDefinition.objects.filter(name=name).delete()
+        ReportDefinition.objects.create(
+            name=name,
+            report_definition=file["report_definition"],
+            remark=file["remark"],
+            last_modified_at=actual,
+        )
+        print(f"reporte cargado: {name}")
+
+
+def load_report(repor_name, folder="reportes", force=False):
+    filename = f"{repor_name}.json"
+    dire = os.path.join(settings.BASE_DIR, folder)
+    load_json(os.path.join(dire, filename), force=force)
 
 
 def load_automatic_reports(folder="reportes"):
