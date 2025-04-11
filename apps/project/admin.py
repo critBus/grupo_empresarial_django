@@ -8,6 +8,7 @@ from .models import (
     Bancarizacion,
     CapitalHumano,
     CargoSinCubrir,
+    Comunales,
     Cuadro,
     CuentasCobrar,
     CuentasPagar,
@@ -32,7 +33,8 @@ from .models import (
     SoberaniaAlimentaria,
     TransportacionDeCarga,
     TransportacionDePasajeros,
-    UEBperdidas, VehiculosCumnales, Comunales,
+    UEBperdidas,
+    VehiculosCumnales,
 )
 from .utils.reportes import (
     generar_atencion_poblacion_pdf,
@@ -962,16 +964,34 @@ class IndicadorGeneralGMAdmin(admin.ModelAdmin):
 
 @admin.register(VehiculosCumnales)
 class VehiculosCumnalesAdmin(admin.ModelAdmin):
-    list_display = ("tipo", "cantidad","activo", "municipio", )
-    list_filter = ("tipo", "cantidad", "activo","municipio", )
+    list_display = (
+        "tipo",
+        "cantidad",
+        "activo",
+        "municipio",
+    )
+    list_filter = (
+        "tipo",
+        "cantidad",
+        "activo",
+        "municipio",
+    )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
 
 @admin.register(Comunales)
 class ComunalesAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", )
-    list_filter = ("empresa", "plan", "real", )
+    list_display = (
+        "empresa",
+        "plan",
+        "real",
+    )
+    list_filter = (
+        "empresa",
+        "plan",
+        "real",
+    )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     filter_horizontal = ["vehiculos"]
