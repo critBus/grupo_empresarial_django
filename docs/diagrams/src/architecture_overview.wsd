@@ -1,163 +1,356 @@
 @startuml
-
-' !include <C4/C4_Component>
+skinparam classAttributeIconSize 0
 
 class Empresa {
-    codigo: varchar(10)
-    nombre: varchar(255)
+    +codigo: String
+    +nombre: String
 }
 
 class Cuadro {
-    aprobada: integer(10)
-    cubierta: integer(10)
-    empresa_id: integer(10)
+    +aprobada: Integer
+    +cubierta: Integer
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" Cuadro
 
 class CargoSinCubrir {
-    cargo: varchar(255)
-    cuadro_id:integer(10)
+    +cargo: String
+    +cuadro_id: Integer
 }
-Cuadro "1" -- "*" CargoSinCubrir
 
 class AtencionPoblacion {
-    quejas: integer(10)
-    denuncias: integer(10)
-    peticiones: integer(10)
-    termino: varchar(10)
-    empresa_id: integer(10)
+    +quejas: Integer
+    +denuncias: Integer
+    +peticiones: Integer
+    +termino: String
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" AtencionPoblacion
 
 class CapitalHumano {
-    plantillaAprobada: integer(10)
-    plantillaCubierta: integer(10)
-    mujeres: integer(10)
-    empresa_id: integer(10)
+    +plantillaAprobada: Integer
+    +plantillaCubierta: Integer
+    +mujeres: Integer
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" CapitalHumano
 
 class Interruptos {
-    total: integer(10)
-    equiposRotos: integer(10)
-    faltaPiezas: integer(10)
-    otrasCausas: integer(10)
-    empresa_id: integer(10)
+    +total: Integer
+    +equiposRotos: Integer
+    +faltaPiezas: Integer
+    +otrasCausas: Integer
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" Interruptos
 
 class Delitos {
-    no_denuncia: integer(10)
-    denuncia: integer(10)
-    municipio: varchar(50)
-    fecha: date()
-    unidad: varchar(50)
-    tipocidad: varchar(50)
-    productosSustraidos: varchar(255)
-    valorPerdidas: float(2)
-    medidasTomadas: varchar(50)
-    empresa_id: integer(10)
+    +no_denuncia: Integer
+    +denuncia: Integer
+    +municipio: String
+    +fecha: Date
+    +unidad: String
+    +tipocidad: String
+    +productosSustraidos: String
+    +valorPerdidas: Float
+    +medidasTomadas: String
+    +empresa_id: Integer
 }
-Empresa "1" -- "*" Delitos
 
 class PlanRecape {
-    plan: integer(10)
-    mes: integer(10)
-    anno: integer(10)
-    empresa_id: integer(10)
+    +plan: Integer
+    +mes: Integer
+    +anno: Integer
+    +empresa_id: Integer
 }
-Empresa "1" -- "*" PlanRecape
 
 class PlanMateriaPrima {
-    anno: integer(10)
-    papel_carton: integer(10)
-    chatarra_acero: integer(10)
-    envase_textil: integer(10)
-    chatarra_aluminio: integer(10)
-    chatarra_plomo: integer(10)
-    polietileno: integer(10)
-    empresa_id: integer(10)
+    +anno: Integer
+    +papel_carton: Integer
+    +chatarra_acero: Integer
+    +envase_textil: Integer
+    +chatarra_aluminio: Integer
+    +chatarra_plomo: Integer
+    +polietileno: Integer
+    +empresa_id: Integer
 }
-Empresa "1" -- "*" PlanMateriaPrima
 
 class Inmuebles {
-    tipo: varchar(255)
-    cantidad: integer(10)
-    empresa_id: integer(10)
+    +loc_oficina: Integer
+    +cpl: Integer
+    +almacenes: Integer
+    +farmacias_opticas: Integer
+    +taller: Integer
+    +poncheras: Integer
+    +plantas_fre: Integer
+    +top: Integer
+    +nave_pasaje: Integer
+    +funeraria: Integer
+    +floristeria: Integer
+    +banos_p: Integer
+    +tienda: Integer
+    +base_carga: Integer
+    +circulos_s: Integer
+    +capillas: Integer
+    +comedores: Integer
+    +panaderias: Integer
+    +dulcerias: Integer
+    +pana_dulc: Integer
+    +bodegas: Integer
+    +minitalleres: Integer
+    +fabricas: Integer
+    +carnicerias: Integer
+    +m_ideal: Integer
+    +mais: Integer
+    +tmc: Integer
+    +bar: Integer
+    +c_elaboracion: Integer
+    +restaurant: Integer
+    +cafeterias: Integer
+    +c_nocturno: Integer
+    +cabaret: Integer
+    +merendero: Integer
+    +heladerias: Integer
+    +alojamiento: Integer
+    +servicios: Integer
+    +incinerador: Integer
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" Inmuebles
 
 class PlanDeMantenimiento {
-    plan: integer(10)
-    real: integer(10)
-    porciento: integer(10)
-    tipo: varchar(70)
-    empresa_id: integer(10)
+    +anno: Integer
+    +cantidad_de_obras_anual: Integer
+    +importe_total_anual: Float
+    +cantidad_de_obras_real: Integer
+    +importe_total_real: Float
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" PlanDeMantenimiento
 
 class Inversiones {
-    plan: integer(10)
-    real: integer(10)
-    porciento: integer(10)
-    tipo: varchar(70)
-    empresa_id: integer(10)
+    +plan_obra: Integer
+    +real_obra: Integer
+    +porciento_obra: Float
+    +plan_no_nominales: Integer
+    +real_no_nominales: Integer
+    +porciento_no_nominales: Float
+    +plan_resto: Integer
+    +real_resto: Integer
+    +porciento_resto: Float
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" Inversiones
 
 class IndicadorGeneral {
-    plan: integer(10)
-    real: integer(10)
-    porciento: integer(10)
-    tipo: varchar(70)
-    empresa_id: integer(10)
+    +plan: Integer
+    +real: Integer
+    +porciento: Float
+    +tipo: String
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" IndicadorGeneral
 
 class Deficiencias {
-    total: integer(10)
-    resueltas: integer(10)
-    pendientes: integer(10)
-    empresa_id: integer(10)
+    +total: Integer
+    +resueltas: Integer
+    +pendientes: Integer
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" Deficiencias
 
 class UEBperdidas {
-    cantidadUEB: integer(10)
-    nombre: varchar(255)
-    municipio: varchar(255)
-    empresa_id: integer(10)
+    +cantidadUEB: Integer
+    +nombre: String
+    +municipio: String
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" UEBperdidas
 
 class CuentasCobrar {
-    inicio_anno: float()
-    mes_anterior: float()
-    mes_actual: float()
-    diferencia_incio_anno: float()
-    diferencia_mes_anterior: float()
-    saldo_al_inicio: float()
-    mes_anterior_vencidas: float()
-    mes_actual_vencidas: float()
-    indice_gestion_cloro: float()
-    ciclo_cobros_dias: float()
-    empresa_id: integer(10)
+    +inicio_anno: Float
+    +mes_anterior: Float
+    +mes_actual: Float
+    +diferencia_incio_anno: Float
+    +diferencia_mes_anterior: Float
+    +saldo_al_inicio: Float
+    +mes_anterior_vencidas: Float
+    +mes_actual_vencidas: Float
+    +indice_gestion_cobro: Float
+    +ciclo_cobros_dias: Float
+    +por_cobrar_total: Float
+    +vencidas_total: Float
+    +porcentage_total: Float
+    +por_cobrar_a_terceros: Float
+    +vencidas_a_terceros: Float
+    +porcentage_a_terceros: Float
+    +por_cobrar_u_admin: Float
+    +vencidas_u_admin: Float
+    +porcentage_u_admin: Float
+    +por_cobrar_grupo: Float
+    +vencidas_grupo: Float
+    +porcentage_grupo: Float
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" CuentasCobrar
 
 class CuentasPagar {
-    inicio_anno: float()
-    mes_anterior: float()
-    mes_actual: float()
-    diferencia_incio_anno: float()
-    diferencia_mes_anterior: float()
-    saldo_al_inicio: float()
-    mes_anterior_vencidas: float()
-    mes_actual_vencidas: float()
-    indice_gestion_cloro: float()
-    ciclo_cobros_dias: float()
-    empresa_id: integer(10)
+    +inicio_anno: Float
+    +mes_anterior: Float
+    +mes_actual: Float
+    +diferencia_incio_anno: Float
+    +diferencia_mes_anterior: Float
+    +saldo_al_inicio: Float
+    +mes_anterior_vencidas: Float
+    +mes_actual_vencidas: Float
+    +indice_gestion_pago: Float
+    +ciclo_pagos_dias: Float
+    +efectos_por_pagar: Float
+    +empresa_id: Integer
 }
-Empresa "1" -- "1" CuentasPagar
 
+class MaterialPlasticoReciclado {
+    +no_material: Integer
+    +materia: String
+    +unidad_de_medida: String
+    +plan: Integer
+    +real: Integer
+    +empresa_id: Integer
+}
+
+class MaterialDeConstruccion {
+    +material: String
+    +unidad_de_medida: String
+    +plan: Integer
+    +real: Integer
+    +empresa_id: Integer
+}
+
+class SoberaniaAlimentaria {
+    +unidad: String
+    +huertos: Integer
+    +canteros: Integer
+    +tierras: Integer
+    +empresa_id: Integer
+}
+
+class Bancarizacion {
+    +establecimientos: Integer
+    +total_unidades: Integer
+    +solicitadas: Integer
+    +aprobados_enzona: Integer
+    +aprobados_transfermovil: Integer
+    +operaciones_acumuladas: Integer
+    +importe_acumulado: Float
+    +empresa_id: Integer
+}
+
+class AtencionALaFamilia {
+    +fecha: Date
+    +total_saf: Integer
+    +beneficiados_conciliacion: Integer
+    +servicio_diario: Integer
+    +almuerzan_unidades: Integer
+    +mensajeria: Integer
+    +llevan_en_cantina: Integer
+    +total_beneficiarios: Integer
+    +empresa_id: Integer
+}
+
+class PerfeccionamientoComercioGastronomia {
+    +anno: Integer
+    +directores_filiales: Integer
+    +avalados_mercancias: Integer
+    +firma_codigo_conducta: Integer
+    +proceso_disponibilidad: String
+    +mensajeros_vendedores_ambulantes: Integer
+    +creacion_emp_filiales: Integer
+    +ueb_dl_34: String
+    +manual_identidad_visual: Integer
+    +categorizacion_almacenes: Integer
+    +licencias_sanitarias: Integer
+    +requisitos_calidad_bodegas: String
+    +estado: String
+    +empresa_id: Integer
+}
+
+class Perdida {
+    +plan: Integer
+    +real: Integer
+    +porciento: Float
+    +indicador: String
+    +empresa_id: Integer
+}
+
+class TransportacionDePasajeros {
+    +aprobadas: Integer
+    +real_ejecutadas: Integer
+    +porciento: Float
+    +indicador: String
+    +empresa_id: Integer
+}
+
+class TransportacionDeCarga {
+    +plan: Integer
+    +real: Integer
+    +porciento: Float
+    +carga: String
+    +empresa_id: Integer
+}
+
+class Medicamento {
+    +plan: Integer
+    +en_falta: Integer
+    +porciento_de_afectacion: Float
+    +medicamento: String
+    +empresa_id: Integer
+}
+
+class InformacionGeneral {
+    +total: Integer
+    +cubiertos: Integer
+    +desglosados_gobierno: Integer
+    +desglosados_tercero: Integer
+    +fluctuacion: Float
+    +dato: String
+    +empresa_id: Integer
+}
+
+class PlanDeConstruccion {
+    +plan: Integer
+    +real: Integer
+    +donde_se_incumple: String
+    +nombre: String
+    +empresa_id: Integer
+}
+
+class IndicadorGeneralGM {
+    +nombre_indicador: String
+    +unidad_medida: String
+    +plan_acumulado: Decimal
+    +real_acumulado: Decimal
+    +porcentaje_cumplimiento: Decimal
+    +empresa_id: Integer
+}
+
+' Relaciones
+Empresa "1" -- "*" Cuadro : empresa_id
+Empresa "1" -- "*" AtencionPoblacion : empresa_id
+Empresa "1" -- "*" CapitalHumano : empresa_id
+Empresa "1" -- "*" Interruptos : empresa_id
+Empresa "1" -- "*" Delitos : empresa_id
+Empresa "1" -- "*" PlanRecape : empresa_id
+Empresa "1" -- "*" PlanMateriaPrima : empresa_id
+Empresa "1" -- "*" Inmuebles : empresa_id
+Empresa "1" -- "*" PlanDeMantenimiento : empresa_id
+Empresa "1" -- "*" Inversiones : empresa_id
+Empresa "1" -- "*" IndicadorGeneral : empresa_id
+Empresa "1" -- "*" Deficiencias : empresa_id
+Empresa "1" -- "*" UEBperdidas : empresa_id
+Empresa "1" -- "*" CuentasCobrar : empresa_id
+Empresa "1" -- "*" CuentasPagar : empresa_id
+Empresa "1" -- "*" MaterialPlasticoReciclado : empresa_id
+Empresa "1" -- "*" MaterialDeConstruccion : empresa_id
+Empresa "1" -- "*" SoberaniaAlimentaria : empresa_id
+Empresa "1" -- "*" Bancarizacion : empresa_id
+Empresa "1" -- "*" AtencionALaFamilia : empresa_id
+Empresa "1" -- "*" PerfeccionamientoComercioGastronomia : empresa_id
+Empresa "1" -- "*" Perdida : empresa_id
+Empresa "1" -- "*" TransportacionDePasajeros : empresa_id
+Empresa "1" -- "*" TransportacionDeCarga : empresa_id
+Empresa "1" -- "*" Medicamento : empresa_id
+Empresa "1" -- "*" InformacionGeneral : empresa_id
+Empresa "1" -- "*" PlanDeConstruccion : empresa_id
+Empresa "1" -- "*" IndicadorGeneralGM : empresa_id
+
+Cuadro "1" -- "*" CargoSinCubrir : cuadro_id
 @enduml
