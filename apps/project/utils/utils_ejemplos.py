@@ -422,20 +422,6 @@ def crear_datos_random():
             importe_acumulado=round(random.uniform(1000, 10000), 2),
         )
 
-        for i in range(30):  # Crear datos para los últimos 30 días
-            fecha = today - timedelta(days=i)
-            AtencionALaFamilia.objects.create(
-                empresa=empresa,
-                fecha=fecha,
-                total_saf=random.randint(50, 200),
-                beneficiados_conciliacion=random.randint(100, 300),
-                servicio_diario=random.randint(80, 250),
-                almuerzan_unidades=random.randint(50, 150),
-                mensajeria=random.randint(20, 80),
-                llevan_en_cantina=random.randint(30, 100),
-                total_beneficiarios=random.randint(100, 300),
-            )
-
         for year in range(current_year - 2, current_year + 1):
             PerfeccionamientoComercioGastronomia.objects.create(
                 empresa=empresa,
@@ -582,6 +568,18 @@ def crear_datos_random():
                 fluctuacion=total / cubiertos,
                 dato=dato,
             )
+    for i in range(30):  # Crear datos para los últimos 30 días
+        fecha = today - timedelta(days=i)
+        AtencionALaFamilia.objects.create(
+            fecha=fecha,
+            total_saf=random.randint(50, 200),
+            beneficiados_conciliacion=random.randint(100, 300),
+            servicio_diario=random.randint(80, 250),
+            almuerzan_unidades=random.randint(50, 150),
+            mensajeria=random.randint(20, 80),
+            llevan_en_cantina=random.randint(30, 100),
+            total_beneficiarios=random.randint(100, 300),
+        )
 
 
 def agregar_perdidas(empresa: Empresa):

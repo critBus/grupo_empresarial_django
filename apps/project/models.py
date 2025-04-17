@@ -720,10 +720,7 @@ class Bancarizacion(models.Model):
 
 
 class AtencionALaFamilia(models.Model):
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
-    fecha = models.DateField(verbose_name="Fecha")
+    fecha = models.DateField(verbose_name="Fecha", unique=True)
     total_saf = models.PositiveIntegerField(
         verbose_name="Total de SAF", default=0
     )
@@ -749,10 +746,9 @@ class AtencionALaFamilia(models.Model):
     class Meta:
         verbose_name = "Atención a la Familia"
         verbose_name_plural = "Atenciones a la familia"
-        unique_together = [["empresa", "fecha"]]
 
     def __str__(self):
-        return f"Atención a la Familia - {self.empresa.nombre} ({self.fecha})"
+        return "Atención a la Familia"
 
 
 class PerfeccionamientoComercioGastronomia(models.Model):

@@ -752,7 +752,6 @@ def generar_reporte_atencion_a_la_familia_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "fecha": str(elemento.fecha),
                 "total_saf": str(elemento.total_saf),
                 "beneficiados_conciliacion": str(

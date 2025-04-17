@@ -764,7 +764,6 @@ class BancarizacionAdmin(admin.ModelAdmin):
 @admin.register(AtencionALaFamilia)
 class AtencionALaFamiliaAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "fecha",
         "total_saf",
         "beneficiados_conciliacion",
@@ -775,7 +774,6 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
         "total_beneficiarios",
     )
     list_filter = (
-        "empresa",
         "fecha",
         "total_saf",
         "beneficiados_conciliacion",
