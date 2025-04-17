@@ -837,14 +837,12 @@ class PerdidaAdmin(admin.ModelAdmin):
 @admin.register(TransportacionDePasajeros)
 class TransportacionDePasajerosAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "aprobadas",
         "real_ejecutadas",
         "porciento",
         "indicador",
     )
     list_filter = (
-        "empresa",
         "aprobadas",
         "real_ejecutadas",
         "porciento",

@@ -858,7 +858,6 @@ def generar_reporte_transportacion_de_pasajeros_pdf(
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "indicador": str(elemento.indicador),
                 "aprobadas": str(elemento.aprobadas),
                 "real_ejecutadas": str(elemento.real_ejecutadas),

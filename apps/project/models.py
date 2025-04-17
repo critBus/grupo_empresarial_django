@@ -846,17 +846,13 @@ class TransportacionDePasajeros(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     indicador = models.CharField(max_length=256, verbose_name="Indicador")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Transportación de Pasajeros"
         verbose_name_plural = "Transportaciones de Pasajeros"
-        unique_together = [["empresa", "indicador"]]
 
     def __str__(self):
-        return f"Transportación de Pasajeros - {self.empresa.nombre} {self.indicador}"
+        return f"Transportación de Pasajeros -  {self.indicador}"
 
 
 class TransportacionDeCarga(models.Model):

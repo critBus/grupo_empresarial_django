@@ -406,18 +406,6 @@ def crear_datos_random():
             importe_acumulado=round(random.uniform(1000, 10000), 2),
         )
 
-        indicadores = ["Pasajeros", "Distancias", "Combustible Consumido"]
-        for indicador in indicadores:
-            plan_ind = random.randint(1000, 5000)
-            real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
-            TransportacionDePasajeros.objects.create(
-                empresa=empresa,
-                aprobadas=plan_ind,
-                real_ejecutadas=real_ind,
-                porciento=int((real_ind / plan_ind) * 100),
-                indicador=indicador,
-            )
-
         cargas = ["Madera", "Comida", "Plastico"]
         for carga in cargas:
             plan_ind = random.randint(1000, 5000)
@@ -573,6 +561,17 @@ def crear_datos_random():
         real_resto=random.randint(10000, 50000),
         porciento_resto=random.randint(10000, 50000),
     )
+
+    indicadores = ["Pasajeros", "Distancias", "Combustible Consumido"]
+    for indicador in indicadores:
+        plan_ind = random.randint(1000, 5000)
+        real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+        TransportacionDePasajeros.objects.create(
+            aprobadas=plan_ind,
+            real_ejecutadas=real_ind,
+            porciento=int((real_ind / plan_ind) * 100),
+            indicador=indicador,
+        )
 
 
 def agregar_perdidas(empresa: Empresa):
