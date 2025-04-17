@@ -2,15 +2,10 @@ import random
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
 from django.utils import timezone
 from faker import Faker
 
-from .nomencladores import EMPRESAS_NOMBRES, NOMBRE_EMPRESA_PRODUCCIONES_VARIAS, NOMBRE_EMPRESA_FARMACIAS_OPTICAS, \
-    NOMBRE_EMPRESA_CONSTRUCCION, NOMBRE_EMPRESA_SEGURIDAD_PROTECCION
 from ..models import (
-    ROL_NAME_DIRECTORA,
-    ROL_NAME_SECRETARIA,
     AtencionALaFamilia,
     AtencionPoblacion,
     Bancarizacion,
@@ -42,6 +37,13 @@ from ..models import (
     TransportacionDePasajeros,
     UEBperdidas,
 )
+from .nomencladores import (
+    EMPRESAS_NOMBRES,
+    NOMBRE_EMPRESA_CONSTRUCCION,
+    NOMBRE_EMPRESA_FARMACIAS_OPTICAS,
+    NOMBRE_EMPRESA_PRODUCCIONES_VARIAS,
+    NOMBRE_EMPRESA_SEGURIDAD_PROTECCION,
+)
 
 User = get_user_model()
 
@@ -52,9 +54,6 @@ def crear_datos_random():
 
     fake = Faker("es_ES")
     today = timezone.now().date()
-
-
-
 
     # Tipos comunes para varias entidades
     municipios = [

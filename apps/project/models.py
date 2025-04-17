@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from solo.models import SingletonModel
+
 User = get_user_model()
 ROL_NAME_ADMIN = "admin"
 ROL_NAME_SECRETARIA = "secretaria"
@@ -372,13 +373,12 @@ class Inversiones(SingletonModel):
         default=0,
     )
 
-
     class Meta:
         verbose_name = "Inversión"
         verbose_name_plural = "Inversiones"
 
     def __str__(self):
-        return f"Inversion"
+        return "Inversion"
 
 
 class IndicadorGeneral(models.Model):

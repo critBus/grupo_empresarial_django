@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("project", "0030_alter_comunales_options_and_more"),
     ]

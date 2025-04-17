@@ -5,8 +5,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
 
-from apps.project.models import ROL_NAME_ADMIN, ROL_NAME_SECRETARIA, ROL_NAME_DIRECTORA
-from apps.project.utils.nomencladores import crear_roles_django_default, crear_empresas_default
+from apps.project.models import (
+    ROL_NAME_ADMIN,
+    ROL_NAME_DIRECTORA,
+    ROL_NAME_SECRETARIA,
+)
+from apps.project.utils.nomencladores import (
+    crear_empresas_default,
+    crear_roles_django_default,
+)
 from apps.project.utils.util_reporte_d import load_automatic_reports
 
 
@@ -23,10 +30,13 @@ def creat_first_superuser_and_roles():
         )
         user.groups.add(Group.objects.get(name=ROL_NAME_ADMIN))
 
+
 def crear_extra_users():
     User = get_user_model()
 
-    if not User.objects.filter(username="secretaria",groups__name=ROL_NAME_SECRETARIA).exists():
+    if not User.objects.filter(
+        username="secretaria", groups__name=ROL_NAME_SECRETARIA
+    ).exists():
         # Crear usuarios para cada rol
         secretaria_user = User.objects.create_user(
             username="secretaria",
@@ -37,7 +47,9 @@ def crear_extra_users():
         )
         secretaria_group = Group.objects.get(name=ROL_NAME_SECRETARIA)
         secretaria_user.groups.add(secretaria_group)
-    if not User.objects.filter(username="directora", groups__name=ROL_NAME_DIRECTORA).exists():
+    if not User.objects.filter(
+        username="directora", groups__name=ROL_NAME_DIRECTORA
+    ).exists():
         directora_user = User.objects.create_user(
             username="directora",
             email="directora@example.com",
@@ -47,6 +59,7 @@ def crear_extra_users():
         )
         directora_group = Group.objects.get(name=ROL_NAME_DIRECTORA)
         directora_user.groups.add(directora_group)
+
 
 class Command(BaseCommand):
     help = "Create All Tables"
