@@ -389,21 +389,17 @@ class Inversiones(models.Model):
 class IndicadorGeneral(models.Model):
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
-    porciento = models.FloatField(
-        verbose_name="Porcentaje",
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
-    )
     tipo = models.CharField(max_length=70, verbose_name="Tipo")
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
 
     class Meta:
-        verbose_name = "Indicador General"
-        verbose_name_plural = "Indicadores Generales"
+        verbose_name = "Pérdida Alimentaria"
+        verbose_name_plural = "Perdidas Alimentarias"
 
     def __str__(self):
-        return f"Indicador General - {self.empresa.nombre}"
+        return f"Pérdida Alimentaria - {self.empresa.nombre}"
 
 
 class Deficiencias(models.Model):
@@ -850,8 +846,8 @@ class Perdida(models.Model):
     )
 
     class Meta:
-        verbose_name = "Perdida"
-        verbose_name_plural = "Perdidas"
+        verbose_name = "Perdida Farmacia"
+        verbose_name_plural = "Perdidas Farmacia"
         unique_together = [["empresa", "indicador"]]
 
     def __str__(self):
