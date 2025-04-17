@@ -247,7 +247,6 @@ def crear_datos_random():
                 )
 
                 MaterialPlasticoReciclado.objects.create(
-                    empresa=empresa,
                     no_material=i,
                     materia=material,
                     unidad_de_medida=unidad,

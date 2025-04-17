@@ -625,16 +625,13 @@ class MaterialPlasticoReciclado(models.Model):
     )
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Material Plástico Reciclado"
         verbose_name_plural = "Materiales Plásticos Reciclados"
 
     def __str__(self):
-        return f"{self.materia} - {self.empresa.nombre}"
+        return f"{self.materia}"
 
 
 class MaterialDeConstruccion(models.Model):

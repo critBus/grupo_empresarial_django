@@ -521,7 +521,6 @@ def generar_reporte_material_plastico_recilcado_pdf(
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "no": str(elemento.no_material),
                 "nombre": str(elemento.materia),
                 "unidad_de_medida": str(elemento.unidad_de_medida),

@@ -674,7 +674,6 @@ class CuentasPagarAdmin(admin.ModelAdmin):
 @admin.register(MaterialPlasticoReciclado)
 class MaterialPlasticoRecicladoAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "no_material",
         "materia",
         "unidad_de_medida",
@@ -682,7 +681,6 @@ class MaterialPlasticoRecicladoAdmin(admin.ModelAdmin):
         "real",
     )
     list_filter = (
-        "empresa",
         "no_material",
         "materia",
         "unidad_de_medida",
