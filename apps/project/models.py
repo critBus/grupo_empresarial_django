@@ -641,16 +641,13 @@ class MaterialDeConstruccion(models.Model):
     )
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Material de Construcción"
         verbose_name_plural = "Materiales de Construcción"
 
     def __str__(self):
-        return f"{self.material} - {self.empresa.nombre}"
+        return f"{self.material}"
 
 
 class SoberaniaAlimentaria(models.Model):

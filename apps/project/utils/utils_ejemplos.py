@@ -493,7 +493,6 @@ def crear_datos_random():
                 unidad_de_medida=unidad,
                 plan=random.randint(100, 500),  # Valor aleatorio para el plan
                 real=random.randint(80, 400),  # Valor aleatorio para el real
-                empresa=empresa_construccion,
             )
 
         datos_planes = [

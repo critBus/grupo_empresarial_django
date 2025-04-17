@@ -550,7 +550,6 @@ def generar_reporte_material_de_construccion_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "nombre": str(elemento.material),
                 "unidad_de_medida": str(elemento.unidad_de_medida),
                 "plan": str(elemento.plan),

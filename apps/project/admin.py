@@ -695,14 +695,12 @@ class MaterialPlasticoRecicladoAdmin(admin.ModelAdmin):
 @admin.register(MaterialDeConstruccion)
 class MaterialDeConstruccionAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "material",
         "unidad_de_medida",
         "plan",
         "real",
     )
     list_filter = (
-        "empresa",
         "material",
         "unidad_de_medida",
         "plan",
