@@ -788,7 +788,6 @@ def generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf(
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "anno": str(elemento.anno),
                 "directores_filiales": str(elemento.directores_filiales),
                 "avalados_mercancias": str(elemento.avalados_mercancias),

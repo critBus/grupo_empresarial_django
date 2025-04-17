@@ -752,13 +752,11 @@ class AtencionALaFamilia(models.Model):
 
 
 class PerfeccionamientoComercioGastronomia(models.Model):
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
     anno = models.PositiveIntegerField(
         verbose_name="Año",
         help_text="Año al que corresponden los datos",
         default=0,
+        unique=True,
     )
     directores_filiales = models.PositiveIntegerField(
         verbose_name="Directores E Filiales", default=0
@@ -818,7 +816,6 @@ class PerfeccionamientoComercioGastronomia(models.Model):
     class Meta:
         verbose_name = "Perfeccionamiento de Comercio y Gastronomía"
         verbose_name_plural = "Perfeccionamientos de Comercio y Gastronomía"
-        unique_together = [["empresa", "anno"]]
 
     def __str__(self):
         return f"Indicadores de Comercio y Gastronomía - {self.empresa.nombre} ({self.anno})"

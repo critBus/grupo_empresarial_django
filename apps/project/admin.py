@@ -813,19 +813,16 @@ class PerfeccionamientoComercioGastronomiaAdmin(admin.ModelAdmin):
     get_data.short_description = "Data"
     get_data.allow_tags = True
 
-    list_display = ("empresa", "anno", "estado", "get_data")
+    list_display = ("anno", "estado", "get_data")
     list_filter = (
-        "empresa",
         "anno",
         "estado",
     )
     ordering = (
-        "empresa",
         "anno",
         "estado",
     )
     list_display_links = (
-        "empresa",
         "anno",
         "estado",
     )
