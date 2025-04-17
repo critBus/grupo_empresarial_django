@@ -526,8 +526,8 @@ class InversionesAdmin(admin.ModelAdmin):
 
 @admin.register(IndicadorGeneral)
 class IndicadorGeneralAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "porciento", "tipo")
-    list_filter = ("empresa", "plan", "real", "porciento", "tipo")
+    list_display = ("empresa", "plan", "real", "tipo")
+    list_filter = ("empresa", "plan", "real", "tipo")
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
 
