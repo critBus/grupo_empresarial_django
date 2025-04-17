@@ -941,17 +941,15 @@ class PlanDeConstruccion(models.Model):
         verbose_name="Donde se Incumple", blank=True, null=True
     )
     nombre = models.CharField(max_length=256, verbose_name="Nombre Del Plan")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
+
 
     class Meta:
         verbose_name = "Plan de Construcción"
         verbose_name_plural = "Planes de Construcción"
-        unique_together = [["empresa", "nombre"]]
+
 
     def __str__(self):
-        return f"Plan de Construcción - {self.empresa.nombre} {self.nombre}"
+        return f"Plan de Construcción - {self.nombre}"
 
 
 class IndicadorGeneralGM(models.Model):

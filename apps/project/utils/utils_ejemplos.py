@@ -510,7 +510,6 @@ def crear_datos_random():
                 donde_se_incumple=dato_plan[1],
                 plan=random.randint(100, 500),  # Valor aleatorio para el plan
                 real=random.randint(80, 400),  # Valor aleatorio para el real
-                empresa=empresa_construccion,
             )
 
     empresa_seguridad_y_proteccion = Empresa.objects.filter(

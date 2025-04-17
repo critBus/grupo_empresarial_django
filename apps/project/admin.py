@@ -916,8 +916,8 @@ class InformacionGeneralAdmin(admin.ModelAdmin):
 
 @admin.register(PlanDeConstruccion)
 class PlanDeConstruccionAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "nombre", "donde_se_incumple")
-    list_filter = ("empresa", "plan", "real", "nombre")
+    list_display = ( "plan", "real", "nombre", "donde_se_incumple")
+    list_filter = ( "plan", "real", "nombre")
     search_fields = ("donde_se_incumple",)
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
