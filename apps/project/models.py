@@ -942,8 +942,8 @@ class InformacionGeneral(models.Model):
     )
 
     class Meta:
-        verbose_name = "Información General"
-        verbose_name_plural = "Informaciones Generales"
+        verbose_name = "Seguridad y Protección"
+        verbose_name_plural = "Seguridad y Protección"
         unique_together = [["empresa", "dato"]]
 
     def __str__(self):
@@ -1016,6 +1016,10 @@ class VehiculosCumnales(models.Model):
     activo = models.PositiveIntegerField(verbose_name="Activo", default=0)
     municipio = models.CharField(max_length=256, verbose_name="Municipio")
 
+    class Meta:
+        verbose_name = "Vehiculo Cumnales"
+        verbose_name_plural = "Vehiculos Cumnales"
+
     def __str__(self):
         return f"{self.tipo} {self.municipio} {self.cantidad}/{self.activo}"
 
@@ -1037,6 +1041,10 @@ class Comunales(models.Model):
     vehiculos = models.ManyToManyField(
         VehiculosCumnales, verbose_name="Vehiculos"
     )
+
+    class Meta:
+        verbose_name = "Comunales"
+        verbose_name_plural = "Comunales"
 
     def __str__(self):
         return f"{self.empresa.nombre} - {self.plan}/{self.real}"
