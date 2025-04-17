@@ -921,17 +921,13 @@ class InformacionGeneral(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(1)],
     )
     dato = models.CharField(max_length=256, verbose_name="Dato")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Seguridad y Protección"
         verbose_name_plural = "Seguridad y Protección"
-        unique_together = [["empresa", "dato"]]
 
     def __str__(self):
-        return f"InformacionGeneral - {self.empresa.nombre} {self.dato}"
+        return f"InformacionGeneral -  {self.dato}"
 
 
 class PlanDeConstruccion(models.Model):
@@ -942,11 +938,9 @@ class PlanDeConstruccion(models.Model):
     )
     nombre = models.CharField(max_length=256, verbose_name="Nombre Del Plan")
 
-
     class Meta:
         verbose_name = "Plan de Construcción"
         verbose_name_plural = "Planes de Construcción"
-
 
     def __str__(self):
         return f"Plan de Construcción - {self.nombre}"

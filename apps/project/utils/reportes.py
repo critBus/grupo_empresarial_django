@@ -949,7 +949,6 @@ def generar_reporte_informacion_general_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "dato": str(elemento.dato),
                 "total": str(elemento.total),
                 "cubiertos": str(elemento.cubiertos),

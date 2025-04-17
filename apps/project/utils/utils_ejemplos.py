@@ -522,7 +522,6 @@ def crear_datos_random():
             total = random.randint(1000, 5000)
             cubiertos = random.randint(int(total * 0.7), total)
             InformacionGeneral.objects.create(
-                empresa=empresa_seguridad_y_proteccion,
                 total=total,
                 cubiertos=cubiertos,
                 desglosados_gobierno=random.randint(1000, 5000),
