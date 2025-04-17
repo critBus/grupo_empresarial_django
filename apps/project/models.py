@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from solo.models import SingletonModel
 User = get_user_model()
 ROL_NAME_ADMIN = "admin"
 ROL_NAME_SECRETARIA = "secretaria"
@@ -337,7 +337,7 @@ class PlanDeMantenimiento(models.Model):
         return f"Plan Mantenimiento - {self.empresa.nombre}"
 
 
-class Inversiones(models.Model):
+class Inversiones(SingletonModel):
     plan_obra = models.IntegerField(
         verbose_name="Preparación de obra: Plan", default=0
     )
@@ -371,19 +371,14 @@ class Inversiones(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         default=0,
     )
-    empresa = models.OneToOneField(
-        Empresa,
-        on_delete=models.CASCADE,
-        verbose_name="Empresa",
-        related_name="inversiones",
-    )
+
 
     class Meta:
         verbose_name = "Inversión"
         verbose_name_plural = "Inversiones"
 
     def __str__(self):
-        return f"Inversiones - {self.empresa.nombre}"
+        return f"Inversion"
 
 
 class IndicadorGeneral(models.Model):

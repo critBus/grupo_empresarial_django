@@ -1,6 +1,8 @@
 # Register your models here.
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django.urls import path
+from django.shortcuts import HttpResponseRedirect
 
 from .models import (
     AtencionALaFamilia,
@@ -66,7 +68,7 @@ from .utils.reportes import (
     generar_reporte_ueb_perdidas_pdf,
 )
 
-
+from solo.admin import SingletonModelAdmin
 def get_table_row(title, id, lista_de_columnas):
     def table_row(obj):
         # Create a list of formatted strings
@@ -480,48 +482,33 @@ class PlanDeMantenimientoAdmin(admin.ModelAdmin):
 
 
 @admin.register(Inversiones)
-class InversionesAdmin(admin.ModelAdmin):
-    def get_preparacion_de_obra(self, obj):
-        data = [
-            f"Plan: {obj.plan_obra}",
-            f"Real: {obj.real_obra}",
-            f"Porcentaje: {obj.porciento_obra}",
-        ]
-        return mark_safe("<br>\n".join(data))
-
-    get_preparacion_de_obra.short_description = "Preparación de Obra"
-
-    def get_inversiones_no_nominales(self, obj):
-        data = [
-            f"Plan: {obj.plan_no_nominales}",
-            f"Real: {obj.real_no_nominales}",
-            f"Porcentaje: {obj.porciento_no_nominales}",
-        ]
-        return mark_safe("<br>\n".join(data))
-
-    get_inversiones_no_nominales.short_description = "Inversiones no nominales"
-
-    def get_resto_de_inversiones_no_nominales(self, obj):
-        data = [
-            f"Plan: {obj.plan_resto}",
-            f"Real: {obj.real_resto}",
-            f"Porcentaje: {obj.porciento_resto}",
-        ]
-        return mark_safe("<br>\n".join(data))
-
-    get_resto_de_inversiones_no_nominales.short_description = (
-        "Resto de inversiones no nominales"
-    )
-
-    list_display = (
-        "empresa",
-        "get_preparacion_de_obra",
-        "get_inversiones_no_nominales",
-    )
-    list_filter = ("empresa",)
-    ordering = ("empresa",)
-    list_display_links = ("empresa",)
+class InversionesAdmin(SingletonModelAdmin):
     actions = [generar_reporte_inversiones_pdf]
+    
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('ejecutar-script/', 
+                 self.admin_site.admin_view(self.ejecutar_script_view),
+                 name='ejecutar-script-inversiones'),
+        ]
+        return custom_urls + urls
+    
+    def ejecutar_script_view(self, request):
+        # Aquí irá la lógica del script que definirás después
+        # Por ahora solo retornamos un mensaje
+        self.message_user(request, "Script ejecutado correctamente")
+        return HttpResponseRedirect("../")
+    
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['show_script_button'] = True
+        return super().change_view(request, object_id, form_url, extra_context=extra_context)
+    
+    def history_view(self, request, object_id, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['show_script_button'] = True
+        return super().history_view(request, object_id, extra_context=extra_context)
 
 
 @admin.register(IndicadorGeneral)

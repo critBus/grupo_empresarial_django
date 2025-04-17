@@ -6,6 +6,8 @@ from django.contrib.auth.models import Group
 from django.utils import timezone
 from faker import Faker
 
+from .nomencladores import EMPRESAS_NOMBRES, NOMBRE_EMPRESA_PRODUCCIONES_VARIAS, NOMBRE_EMPRESA_FARMACIAS_OPTICAS, \
+    NOMBRE_EMPRESA_CONSTRUCCION, NOMBRE_EMPRESA_SEGURIDAD_PROTECCION
 from ..models import (
     ROL_NAME_DIRECTORA,
     ROL_NAME_SECRETARIA,
@@ -51,54 +53,8 @@ def crear_datos_random():
     fake = Faker("es_ES")
     today = timezone.now().date()
 
-    # Crear usuarios para cada rol
-    secretaria_user = User.objects.create_user(
-        username="secretaria",
-        email="secretaria@example.com",
-        password="123",
-        first_name="Secretaria",
-        last_name="General",
-    )
-    secretaria_group = Group.objects.get(name=ROL_NAME_SECRETARIA)
-    secretaria_user.groups.add(secretaria_group)
 
-    directora_user = User.objects.create_user(
-        username="directora",
-        email="directora@example.com",
-        password="123",
-        first_name="Directora",
-        last_name="General",
-    )
-    directora_group = Group.objects.get(name=ROL_NAME_DIRECTORA)
-    directora_user.groups.add(directora_group)
 
-    # Lista de empresas predefinidas
-    nombre_empresa_construccion = "Provincial de Construcción y Mantenimiento"
-    nombre_empresa_farmacia_opticas = "Provincial de Farmacias y Ópticas"
-    nombre_empresa_producciones_varias = (
-        "Provincial de Alimentos y Producciones Varias"
-    )
-    nombre_empresa_seguridad_y_proteccion = (
-        "Provincial de Seguridad y Protección"
-    )
-    empresas_nombres = [
-        nombre_empresa_construccion,
-        "Provincial de Comunales",
-        nombre_empresa_farmacia_opticas,
-        "Provincial de Transporte",
-        nombre_empresa_seguridad_y_proteccion,
-        "Provincial de Comercio, Gastronomía y Servicios",
-        "Provincial de Mantenimiento Vial y Construcción",
-        "Provincial de Logística",
-        nombre_empresa_producciones_varias,
-        "Provincial de Servicios Técnicos del Arquitecto de la Comunidad",
-    ]
-
-    # Crear empresas
-    empresas = []
-    for i, nombre in enumerate(empresas_nombres, 1):
-        empresa = Empresa.objects.create(codigo=f"EMP{i:03d}", nombre=nombre)
-        empresas.append(empresa)
 
     # Tipos comunes para varias entidades
     municipios = [
@@ -156,7 +112,7 @@ def crear_datos_random():
         "Utilidad o Pérdida en Operaciones": "MP",
     }
 
-    for empresa in empresas:
+    for empresa in EMPRESAS_NOMBRES:
         # Crear Cuadro
         cuadro = Cuadro.objects.create(
             empresa=empresa,
@@ -263,7 +219,7 @@ def crear_datos_random():
                 chatarra_plomo=random.randint(0, 1000),
                 polietileno=random.randint(0, 1000),
             )
-        if empresa.nombre == nombre_empresa_producciones_varias:
+        if empresa.nombre == NOMBRE_EMPRESA_PRODUCCIONES_VARIAS:
             # Crear MaterialPlasticoReciclado para Producciones Varias
             materiales = [
                 r"Mangueras plásticas flexibles ½\"",
@@ -528,14 +484,14 @@ def crear_datos_random():
             )
 
     empresa_producciones_varias = Empresa.objects.filter(
-        nombre=nombre_empresa_producciones_varias
+        nombre=NOMBRE_EMPRESA_PRODUCCIONES_VARIAS
     ).first()
 
     if empresa_producciones_varias:
         agregar_perdidas(empresa_producciones_varias)
 
     empresa_farmacia = Empresa.objects.filter(
-        nombre=nombre_empresa_farmacia_opticas
+        nombre=NOMBRE_EMPRESA_FARMACIAS_OPTICAS
     ).first()
 
     if empresa_farmacia:
@@ -556,7 +512,7 @@ def crear_datos_random():
     # Crear MaterialDeConstruccion solo para la empresa de Construcción
 
     empresa_construccion = Empresa.objects.filter(
-        nombre=nombre_empresa_construccion
+        nombre=NOMBRE_EMPRESA_CONSTRUCCION
     ).first()
 
     if empresa_construccion:
@@ -610,7 +566,7 @@ def crear_datos_random():
             )
 
     empresa_seguridad_y_proteccion = Empresa.objects.filter(
-        nombre=nombre_empresa_seguridad_y_proteccion
+        nombre=NOMBRE_EMPRESA_SEGURIDAD_PROTECCION
     ).first()
 
     if empresa_seguridad_y_proteccion:
