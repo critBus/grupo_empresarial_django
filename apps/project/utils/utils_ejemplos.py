@@ -382,7 +382,6 @@ def crear_datos_random():
             empresa=empresa,
             plan=plan_ind,
             real=real_ind,
-            porciento=int((real_ind / plan_ind) * 100),
             tipo=random.choice(["Producción", "Servicios", "Ventas"]),
         )
 
