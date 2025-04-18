@@ -823,17 +823,13 @@ class Perdida(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     indicador = models.CharField(max_length=256, verbose_name="Indicador")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Perdida Farmacia"
         verbose_name_plural = "Perdidas Farmacia"
-        unique_together = [["empresa", "indicador"]]
 
     def __str__(self):
-        return f"Perdidas - {self.empresa.nombre} {self.indicador}"
+        return f"Perdidas - {self.indicador}"
 
 
 class TransportacionDePasajeros(models.Model):

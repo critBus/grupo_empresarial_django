@@ -827,8 +827,8 @@ class PerfeccionamientoComercioGastronomiaAdmin(admin.ModelAdmin):
 
 @admin.register(Perdida)
 class PerdidaAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "porciento", "indicador")
-    list_filter = ("empresa", "plan", "real", "porciento", "indicador")
+    list_display = ("plan", "real", "porciento", "indicador")
+    list_filter = ("plan", "real", "porciento", "indicador")
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_perdidas_pdf]

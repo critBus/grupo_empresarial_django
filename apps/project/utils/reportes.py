@@ -831,7 +831,6 @@ def generar_reporte_perdidas_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "indicador": str(elemento.indicador),
                 "plan": str(elemento.plan),
                 "real": str(elemento.real),

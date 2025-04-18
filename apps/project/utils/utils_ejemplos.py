@@ -418,12 +418,12 @@ def crear_datos_random():
                 carga=carga,
             )
 
-    empresa_producciones_varias = Empresa.objects.filter(
-        nombre=NOMBRE_EMPRESA_PRODUCCIONES_VARIAS
-    ).first()
-
-    if empresa_producciones_varias:
-        agregar_perdidas(empresa_producciones_varias)
+    # empresa_producciones_varias = Empresa.objects.filter(
+    #     nombre=NOMBRE_EMPRESA_PRODUCCIONES_VARIAS
+    # ).first()
+    #
+    # if empresa_producciones_varias:
+    #     agregar_perdidas(empresa_producciones_varias)
 
     empresa_farmacia = Empresa.objects.filter(
         nombre=NOMBRE_EMPRESA_FARMACIAS_OPTICAS
