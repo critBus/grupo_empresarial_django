@@ -6,6 +6,7 @@ from apps.project.models import (
     Bancarizacion,
     CapitalHumano,
     CargoSinCubrir,
+    Comunales,
     Cuadro,
     CuentasCobrar,
     CuentasPagar,
@@ -29,6 +30,7 @@ from apps.project.models import (
     TransportacionDeCarga,
     TransportacionDePasajeros,
     UEBperdidas,
+    VehiculosCumnales,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -412,15 +414,14 @@ generar_reporte_plan_de_mantenimiento_pdf.short_description = (
 )
 
 
-def generar_reporte_inversiones_pdf(modeladmin, request, queryset):
-    elementos: List[Inversiones] = queryset
+def generar_reporte_inversiones_pdf():
+    elementos: List[Inversiones] = [Inversiones.get_solo()]
 
     # Organizar datos por empresa y año
     lista = []
     for plan in elementos:
         lista.append(
             {
-                "empresa": plan.empresa.nombre,
                 "plan_obra": format_float(plan.plan_obra),
                 "real_obra": format_float(plan.real_obra),
                 "porciento_obra": format_float(plan.porciento_obra),
@@ -522,7 +523,6 @@ def generar_reporte_material_plastico_recilcado_pdf(
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "no": str(elemento.no_material),
                 "nombre": str(elemento.materia),
                 "unidad_de_medida": str(elemento.unidad_de_medida),
@@ -552,7 +552,6 @@ def generar_reporte_material_de_construccion_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "nombre": str(elemento.material),
                 "unidad_de_medida": str(elemento.unidad_de_medida),
                 "plan": str(elemento.plan),
@@ -753,7 +752,6 @@ def generar_reporte_atencion_a_la_familia_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "fecha": str(elemento.fecha),
                 "total_saf": str(elemento.total_saf),
                 "beneficiados_conciliacion": str(
@@ -790,7 +788,6 @@ def generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf(
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "anno": str(elemento.anno),
                 "directores_filiales": str(elemento.directores_filiales),
                 "avalados_mercancias": str(elemento.avalados_mercancias),
@@ -834,7 +831,6 @@ def generar_reporte_perdidas_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "indicador": str(elemento.indicador),
                 "plan": str(elemento.plan),
                 "real": str(elemento.real),
@@ -863,7 +859,6 @@ def generar_reporte_transportacion_de_pasajeros_pdf(
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "indicador": str(elemento.indicador),
                 "aprobadas": str(elemento.aprobadas),
                 "real_ejecutadas": str(elemento.real_ejecutadas),
@@ -952,7 +947,6 @@ def generar_reporte_informacion_general_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "dato": str(elemento.dato),
                 "total": str(elemento.total),
                 "cubiertos": str(elemento.cubiertos),
@@ -983,7 +977,6 @@ def generar_reporte_plan_de_construccion_pdf(modeladmin, request, queryset):
     for elemento in elementos:
         lista.append(
             {
-                "empresa": str(elemento.empresa.nombre),
                 "nombre": str(elemento.nombre),
                 "plan": str(elemento.plan),
                 "real": str(elemento.real),
@@ -1036,3 +1029,28 @@ def generar_reporte_indicador_general_del_gm_pdf(modeladmin, request, queryset):
 generar_reporte_indicador_general_del_gm_pdf.short_description = (
     "Generar Reporte Indicador General del GM PDF"
 )
+
+
+def generar_reporte_comunales_vehiculos_pdf(request, entidad: Comunales):
+    elementos: List[VehiculosCumnales] = entidad.vehiculos.all()
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "tipo": str(elemento.tipo),
+                "cantidad": str(elemento.cantidad),
+                "activo": str(elemento.activo),
+                "municipio": str(elemento.municipio),
+            }
+        )
+
+    data = {
+        "lista": lista,
+        "plan": str(entidad.plan),
+        "real": str(entidad.real),
+    }
+    return custom_export_report_by_name(
+        "Comunales y vehículos comunales",
+        data,
+        file="reporte_comunales_y_vehiculos",
+    )

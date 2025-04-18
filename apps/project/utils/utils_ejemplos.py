@@ -2,13 +2,10 @@ import random
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
 from django.utils import timezone
 from faker import Faker
 
 from ..models import (
-    ROL_NAME_DIRECTORA,
-    ROL_NAME_SECRETARIA,
     AtencionALaFamilia,
     AtencionPoblacion,
     Bancarizacion,
@@ -40,65 +37,22 @@ from ..models import (
     TransportacionDePasajeros,
     UEBperdidas,
 )
+from .nomencladores import (
+    NOMBRE_EMPRESA_CONSTRUCCION,
+    NOMBRE_EMPRESA_FARMACIAS_OPTICAS,
+    NOMBRE_EMPRESA_PRODUCCIONES_VARIAS,
+    NOMBRE_EMPRESA_SEGURIDAD_PROTECCION,
+)
 
 User = get_user_model()
 
 
 def crear_datos_random():
-    if User.objects.count() > 1 or Empresa.objects.count() > 0:
+    if User.objects.count() > 4 or Cuadro.objects.count() > 0:
         return
 
     fake = Faker("es_ES")
     today = timezone.now().date()
-
-    # Crear usuarios para cada rol
-    secretaria_user = User.objects.create_user(
-        username="secretaria",
-        email="secretaria@example.com",
-        password="123",
-        first_name="Secretaria",
-        last_name="General",
-    )
-    secretaria_group = Group.objects.get(name=ROL_NAME_SECRETARIA)
-    secretaria_user.groups.add(secretaria_group)
-
-    directora_user = User.objects.create_user(
-        username="directora",
-        email="directora@example.com",
-        password="123",
-        first_name="Directora",
-        last_name="General",
-    )
-    directora_group = Group.objects.get(name=ROL_NAME_DIRECTORA)
-    directora_user.groups.add(directora_group)
-
-    # Lista de empresas predefinidas
-    nombre_empresa_construccion = "Provincial de Construcción y Mantenimiento"
-    nombre_empresa_farmacia_opticas = "Provincial de Farmacias y Ópticas"
-    nombre_empresa_producciones_varias = (
-        "Provincial de Alimentos y Producciones Varias"
-    )
-    nombre_empresa_seguridad_y_proteccion = (
-        "Provincial de Seguridad y Protección"
-    )
-    empresas_nombres = [
-        nombre_empresa_construccion,
-        "Provincial de Comunales",
-        nombre_empresa_farmacia_opticas,
-        "Provincial de Transporte",
-        nombre_empresa_seguridad_y_proteccion,
-        "Provincial de Comercio, Gastronomía y Servicios",
-        "Provincial de Mantenimiento Vial y Construcción",
-        "Provincial de Logística",
-        nombre_empresa_producciones_varias,
-        "Provincial de Servicios Técnicos del Arquitecto de la Comunidad",
-    ]
-
-    # Crear empresas
-    empresas = []
-    for i, nombre in enumerate(empresas_nombres, 1):
-        empresa = Empresa.objects.create(codigo=f"EMP{i:03d}", nombre=nombre)
-        empresas.append(empresa)
 
     # Tipos comunes para varias entidades
     municipios = [
@@ -156,7 +110,7 @@ def crear_datos_random():
         "Utilidad o Pérdida en Operaciones": "MP",
     }
 
-    for empresa in empresas:
+    for empresa in Empresa.objects.all():
         # Crear Cuadro
         cuadro = Cuadro.objects.create(
             empresa=empresa,
@@ -263,7 +217,7 @@ def crear_datos_random():
                 chatarra_plomo=random.randint(0, 1000),
                 polietileno=random.randint(0, 1000),
             )
-        if empresa.nombre == nombre_empresa_producciones_varias:
+        if empresa.nombre == NOMBRE_EMPRESA_PRODUCCIONES_VARIAS:
             # Crear MaterialPlasticoReciclado para Producciones Varias
             materiales = [
                 r"Mangueras plásticas flexibles ½\"",
@@ -293,7 +247,6 @@ def crear_datos_random():
                 )
 
                 MaterialPlasticoReciclado.objects.create(
-                    empresa=empresa,
                     no_material=i,
                     materia=material,
                     unidad_de_medida=unidad,
@@ -360,20 +313,6 @@ def crear_datos_random():
                 cantidad_de_obras_real=random.randint(0, 1000),
                 importe_total_real=random.randint(0, 1000),
             )
-
-        # Crear Inversiones
-        Inversiones.objects.create(
-            empresa=empresa,
-            plan_obra=random.randint(10000, 50000),
-            real_obra=random.randint(10000, 50000),
-            porciento_obra=random.randint(10000, 50000),
-            plan_no_nominales=random.randint(10000, 50000),
-            real_no_nominales=random.randint(10000, 50000),
-            porciento_no_nominales=random.randint(10000, 50000),
-            plan_resto=random.randint(10000, 50000),
-            real_resto=random.randint(10000, 50000),
-            porciento_resto=random.randint(10000, 50000),
-        )
 
         # Crear IndicadorGeneral
         plan_ind = random.randint(1000, 5000)
@@ -467,54 +406,6 @@ def crear_datos_random():
             importe_acumulado=round(random.uniform(1000, 10000), 2),
         )
 
-        for i in range(30):  # Crear datos para los últimos 30 días
-            fecha = today - timedelta(days=i)
-            AtencionALaFamilia.objects.create(
-                empresa=empresa,
-                fecha=fecha,
-                total_saf=random.randint(50, 200),
-                beneficiados_conciliacion=random.randint(100, 300),
-                servicio_diario=random.randint(80, 250),
-                almuerzan_unidades=random.randint(50, 150),
-                mensajeria=random.randint(20, 80),
-                llevan_en_cantina=random.randint(30, 100),
-                total_beneficiarios=random.randint(100, 300),
-            )
-
-        for year in range(current_year - 2, current_year + 1):
-            PerfeccionamientoComercioGastronomia.objects.create(
-                empresa=empresa,
-                anno=year,
-                directores_filiales=random.randint(0, 20),
-                avalados_mercancias=random.randint(0, 500),
-                firma_codigo_conducta=random.randint(0, 1000),
-                proceso_disponibilidad=random.choice(
-                    ["Cumplido", "Incumplido", "N/P"]
-                ),
-                mensajeros_vendedores_ambulantes=random.randint(0, 100),
-                creacion_emp_filiales=random.randint(0, 20),
-                ueb_dl_34=random.choice(["Cumplido", "Incumplido", "N/P"]),
-                manual_identidad_visual=random.randint(0, 500),
-                categorizacion_almacenes=random.randint(0, 200),
-                licencias_sanitarias=random.randint(0, 300),
-                requisitos_calidad_bodegas=fake.text(max_nb_chars=200),
-                estado=random.choice(
-                    ["Cumplido", "Incumplido", "Pendiente", "Con pérdida"]
-                ),
-            )
-
-        indicadores = ["Pasajeros", "Distancias", "Combustible Consumido"]
-        for indicador in indicadores:
-            plan_ind = random.randint(1000, 5000)
-            real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
-            TransportacionDePasajeros.objects.create(
-                empresa=empresa,
-                aprobadas=plan_ind,
-                real_ejecutadas=real_ind,
-                porciento=int((real_ind / plan_ind) * 100),
-                indicador=indicador,
-            )
-
         cargas = ["Madera", "Comida", "Plastico"]
         for carga in cargas:
             plan_ind = random.randint(1000, 5000)
@@ -527,19 +418,19 @@ def crear_datos_random():
                 carga=carga,
             )
 
-    empresa_producciones_varias = Empresa.objects.filter(
-        nombre=nombre_empresa_producciones_varias
-    ).first()
-
-    if empresa_producciones_varias:
-        agregar_perdidas(empresa_producciones_varias)
+    # empresa_producciones_varias = Empresa.objects.filter(
+    #     nombre=NOMBRE_EMPRESA_PRODUCCIONES_VARIAS
+    # ).first()
+    #
+    # if empresa_producciones_varias:
+    #     agregar_perdidas(empresa_producciones_varias)
 
     empresa_farmacia = Empresa.objects.filter(
-        nombre=nombre_empresa_farmacia_opticas
+        nombre=NOMBRE_EMPRESA_FARMACIAS_OPTICAS
     ).first()
 
     if empresa_farmacia:
-        agregar_perdidas(empresa_farmacia)
+        agregar_perdidas()
 
         medicamentos = ["Antibiotico", "Aspirina", "Vitamina C"]
         for medicamento in medicamentos:
@@ -556,7 +447,7 @@ def crear_datos_random():
     # Crear MaterialDeConstruccion solo para la empresa de Construcción
 
     empresa_construccion = Empresa.objects.filter(
-        nombre=nombre_empresa_construccion
+        nombre=NOMBRE_EMPRESA_CONSTRUCCION
     ).first()
 
     if empresa_construccion:
@@ -590,7 +481,6 @@ def crear_datos_random():
                 unidad_de_medida=unidad,
                 plan=random.randint(100, 500),  # Valor aleatorio para el plan
                 real=random.randint(80, 400),  # Valor aleatorio para el real
-                empresa=empresa_construccion,
             )
 
         datos_planes = [
@@ -606,11 +496,10 @@ def crear_datos_random():
                 donde_se_incumple=dato_plan[1],
                 plan=random.randint(100, 500),  # Valor aleatorio para el plan
                 real=random.randint(80, 400),  # Valor aleatorio para el real
-                empresa=empresa_construccion,
             )
 
     empresa_seguridad_y_proteccion = Empresa.objects.filter(
-        nombre=nombre_empresa_seguridad_y_proteccion
+        nombre=NOMBRE_EMPRESA_SEGURIDAD_PROTECCION
     ).first()
 
     if empresa_seguridad_y_proteccion:
@@ -619,7 +508,6 @@ def crear_datos_random():
             total = random.randint(1000, 5000)
             cubiertos = random.randint(int(total * 0.7), total)
             InformacionGeneral.objects.create(
-                empresa=empresa_seguridad_y_proteccion,
                 total=total,
                 cubiertos=cubiertos,
                 desglosados_gobierno=random.randint(1000, 5000),
@@ -627,15 +515,71 @@ def crear_datos_random():
                 fluctuacion=total / cubiertos,
                 dato=dato,
             )
+    for i in range(30):  # Crear datos para los últimos 30 días
+        fecha = today - timedelta(days=i)
+        AtencionALaFamilia.objects.create(
+            fecha=fecha,
+            total_saf=random.randint(50, 200),
+            beneficiados_conciliacion=random.randint(100, 300),
+            servicio_diario=random.randint(80, 250),
+            almuerzan_unidades=random.randint(50, 150),
+            mensajeria=random.randint(20, 80),
+            llevan_en_cantina=random.randint(30, 100),
+            total_beneficiarios=random.randint(100, 300),
+        )
+    current_year = 2024
+    for year in range(current_year - 2, current_year + 1):
+        PerfeccionamientoComercioGastronomia.objects.create(
+            anno=year,
+            directores_filiales=random.randint(0, 20),
+            avalados_mercancias=random.randint(0, 500),
+            firma_codigo_conducta=random.randint(0, 1000),
+            proceso_disponibilidad=random.choice(
+                ["Cumplido", "Incumplido", "N/P"]
+            ),
+            mensajeros_vendedores_ambulantes=random.randint(0, 100),
+            creacion_emp_filiales=random.randint(0, 20),
+            ueb_dl_34=random.choice(["Cumplido", "Incumplido", "N/P"]),
+            manual_identidad_visual=random.randint(0, 500),
+            categorizacion_almacenes=random.randint(0, 200),
+            licencias_sanitarias=random.randint(0, 300),
+            requisitos_calidad_bodegas=fake.text(max_nb_chars=200),
+            estado=random.choice(
+                ["Cumplido", "Incumplido", "Pendiente", "Con pérdida"]
+            ),
+        )
+
+    # Crear Inversiones
+    Inversiones.objects.create(
+        plan_obra=random.randint(10000, 50000),
+        real_obra=random.randint(10000, 50000),
+        porciento_obra=random.randint(10000, 50000),
+        plan_no_nominales=random.randint(10000, 50000),
+        real_no_nominales=random.randint(10000, 50000),
+        porciento_no_nominales=random.randint(10000, 50000),
+        plan_resto=random.randint(10000, 50000),
+        real_resto=random.randint(10000, 50000),
+        porciento_resto=random.randint(10000, 50000),
+    )
+
+    indicadores = ["Pasajeros", "Distancias", "Combustible Consumido"]
+    for indicador in indicadores:
+        plan_ind = random.randint(1000, 5000)
+        real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+        TransportacionDePasajeros.objects.create(
+            aprobadas=plan_ind,
+            real_ejecutadas=real_ind,
+            porciento=int((real_ind / plan_ind) * 100),
+            indicador=indicador,
+        )
 
 
-def agregar_perdidas(empresa: Empresa):
+def agregar_perdidas():
     indicadores = ["Producción", "Servicios", "Ventas"]
     for indicador in indicadores:
         plan_ind = random.randint(1000, 5000)
         real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
         Perdida.objects.create(
-            empresa=empresa,
             plan=plan_ind,
             real=real_ind,
             porciento=int((real_ind / plan_ind) * 100),
