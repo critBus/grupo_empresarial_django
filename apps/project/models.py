@@ -1001,9 +1001,6 @@ class Comunales(models.Model):
     # fecha=models.DateField(verbose_name="Fecha")
     plan = models.PositiveIntegerField(verbose_name="Plan")
     real = models.PositiveIntegerField(verbose_name="Real")
-    empresa = models.OneToOneField(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
     vehiculos = models.ManyToManyField(
         VehiculosCumnales, verbose_name="Vehiculos"
     )
@@ -1013,4 +1010,4 @@ class Comunales(models.Model):
         verbose_name_plural = "Comunales"
 
     def __str__(self):
-        return f"{self.empresa.nombre} - {self.plan}/{self.real}"
+        return f"{self.plan}/{self.real}"

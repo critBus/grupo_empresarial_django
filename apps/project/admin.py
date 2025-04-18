@@ -1,6 +1,6 @@
 # Register your models here.
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, reverse
 from django.utils.safestring import mark_safe
 from solo.admin import SingletonModelAdmin
 
@@ -959,16 +959,30 @@ class VehiculosCumnalesAdmin(admin.ModelAdmin):
 
 @admin.register(Comunales)
 class ComunalesAdmin(admin.ModelAdmin):
-    list_display = (
-        "empresa",
-        "plan",
-        "real",
-    )
+    def custom_button(self, obj):
+        """
+        Genera un botón HTML para ejecutar un script personalizado.
+        """
+        # URL a la que se redirigirá cuando se haga clic en el botón
+        url = reverse(
+            "reporte-comunales", args=[obj.pk]
+        )  # Asegúrate de definir esta vista
+        return mark_safe(
+            f'<a class="button btn btn-high btn-danger mt-2 " href="{url}"><i class="fas fa-file-pdf"></i></a>'
+        )
+
+    custom_button.short_description = "Acción"
+    list_display = ("plan", "real", "custom_button")
     list_filter = (
-        "empresa",
         "plan",
         "real",
     )
-    ordering = list(list_display).copy()
-    list_display_links = list(list_display).copy()
+    ordering = (
+        "plan",
+        "real",
+    )
+    list_display_links = (
+        "plan",
+        "real",
+    )
     filter_horizontal = ["vehiculos"]

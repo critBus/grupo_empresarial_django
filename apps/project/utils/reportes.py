@@ -6,6 +6,7 @@ from apps.project.models import (
     Bancarizacion,
     CapitalHumano,
     CargoSinCubrir,
+    Comunales,
     Cuadro,
     CuentasCobrar,
     CuentasPagar,
@@ -29,6 +30,7 @@ from apps.project.models import (
     TransportacionDeCarga,
     TransportacionDePasajeros,
     UEBperdidas,
+    VehiculosCumnales,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -1028,3 +1030,28 @@ def generar_reporte_indicador_general_del_gm_pdf(modeladmin, request, queryset):
 generar_reporte_indicador_general_del_gm_pdf.short_description = (
     "Generar Reporte Indicador General del GM PDF"
 )
+
+
+def generar_reporte_comunales_vehiculos_pdf(request, entidad: Comunales):
+    elementos: List[VehiculosCumnales] = entidad.vehiculos.all()
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "tipo": str(elemento.tipo),
+                "cantidad": str(elemento.cantidad),
+                "activo": str(elemento.activo),
+                "municipio": str(elemento.municipio),
+            }
+        )
+
+    data = {
+        "lista": lista,
+        "plan": str(entidad.plan),
+        "real": str(entidad.real),
+    }
+    return custom_export_report_by_name(
+        "Comunales y vehículos comunales",
+        data,
+        file="reporte_comunales_y_vehiculos",
+    )
