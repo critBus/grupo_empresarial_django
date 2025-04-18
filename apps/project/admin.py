@@ -1,6 +1,8 @@
 # Register your models here.
 from django.contrib import admin
+from django.urls import path, reverse
 from django.utils.safestring import mark_safe
+from solo.admin import SingletonModelAdmin
 
 from .models import (
     AtencionALaFamilia,
@@ -480,48 +482,36 @@ class PlanDeMantenimientoAdmin(admin.ModelAdmin):
 
 
 @admin.register(Inversiones)
-class InversionesAdmin(admin.ModelAdmin):
-    def get_preparacion_de_obra(self, obj):
-        data = [
-            f"Plan: {obj.plan_obra}",
-            f"Real: {obj.real_obra}",
-            f"Porcentaje: {obj.porciento_obra}",
+class InversionesAdmin(SingletonModelAdmin):
+    change_form_template = "admin/project/inversiones/change_form.html"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "ejecutar-script/",
+                self.admin_site.admin_view(self.ejecutar_script_view),
+                name="ejecutar-script-inversiones",
+            ),
         ]
-        return mark_safe("<br>\n".join(data))
+        return custom_urls + urls
 
-    get_preparacion_de_obra.short_description = "Preparación de Obra"
+    def ejecutar_script_view(self, request):
+        return generar_reporte_inversiones_pdf()
 
-    def get_inversiones_no_nominales(self, obj):
-        data = [
-            f"Plan: {obj.plan_no_nominales}",
-            f"Real: {obj.real_no_nominales}",
-            f"Porcentaje: {obj.porciento_no_nominales}",
-        ]
-        return mark_safe("<br>\n".join(data))
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["show_script_button"] = True
+        return super().change_view(
+            request, object_id, form_url, extra_context=extra_context
+        )
 
-    get_inversiones_no_nominales.short_description = "Inversiones no nominales"
-
-    def get_resto_de_inversiones_no_nominales(self, obj):
-        data = [
-            f"Plan: {obj.plan_resto}",
-            f"Real: {obj.real_resto}",
-            f"Porcentaje: {obj.porciento_resto}",
-        ]
-        return mark_safe("<br>\n".join(data))
-
-    get_resto_de_inversiones_no_nominales.short_description = (
-        "Resto de inversiones no nominales"
-    )
-
-    list_display = (
-        "empresa",
-        "get_preparacion_de_obra",
-        "get_inversiones_no_nominales",
-    )
-    list_filter = ("empresa",)
-    ordering = ("empresa",)
-    list_display_links = ("empresa",)
-    actions = [generar_reporte_inversiones_pdf]
+    def history_view(self, request, object_id, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["show_script_button"] = True
+        return super().history_view(
+            request, object_id, extra_context=extra_context
+        )
 
 
 @admin.register(IndicadorGeneral)
@@ -684,7 +674,6 @@ class CuentasPagarAdmin(admin.ModelAdmin):
 @admin.register(MaterialPlasticoReciclado)
 class MaterialPlasticoRecicladoAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "no_material",
         "materia",
         "unidad_de_medida",
@@ -692,7 +681,6 @@ class MaterialPlasticoRecicladoAdmin(admin.ModelAdmin):
         "real",
     )
     list_filter = (
-        "empresa",
         "no_material",
         "materia",
         "unidad_de_medida",
@@ -707,14 +695,12 @@ class MaterialPlasticoRecicladoAdmin(admin.ModelAdmin):
 @admin.register(MaterialDeConstruccion)
 class MaterialDeConstruccionAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "material",
         "unidad_de_medida",
         "plan",
         "real",
     )
     list_filter = (
-        "empresa",
         "material",
         "unidad_de_medida",
         "plan",
@@ -774,7 +760,6 @@ class BancarizacionAdmin(admin.ModelAdmin):
 @admin.register(AtencionALaFamilia)
 class AtencionALaFamiliaAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "fecha",
         "total_saf",
         "beneficiados_conciliacion",
@@ -785,7 +770,6 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
         "total_beneficiarios",
     )
     list_filter = (
-        "empresa",
         "fecha",
         "total_saf",
         "beneficiados_conciliacion",
@@ -825,19 +809,16 @@ class PerfeccionamientoComercioGastronomiaAdmin(admin.ModelAdmin):
     get_data.short_description = "Data"
     get_data.allow_tags = True
 
-    list_display = ("empresa", "anno", "estado", "get_data")
+    list_display = ("anno", "estado", "get_data")
     list_filter = (
-        "empresa",
         "anno",
         "estado",
     )
     ordering = (
-        "empresa",
         "anno",
         "estado",
     )
     list_display_links = (
-        "empresa",
         "anno",
         "estado",
     )
@@ -846,8 +827,8 @@ class PerfeccionamientoComercioGastronomiaAdmin(admin.ModelAdmin):
 
 @admin.register(Perdida)
 class PerdidaAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "porciento", "indicador")
-    list_filter = ("empresa", "plan", "real", "porciento", "indicador")
+    list_display = ("plan", "real", "porciento", "indicador")
+    list_filter = ("plan", "real", "porciento", "indicador")
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
     actions = [generar_reporte_perdidas_pdf]
@@ -856,14 +837,12 @@ class PerdidaAdmin(admin.ModelAdmin):
 @admin.register(TransportacionDePasajeros)
 class TransportacionDePasajerosAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "aprobadas",
         "real_ejecutadas",
         "porciento",
         "indicador",
     )
     list_filter = (
-        "empresa",
         "aprobadas",
         "real_ejecutadas",
         "porciento",
@@ -907,7 +886,6 @@ class MedicamentoAdmin(admin.ModelAdmin):
 @admin.register(InformacionGeneral)
 class InformacionGeneralAdmin(admin.ModelAdmin):
     list_display = (
-        "empresa",
         "total",
         "cubiertos",
         "desglosados_gobierno",
@@ -916,7 +894,6 @@ class InformacionGeneralAdmin(admin.ModelAdmin):
         "dato",
     )
     list_filter = (
-        "empresa",
         "total",
         "cubiertos",
         "desglosados_gobierno",
@@ -931,8 +908,8 @@ class InformacionGeneralAdmin(admin.ModelAdmin):
 
 @admin.register(PlanDeConstruccion)
 class PlanDeConstruccionAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "nombre", "donde_se_incumple")
-    list_filter = ("empresa", "plan", "real", "nombre")
+    list_display = ("plan", "real", "nombre", "donde_se_incumple")
+    list_filter = ("plan", "real", "nombre")
     search_fields = ("donde_se_incumple",)
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
@@ -982,16 +959,30 @@ class VehiculosCumnalesAdmin(admin.ModelAdmin):
 
 @admin.register(Comunales)
 class ComunalesAdmin(admin.ModelAdmin):
-    list_display = (
-        "empresa",
-        "plan",
-        "real",
-    )
+    def custom_button(self, obj):
+        """
+        Genera un botón HTML para ejecutar un script personalizado.
+        """
+        # URL a la que se redirigirá cuando se haga clic en el botón
+        url = reverse(
+            "reporte-comunales", args=[obj.pk]
+        )  # Asegúrate de definir esta vista
+        return mark_safe(
+            f'<a class="button btn btn-high btn-danger mt-2 " href="{url}"><i class="fas fa-file-pdf"></i></a>'
+        )
+
+    custom_button.short_description = "Acción"
+    list_display = ("plan", "real", "custom_button")
     list_filter = (
-        "empresa",
         "plan",
         "real",
     )
-    ordering = list(list_display).copy()
-    list_display_links = list(list_display).copy()
+    ordering = (
+        "plan",
+        "real",
+    )
+    list_display_links = (
+        "plan",
+        "real",
+    )
     filter_horizontal = ["vehiculos"]

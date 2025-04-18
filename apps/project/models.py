@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from solo.models import SingletonModel
 
 User = get_user_model()
 ROL_NAME_ADMIN = "admin"
@@ -337,7 +338,7 @@ class PlanDeMantenimiento(models.Model):
         return f"Plan Mantenimiento - {self.empresa.nombre}"
 
 
-class Inversiones(models.Model):
+class Inversiones(SingletonModel):
     plan_obra = models.IntegerField(
         verbose_name="Preparación de obra: Plan", default=0
     )
@@ -371,19 +372,13 @@ class Inversiones(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         default=0,
     )
-    empresa = models.OneToOneField(
-        Empresa,
-        on_delete=models.CASCADE,
-        verbose_name="Empresa",
-        related_name="inversiones",
-    )
 
     class Meta:
         verbose_name = "Inversión"
         verbose_name_plural = "Inversiones"
 
     def __str__(self):
-        return f"Inversiones - {self.empresa.nombre}"
+        return "Inversion"
 
 
 class IndicadorGeneral(models.Model):
@@ -630,16 +625,13 @@ class MaterialPlasticoReciclado(models.Model):
     )
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Material Plástico Reciclado"
         verbose_name_plural = "Materiales Plásticos Reciclados"
 
     def __str__(self):
-        return f"{self.materia} - {self.empresa.nombre}"
+        return f"{self.materia}"
 
 
 class MaterialDeConstruccion(models.Model):
@@ -649,16 +641,13 @@ class MaterialDeConstruccion(models.Model):
     )
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Material de Construcción"
         verbose_name_plural = "Materiales de Construcción"
 
     def __str__(self):
-        return f"{self.material} - {self.empresa.nombre}"
+        return f"{self.material}"
 
 
 class SoberaniaAlimentaria(models.Model):
@@ -725,10 +714,7 @@ class Bancarizacion(models.Model):
 
 
 class AtencionALaFamilia(models.Model):
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
-    fecha = models.DateField(verbose_name="Fecha")
+    fecha = models.DateField(verbose_name="Fecha", unique=True)
     total_saf = models.PositiveIntegerField(
         verbose_name="Total de SAF", default=0
     )
@@ -754,20 +740,17 @@ class AtencionALaFamilia(models.Model):
     class Meta:
         verbose_name = "Atención a la Familia"
         verbose_name_plural = "Atenciones a la familia"
-        unique_together = [["empresa", "fecha"]]
 
     def __str__(self):
-        return f"Atención a la Familia - {self.empresa.nombre} ({self.fecha})"
+        return "Atención a la Familia"
 
 
 class PerfeccionamientoComercioGastronomia(models.Model):
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
     anno = models.PositiveIntegerField(
         verbose_name="Año",
         help_text="Año al que corresponden los datos",
         default=0,
+        unique=True,
     )
     directores_filiales = models.PositiveIntegerField(
         verbose_name="Directores E Filiales", default=0
@@ -827,7 +810,6 @@ class PerfeccionamientoComercioGastronomia(models.Model):
     class Meta:
         verbose_name = "Perfeccionamiento de Comercio y Gastronomía"
         verbose_name_plural = "Perfeccionamientos de Comercio y Gastronomía"
-        unique_together = [["empresa", "anno"]]
 
     def __str__(self):
         return f"Indicadores de Comercio y Gastronomía - {self.empresa.nombre} ({self.anno})"
@@ -841,17 +823,13 @@ class Perdida(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     indicador = models.CharField(max_length=256, verbose_name="Indicador")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Perdida Farmacia"
         verbose_name_plural = "Perdidas Farmacia"
-        unique_together = [["empresa", "indicador"]]
 
     def __str__(self):
-        return f"Perdidas - {self.empresa.nombre} {self.indicador}"
+        return f"Perdidas - {self.indicador}"
 
 
 class TransportacionDePasajeros(models.Model):
@@ -864,17 +842,13 @@ class TransportacionDePasajeros(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     indicador = models.CharField(max_length=256, verbose_name="Indicador")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Transportación de Pasajeros"
         verbose_name_plural = "Transportaciones de Pasajeros"
-        unique_together = [["empresa", "indicador"]]
 
     def __str__(self):
-        return f"Transportación de Pasajeros - {self.empresa.nombre} {self.indicador}"
+        return f"Transportación de Pasajeros -  {self.indicador}"
 
 
 class TransportacionDeCarga(models.Model):
@@ -933,17 +907,13 @@ class InformacionGeneral(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(1)],
     )
     dato = models.CharField(max_length=256, verbose_name="Dato")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Seguridad y Protección"
         verbose_name_plural = "Seguridad y Protección"
-        unique_together = [["empresa", "dato"]]
 
     def __str__(self):
-        return f"InformacionGeneral - {self.empresa.nombre} {self.dato}"
+        return f"InformacionGeneral -  {self.dato}"
 
 
 class PlanDeConstruccion(models.Model):
@@ -953,17 +923,13 @@ class PlanDeConstruccion(models.Model):
         verbose_name="Donde se Incumple", blank=True, null=True
     )
     nombre = models.CharField(max_length=256, verbose_name="Nombre Del Plan")
-    empresa = models.ForeignKey(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Plan de Construcción"
         verbose_name_plural = "Planes de Construcción"
-        unique_together = [["empresa", "nombre"]]
 
     def __str__(self):
-        return f"Plan de Construcción - {self.empresa.nombre} {self.nombre}"
+        return f"Plan de Construcción - {self.nombre}"
 
 
 class IndicadorGeneralGM(models.Model):
@@ -1031,9 +997,6 @@ class Comunales(models.Model):
     # fecha=models.DateField(verbose_name="Fecha")
     plan = models.PositiveIntegerField(verbose_name="Plan")
     real = models.PositiveIntegerField(verbose_name="Real")
-    empresa = models.OneToOneField(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
     vehiculos = models.ManyToManyField(
         VehiculosCumnales, verbose_name="Vehiculos"
     )
@@ -1043,4 +1006,4 @@ class Comunales(models.Model):
         verbose_name_plural = "Comunales"
 
     def __str__(self):
-        return f"{self.empresa.nombre} - {self.plan}/{self.real}"
+        return f"{self.plan}/{self.real}"
