@@ -430,7 +430,7 @@ def crear_datos_random():
     ).first()
 
     if empresa_farmacia:
-        agregar_perdidas(empresa_farmacia)
+        agregar_perdidas()
 
         medicamentos = ["Antibiotico", "Aspirina", "Vitamina C"]
         for medicamento in medicamentos:
@@ -574,13 +574,12 @@ def crear_datos_random():
         )
 
 
-def agregar_perdidas(empresa: Empresa):
+def agregar_perdidas():
     indicadores = ["Producción", "Servicios", "Ventas"]
     for indicador in indicadores:
         plan_ind = random.randint(1000, 5000)
         real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
         Perdida.objects.create(
-            empresa=empresa,
             plan=plan_ind,
             real=real_ind,
             porciento=int((real_ind / plan_ind) * 100),
