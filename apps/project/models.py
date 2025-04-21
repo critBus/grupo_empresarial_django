@@ -223,78 +223,78 @@ class PlanMateriaPrima(models.Model):
 
 class Inmuebles(models.Model):
     loc_oficina = models.PositiveIntegerField(
-        verbose_name="Loc. oficina", default=0
+        verbose_name="Loc. oficina", default=0, null=True, blank=True
     )
-    cpl = models.PositiveIntegerField(verbose_name="CPL", default=0)
-    almacenes = models.PositiveIntegerField(verbose_name="almacenes", default=0)
+    cpl = models.PositiveIntegerField(verbose_name="CPL", default=0, null=True, blank=True)
+    almacenes = models.PositiveIntegerField(verbose_name="almacenes", default=0, null=True, blank=True)
     farmacias_opticas = models.PositiveIntegerField(
-        verbose_name="farmacias y opticas / C. auditivo", default=0
+        verbose_name="farmacias y opticas / C. auditivo", default=0, null=True, blank=True
     )
-    taller = models.PositiveIntegerField(verbose_name="taller", default=0)
-    poncheras = models.PositiveIntegerField(verbose_name="Poncheras", default=0)
+    taller = models.PositiveIntegerField(verbose_name="taller", default=0, null=True, blank=True)
+    poncheras = models.PositiveIntegerField(verbose_name="Poncheras", default=0, null=True, blank=True)
     plantas_fre = models.PositiveIntegerField(
-        verbose_name="Plantas Fre", default=0
+        verbose_name="Plantas Fre", default=0, null=True, blank=True
     )
-    top = models.PositiveIntegerField(verbose_name="TOP", default=0)
+    top = models.PositiveIntegerField(verbose_name="TOP", default=0, null=True, blank=True)
     nave_pasaje = models.PositiveIntegerField(
-        verbose_name="nave pasaje", default=0
+        verbose_name="nave pasaje", default=0, null=True, blank=True
     )
-    funeraria = models.PositiveIntegerField(verbose_name="Funeraria", default=0)
+    funeraria = models.PositiveIntegerField(verbose_name="Funeraria", default=0, null=True, blank=True)
     floristeria = models.PositiveIntegerField(
-        verbose_name="Floristería", default=0
+        verbose_name="Floristería", default=0, null=True, blank=True
     )
-    banos_p = models.PositiveIntegerField(verbose_name="baños P", default=0)
-    tienda = models.PositiveIntegerField(verbose_name="tienda", default=0)
+    banos_p = models.PositiveIntegerField(verbose_name="baños P", default=0, null=True, blank=True)
+    tienda = models.PositiveIntegerField(verbose_name="tienda", default=0, null=True, blank=True)
     base_carga = models.PositiveIntegerField(
-        verbose_name="base carga", default=0
+        verbose_name="base carga", default=0, null=True, blank=True
     )
     circulos_s = models.PositiveIntegerField(
-        verbose_name="Círculos .S", default=0
+        verbose_name="Círculos .S", default=0, null=True, blank=True
     )
-    capillas = models.PositiveIntegerField(verbose_name="Capillas", default=0)
-    comedores = models.PositiveIntegerField(verbose_name="comedores", default=0)
+    capillas = models.PositiveIntegerField(verbose_name="Capillas", default=0, null=True, blank=True)
+    comedores = models.PositiveIntegerField(verbose_name="comedores", default=0, null=True, blank=True)
     panaderias = models.PositiveIntegerField(
-        verbose_name="panaderías", default=0
+        verbose_name="panaderías", default=0, null=True, blank=True
     )
-    dulcerias = models.PositiveIntegerField(verbose_name="dulcerías", default=0)
+    dulcerias = models.PositiveIntegerField(verbose_name="dulcerías", default=0, null=True, blank=True)
     pana_dulc = models.PositiveIntegerField(
-        verbose_name="Pana / dulc", default=0
+        verbose_name="Pana / dulc", default=0, null=True, blank=True
     )
-    bodegas = models.PositiveIntegerField(verbose_name="Bodegas", default=0)
+    bodegas = models.PositiveIntegerField(verbose_name="Bodegas", default=0, null=True, blank=True)
     minitalleres = models.PositiveIntegerField(
-        verbose_name="minitalleres", default=0
+        verbose_name="minitalleres", default=0, null=True, blank=True
     )
-    fabricas = models.PositiveIntegerField(verbose_name="fabricas", default=0)
+    fabricas = models.PositiveIntegerField(verbose_name="fabricas", default=0, null=True, blank=True)
     carnicerias = models.PositiveIntegerField(
-        verbose_name="Carnicerías", default=0
+        verbose_name="Carnicerías", default=0, null=True, blank=True
     )
-    m_ideal = models.PositiveIntegerField(verbose_name="M. Ideal", default=0)
-    mais = models.PositiveIntegerField(verbose_name="MAIS", default=0)
-    tmc = models.PositiveIntegerField(verbose_name="TMC", default=0)
-    bar = models.PositiveIntegerField(verbose_name="Bar", default=0)
+    m_ideal = models.PositiveIntegerField(verbose_name="M. Ideal", default=0, null=True, blank=True)
+    mais = models.PositiveIntegerField(verbose_name="MAIS", default=0, null=True, blank=True)
+    tmc = models.PositiveIntegerField(verbose_name="TMC", default=0, null=True, blank=True)
+    bar = models.PositiveIntegerField(verbose_name="Bar", default=0, null=True, blank=True)
     c_elaboracion = models.PositiveIntegerField(
-        verbose_name="C. Elabor.", default=0
+        verbose_name="C. Elabor.", default=0, null=True, blank=True
     )
     restaurant = models.PositiveIntegerField(
-        verbose_name="Restaurant", default=0
+        verbose_name="Restaurant", default=0, null=True, blank=True
     )
     cafeterias = models.PositiveIntegerField(
-        verbose_name="Cafeterías", default=0
+        verbose_name="Cafeterías", default=0, null=True, blank=True
     )
     c_nocturno = models.PositiveIntegerField(
-        verbose_name="C Nocturno", default=0
+        verbose_name="C Nocturno", default=0, null=True, blank=True
     )
-    cabaret = models.PositiveIntegerField(verbose_name="Cabaret", default=0)
-    merendero = models.PositiveIntegerField(verbose_name="Merendero", default=0)
+    cabaret = models.PositiveIntegerField(verbose_name="Cabaret", default=0, null=True, blank=True)
+    merendero = models.PositiveIntegerField(verbose_name="Merendero", default=0, null=True, blank=True)
     heladerias = models.PositiveIntegerField(
-        verbose_name="Heladerías", default=0
+        verbose_name="Heladerías", default=0, null=True, blank=True
     )
     alojamiento = models.PositiveIntegerField(
-        verbose_name="Alojamiento", default=0
+        verbose_name="Alojamiento", default=0, null=True, blank=True
     )
-    servicios = models.PositiveIntegerField(verbose_name="Servicios", default=0)
+    servicios = models.PositiveIntegerField(verbose_name="Servicios", default=0, null=True, blank=True)
     incinerador = models.PositiveIntegerField(
-        verbose_name="Incinerador", default=0
+        verbose_name="Incinerador", default=0, null=True, blank=True
     )
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
