@@ -121,7 +121,20 @@ class Delitos(models.Model):
         max_length=10, verbose_name="Código", validators=[MinValueValidator(1)]
     )
     denuncia = models.IntegerField(verbose_name="Número de Denuncia")
-    municipio = models.CharField(max_length=50, verbose_name="Municipio")
+    MUM_CHOICES=[
+        ('San Jose','San José de las Lajas'),
+        ('Batabano','Batabanó'),
+        ('Bejucal','Bejucal'),
+        ('San Nicolas de Bari','San Nicolás de Bari'),
+        ('Guines','Güines'),
+        ('Jaruco','Jaruco'),
+        ('Madruga','Madruga'),
+        ('Melena','Melena del Sur'),
+        ('Nueva Paz','Nueva Paz'),
+        ('Santa Cruz','Santa Cruz del Norte'),
+        ('Quivican','Quivicán')
+    ]
+    municipio = models.CharField(max_length=50, verbose_name="Municipio",choices= MUM_CHOICES)
     fecha = models.DateField(verbose_name="Fecha")
     unidad = models.CharField(max_length=50, verbose_name="Unidad")
     tipocidad = models.CharField(max_length=50, verbose_name="Tipicidad")
@@ -228,7 +241,7 @@ class Inmuebles(models.Model):
     cpl = models.PositiveIntegerField(verbose_name="CPL", default=0, null=True, blank=True)
     almacenes = models.PositiveIntegerField(verbose_name="almacenes", default=0, null=True, blank=True)
     farmacias_opticas = models.PositiveIntegerField(
-        verbose_name="farmacias y opticas / C. auditivo", default=0, null=True, blank=True
+        verbose_name="farmacias y ópticas / C. auditivo", default=0, null=True, blank=True
     )
     taller = models.PositiveIntegerField(verbose_name="taller", default=0, null=True, blank=True)
     poncheras = models.PositiveIntegerField(verbose_name="Poncheras", default=0, null=True, blank=True)
@@ -264,7 +277,7 @@ class Inmuebles(models.Model):
     minitalleres = models.PositiveIntegerField(
         verbose_name="minitalleres", default=0, null=True, blank=True
     )
-    fabricas = models.PositiveIntegerField(verbose_name="fabricas", default=0, null=True, blank=True)
+    fabricas = models.PositiveIntegerField(verbose_name="fábricas", default=0, null=True, blank=True)
     carnicerias = models.PositiveIntegerField(
         verbose_name="Carnicerías", default=0, null=True, blank=True
     )
@@ -671,7 +684,7 @@ class SoberaniaAlimentaria(models.Model):
 
     class Meta:
         verbose_name = "Soberanía Alimentaria"
-        verbose_name_plural = "Soberanias Alimentarias"
+        verbose_name_plural = "Soberanías Alimentarias"
 
     def __str__(self):
         return f"Soberanía Alimentaria - {self.empresa.nombre}"
@@ -825,8 +838,8 @@ class Perdida(models.Model):
     indicador = models.CharField(max_length=256, verbose_name="Indicador")
 
     class Meta:
-        verbose_name = "Perdida Farmacia"
-        verbose_name_plural = "Perdidas Farmacia"
+        verbose_name = "Pérdida Farmacia"
+        verbose_name_plural = "Pérdidas Farmacia"
 
     def __str__(self):
         return f"Perdidas - {self.indicador}"
@@ -961,10 +974,10 @@ class IndicadorGeneralGM(models.Model):
 
 
 VEHICULOS_TIPOS = [
-    ("Camion", "Camion"),
+    ("Camión", "Camión"),
     ("Tractores", "Tractores"),
-    ("Camion Especializados", "Camion Especializados"),
-    ("Camion Ampliroel", "Camion Ampliroel"),
+    ("Camión Especializado", "Camión Especializado"),
+    ("Camión Ampliroel", "Camión Ampliroel"),
     ("Buldocer", "Buldocer"),
     ("Cargador Frontal", "Cargador Frontal"),
 ]
@@ -972,15 +985,15 @@ VEHICULOS_TIPOS = [
 
 class VehiculosCumnales(models.Model):
     tipo = models.CharField(
-        max_length=256, choices=VEHICULOS_TIPOS, verbose_name="Vehiculo"
+        max_length=256, choices=VEHICULOS_TIPOS, verbose_name="Vehículo"
     )
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad", default=0)
     activo = models.PositiveIntegerField(verbose_name="Activo", default=0)
     municipio = models.CharField(max_length=256, verbose_name="Municipio")
 
     class Meta:
-        verbose_name = "Vehiculo Cumnales"
-        verbose_name_plural = "Vehiculos Cumnales"
+        verbose_name = "Vehículo Comunales"
+        verbose_name_plural = "Vehículos Comunales"
 
     def __str__(self):
         return f"{self.tipo} {self.municipio} {self.cantidad}/{self.activo}"
@@ -998,7 +1011,7 @@ class Comunales(models.Model):
     plan = models.PositiveIntegerField(verbose_name="Plan")
     real = models.PositiveIntegerField(verbose_name="Real")
     vehiculos = models.ManyToManyField(
-        VehiculosCumnales, verbose_name="Vehiculos"
+        VehiculosCumnales, verbose_name="Vehículos"
     )
 
     class Meta:
