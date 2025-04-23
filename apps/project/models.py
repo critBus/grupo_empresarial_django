@@ -226,45 +226,45 @@ class Inmuebles(models.Model):
         verbose_name="Loc. oficina", default=0, null=True, blank=True
     )
     cpl = models.PositiveIntegerField(verbose_name="CPL", default=0, null=True, blank=True)
-    almacenes = models.PositiveIntegerField(verbose_name="almacenes", default=0, null=True, blank=True)
+    almacenes = models.PositiveIntegerField(verbose_name="Almacenes", default=0, null=True, blank=True)
     farmacias_opticas = models.PositiveIntegerField(
-        verbose_name="farmacias y opticas / C. auditivo", default=0, null=True, blank=True
+        verbose_name="Farmacias y ópticas / C. auditivo", default=0, null=True, blank=True
     )
-    taller = models.PositiveIntegerField(verbose_name="taller", default=0, null=True, blank=True)
+    taller = models.PositiveIntegerField(verbose_name="Taller", default=0, null=True, blank=True)
     poncheras = models.PositiveIntegerField(verbose_name="Poncheras", default=0, null=True, blank=True)
     plantas_fre = models.PositiveIntegerField(
         verbose_name="Plantas Fre", default=0, null=True, blank=True
     )
     top = models.PositiveIntegerField(verbose_name="TOP", default=0, null=True, blank=True)
     nave_pasaje = models.PositiveIntegerField(
-        verbose_name="nave pasaje", default=0, null=True, blank=True
+        verbose_name="Nave pasaje", default=0, null=True, blank=True
     )
     funeraria = models.PositiveIntegerField(verbose_name="Funeraria", default=0, null=True, blank=True)
     floristeria = models.PositiveIntegerField(
         verbose_name="Floristería", default=0, null=True, blank=True
     )
-    banos_p = models.PositiveIntegerField(verbose_name="baños P", default=0, null=True, blank=True)
-    tienda = models.PositiveIntegerField(verbose_name="tienda", default=0, null=True, blank=True)
+    banos_p = models.PositiveIntegerField(verbose_name="Baños P", default=0, null=True, blank=True)
+    tienda = models.PositiveIntegerField(verbose_name="Tienda", default=0, null=True, blank=True)
     base_carga = models.PositiveIntegerField(
-        verbose_name="base carga", default=0, null=True, blank=True
+        verbose_name="Base carga", default=0, null=True, blank=True
     )
     circulos_s = models.PositiveIntegerField(
         verbose_name="Círculos .S", default=0, null=True, blank=True
     )
     capillas = models.PositiveIntegerField(verbose_name="Capillas", default=0, null=True, blank=True)
-    comedores = models.PositiveIntegerField(verbose_name="comedores", default=0, null=True, blank=True)
+    comedores = models.PositiveIntegerField(verbose_name="Comedores", default=0, null=True, blank=True)
     panaderias = models.PositiveIntegerField(
-        verbose_name="panaderías", default=0, null=True, blank=True
+        verbose_name="Panaderías", default=0, null=True, blank=True
     )
-    dulcerias = models.PositiveIntegerField(verbose_name="dulcerías", default=0, null=True, blank=True)
+    dulcerias = models.PositiveIntegerField(verbose_name="Dulcerías", default=0, null=True, blank=True)
     pana_dulc = models.PositiveIntegerField(
         verbose_name="Pana / dulc", default=0, null=True, blank=True
     )
     bodegas = models.PositiveIntegerField(verbose_name="Bodegas", default=0, null=True, blank=True)
     minitalleres = models.PositiveIntegerField(
-        verbose_name="minitalleres", default=0, null=True, blank=True
+        verbose_name="Minitalleres", default=0, null=True, blank=True
     )
-    fabricas = models.PositiveIntegerField(verbose_name="fabricas", default=0, null=True, blank=True)
+    fabricas = models.PositiveIntegerField(verbose_name="Fábricas", default=0, null=True, blank=True)
     carnicerias = models.PositiveIntegerField(
         verbose_name="Carnicerías", default=0, null=True, blank=True
     )
@@ -987,7 +987,7 @@ MUNICIPIOS_MAYABEQUE = [
 
 class VehiculosCumnales(models.Model):
     tipo = models.CharField(
-        max_length=256, choices=VEHICULOS_TIPOS, verbose_name="Vehiculo"
+        max_length=256, choices=VEHICULOS_TIPOS, verbose_name="Vehículo"
     )
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad", default=0)
     activo = models.PositiveIntegerField(verbose_name="Activo", default=0)
@@ -1017,7 +1017,7 @@ class Comunales(models.Model):
     plan = models.PositiveIntegerField(verbose_name="Plan")
     real = models.PositiveIntegerField(verbose_name="Real")
     vehiculos = models.ManyToManyField(
-        VehiculosCumnales, verbose_name="Vehiculos"
+        VehiculosCumnales, verbose_name="Vehículos"
     )
 
     class Meta:
