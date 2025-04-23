@@ -134,10 +134,16 @@ class Delitos(models.Model):
         ('Santa Cruz','Santa Cruz del Norte'),
         ('Quivican','Quivicán')
     ]
+
     municipio = models.CharField(max_length=50, verbose_name="Municipio",choices= MUM_CHOICES)
     fecha = models.DateField(verbose_name="Fecha")
     unidad = models.CharField(max_length=50, verbose_name="Unidad")
-    tipocidad = models.CharField(max_length=50, verbose_name="Tipicidad")
+    TIP_CHOICES=[
+        ('Robo con fuerza','Robo con Fuerza'),
+        ('Hurto','Hurto'),
+        ('Malversacion','Malversación')
+    ]
+    tipocidad = models.CharField(max_length=50, verbose_name="Tipicidad",choices=TIP_CHOICES)
     productosSustraidos = models.CharField(
         max_length=255, verbose_name="Productos Sustraídos"
     )
@@ -404,7 +410,7 @@ class IndicadorGeneral(models.Model):
 
     class Meta:
         verbose_name = "Pérdida Alimentaria"
-        verbose_name_plural = "Perdidas Alimentarias"
+        verbose_name_plural = "Pérdidas Alimentarias"
 
     def __str__(self):
         return f"Pérdida Alimentaria - {self.empresa.nombre}"
@@ -987,9 +993,23 @@ class VehiculosCumnales(models.Model):
     tipo = models.CharField(
         max_length=256, choices=VEHICULOS_TIPOS, verbose_name="Vehículo"
     )
+
+    MUM_CHOICES = [
+        ('San Jose', 'San José de las Lajas'),
+        ('Batabano', 'Batabanó'),
+        ('Bejucal', 'Bejucal'),
+        ('San Nicolas de Bari', 'San Nicolás de Bari'),
+        ('Guines', 'Güines'),
+        ('Jaruco', 'Jaruco'),
+        ('Madruga', 'Madruga'),
+        ('Melena', 'Melena del Sur'),
+        ('Nueva Paz', 'Nueva Paz'),
+        ('Santa Cruz', 'Santa Cruz del Norte'),
+        ('Quivican', 'Quivicán')
+    ]
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad", default=0)
     activo = models.PositiveIntegerField(verbose_name="Activo", default=0)
-    municipio = models.CharField(max_length=256, verbose_name="Municipio")
+    municipio = models.CharField(max_length=256, verbose_name="Municipio",choices= MUM_CHOICES)
 
     class Meta:
         verbose_name = "Vehículo Comunales"
