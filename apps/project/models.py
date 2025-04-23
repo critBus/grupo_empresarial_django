@@ -970,13 +970,32 @@ VEHICULOS_TIPOS = [
 ]
 
 
+MUNICIPIOS_MAYABEQUE = [
+    ("Santa Cruz del Norte", "Santa Cruz del Norte"),
+    ("Jaruco", "Jaruco"),
+    ("Madruga", "Madruga"),
+    ("Nueva Paz", "Nueva Paz"),
+    ("San Nicolás de Bari", "San Nicolás de Bari"),
+    ("Güines", "Güines"),
+    ("San José de las Lajas", "San José de las Lajas"),
+    ("Melena del Sur", "Melena del Sur"),
+    ("Bejucal", "Bejucal"),
+    ("Quivicán", "Quivicán"),
+    ("Batabanó", "Batabanó")
+]
+
+
 class VehiculosCumnales(models.Model):
     tipo = models.CharField(
         max_length=256, choices=VEHICULOS_TIPOS, verbose_name="Vehiculo"
     )
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad", default=0)
     activo = models.PositiveIntegerField(verbose_name="Activo", default=0)
-    municipio = models.CharField(max_length=256, verbose_name="Municipio")
+    municipio = models.CharField(
+        max_length=256, 
+        choices=MUNICIPIOS_MAYABEQUE, 
+        verbose_name="Municipio"
+    )
 
     class Meta:
         verbose_name = "Vehiculo Cumnales"
