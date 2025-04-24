@@ -278,7 +278,6 @@ class DelitosAdmin(admin.ModelAdmin):
         "fecha",
         "municipio",
         "tipocidad",
-        "denuncia",
         "valorPerdidas",
     )
     search_fields = ("unidad", "productosSustraidos")

@@ -193,7 +193,6 @@ def crear_datos_random():
                 Delitos.objects.create(
                     no_denuncia=no_denuncia,
                     empresa=empresa,
-                    denuncia=random.randint(1, 100),
                     municipio=random.choice(municipios),
                     fecha=fake.date_between(start_date="-1y", end_date="today"),
                     unidad=fake.company(),
