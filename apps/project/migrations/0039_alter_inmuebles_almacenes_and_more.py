@@ -4,200 +4,281 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('project', '0038_alter_perdida_unique_together_remove_perdida_empresa'),
+        (
+            "project",
+            "0038_alter_perdida_unique_together_remove_perdida_empresa",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='inmuebles',
-            name='almacenes',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='almacenes'),
+            model_name="inmuebles",
+            name="almacenes",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="almacenes"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='alojamiento',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Alojamiento'),
+            model_name="inmuebles",
+            name="alojamiento",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Alojamiento"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='banos_p',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='baños P'),
+            model_name="inmuebles",
+            name="banos_p",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="baños P"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='bar',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Bar'),
+            model_name="inmuebles",
+            name="bar",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Bar"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='base_carga',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='base carga'),
+            model_name="inmuebles",
+            name="base_carga",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="base carga"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='bodegas',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Bodegas'),
+            model_name="inmuebles",
+            name="bodegas",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Bodegas"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='c_elaboracion',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='C. Elabor.'),
+            model_name="inmuebles",
+            name="c_elaboracion",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="C. Elabor."
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='c_nocturno',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='C Nocturno'),
+            model_name="inmuebles",
+            name="c_nocturno",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="C Nocturno"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='cabaret',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Cabaret'),
+            model_name="inmuebles",
+            name="cabaret",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Cabaret"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='cafeterias',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Cafeterías'),
+            model_name="inmuebles",
+            name="cafeterias",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Cafeterías"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='capillas',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Capillas'),
+            model_name="inmuebles",
+            name="capillas",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Capillas"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='carnicerias',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Carnicerías'),
+            model_name="inmuebles",
+            name="carnicerias",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Carnicerías"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='circulos_s',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Círculos .S'),
+            model_name="inmuebles",
+            name="circulos_s",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Círculos .S"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='comedores',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='comedores'),
+            model_name="inmuebles",
+            name="comedores",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="comedores"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='cpl',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='CPL'),
+            model_name="inmuebles",
+            name="cpl",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="CPL"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='dulcerias',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='dulcerías'),
+            model_name="inmuebles",
+            name="dulcerias",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="dulcerías"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='fabricas',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='fabricas'),
+            model_name="inmuebles",
+            name="fabricas",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="fabricas"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='farmacias_opticas',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='farmacias y opticas / C. auditivo'),
+            model_name="inmuebles",
+            name="farmacias_opticas",
+            field=models.PositiveIntegerField(
+                blank=True,
+                default=0,
+                null=True,
+                verbose_name="farmacias y opticas / C. auditivo",
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='floristeria',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Floristería'),
+            model_name="inmuebles",
+            name="floristeria",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Floristería"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='funeraria',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Funeraria'),
+            model_name="inmuebles",
+            name="funeraria",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Funeraria"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='heladerias',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Heladerías'),
+            model_name="inmuebles",
+            name="heladerias",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Heladerías"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='incinerador',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Incinerador'),
+            model_name="inmuebles",
+            name="incinerador",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Incinerador"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='loc_oficina',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Loc. oficina'),
+            model_name="inmuebles",
+            name="loc_oficina",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Loc. oficina"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='m_ideal',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='M. Ideal'),
+            model_name="inmuebles",
+            name="m_ideal",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="M. Ideal"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='mais',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='MAIS'),
+            model_name="inmuebles",
+            name="mais",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="MAIS"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='merendero',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Merendero'),
+            model_name="inmuebles",
+            name="merendero",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Merendero"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='minitalleres',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='minitalleres'),
+            model_name="inmuebles",
+            name="minitalleres",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="minitalleres"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='nave_pasaje',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='nave pasaje'),
+            model_name="inmuebles",
+            name="nave_pasaje",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="nave pasaje"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='pana_dulc',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Pana / dulc'),
+            model_name="inmuebles",
+            name="pana_dulc",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Pana / dulc"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='panaderias',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='panaderías'),
+            model_name="inmuebles",
+            name="panaderias",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="panaderías"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='plantas_fre',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Plantas Fre'),
+            model_name="inmuebles",
+            name="plantas_fre",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Plantas Fre"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='poncheras',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Poncheras'),
+            model_name="inmuebles",
+            name="poncheras",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Poncheras"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='restaurant',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Restaurant'),
+            model_name="inmuebles",
+            name="restaurant",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Restaurant"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='servicios',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='Servicios'),
+            model_name="inmuebles",
+            name="servicios",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="Servicios"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='taller',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='taller'),
+            model_name="inmuebles",
+            name="taller",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="taller"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='tienda',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='tienda'),
+            model_name="inmuebles",
+            name="tienda",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="tienda"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='tmc',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='TMC'),
+            model_name="inmuebles",
+            name="tmc",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="TMC"
+            ),
         ),
         migrations.AlterField(
-            model_name='inmuebles',
-            name='top',
-            field=models.PositiveIntegerField(blank=True, default=0, null=True, verbose_name='TOP'),
+            model_name="inmuebles",
+            name="top",
+            field=models.PositiveIntegerField(
+                blank=True, default=0, null=True, verbose_name="TOP"
+            ),
         ),
     ]

@@ -1,8 +1,7 @@
 # Register your models here.
 from django.contrib import admin
-from django.urls import path, reverse
+from django.urls import reverse
 from django.utils.safestring import mark_safe
-from solo.admin import SingletonModelAdmin
 
 from .models import (
     AtencionALaFamilia,
@@ -56,6 +55,7 @@ from .utils.reportes import (
     generar_reporte_material_de_construccion_pdf,
     generar_reporte_material_plastico_recilcado_pdf,
     generar_reporte_medicamentos_pdf,
+    generar_reporte_perdidas_alimentaria_pdf,
     generar_reporte_perdidas_pdf,
     generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf,
     generar_reporte_plan_de_construccion_pdf,
@@ -65,7 +65,7 @@ from .utils.reportes import (
     generar_reporte_soberania_alimentaria_pdf,
     generar_reporte_transportacion_de_cargas_pdf,
     generar_reporte_transportacion_de_pasajeros_pdf,
-    generar_reporte_ueb_perdidas_pdf, generar_reporte_perdidas_alimentaria_pdf,
+    generar_reporte_ueb_perdidas_pdf,
 )
 
 
@@ -492,7 +492,7 @@ class InversionesAdmin(admin.ModelAdmin):
 
 @admin.register(IndicadorGeneral)
 class IndicadorGeneralAdmin(admin.ModelAdmin):
-    list_display = ( "plan", "real", "tipo")
+    list_display = ("plan", "real", "tipo")
     list_filter = ("plan", "real", "tipo")
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
@@ -744,7 +744,6 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
         "almuerzan_unidades",
         "mensajeria",
         "llevan_en_cantina",
-
     )
     list_filter = (
         "fecha",
@@ -754,7 +753,6 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
         "almuerzan_unidades",
         "mensajeria",
         "llevan_en_cantina",
-
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()

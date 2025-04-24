@@ -12,6 +12,7 @@ from apps.project.models import (
     CuentasPagar,
     Deficiencias,
     Delitos,
+    IndicadorGeneral,
     IndicadorGeneralGM,
     InformacionGeneral,
     Inmuebles,
@@ -30,7 +31,7 @@ from apps.project.models import (
     TransportacionDeCarga,
     TransportacionDePasajeros,
     UEBperdidas,
-    VehiculosCumnales, IndicadorGeneral,
+    VehiculosCumnales,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -422,7 +423,7 @@ def generar_reporte_inversiones_pdf(modeladmin, request, queryset):
     for plan in elementos:
         lista.append(
             {
-                "empresa":str(plan.empresa.nombre),
+                "empresa": str(plan.empresa.nombre),
                 "plan_obra": format_float(plan.plan_obra),
                 "real_obra": format_float(plan.real_obra),
                 "porciento_obra": format_float(plan.porciento_obra),
@@ -762,7 +763,11 @@ def generar_reporte_atencion_a_la_familia_pdf(modeladmin, request, queryset):
                 "almuerzan_unidades": str(elemento.almuerzan_unidades),
                 "mensajeria": str(elemento.mensajeria),
                 "llevan_en_cantina": str(elemento.llevan_en_cantina),
-                "total_beneficiarios": str(elemento.llevan_en_cantina+elemento.almuerzan_unidades+elemento.mensajeria),
+                "total_beneficiarios": str(
+                    elemento.llevan_en_cantina
+                    + elemento.almuerzan_unidades
+                    + elemento.mensajeria
+                ),
             }
         )
 

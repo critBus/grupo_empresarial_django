@@ -6,6 +6,5 @@ class ProjectConfig(AppConfig):
     name = "apps.project"
     verbose_name = "Modelos"
 
-
     def ready(self):
         from . import signals  # noqa

@@ -111,7 +111,6 @@ def crear_datos_random():
     }
 
     for empresa in Empresa.objects.all():
-
         # Crear Inversiones
         Inversiones.objects.create(
             plan_obra=random.randint(10000, 50000),
@@ -123,7 +122,7 @@ def crear_datos_random():
             plan_resto=random.randint(10000, 50000),
             real_resto=random.randint(10000, 50000),
             porciento_resto=random.randint(10000, 50000),
-            empresa=empresa
+            empresa=empresa,
         )
 
         # Crear Cuadro
@@ -329,8 +328,6 @@ def crear_datos_random():
                 importe_total_real=random.randint(0, 1000),
             )
 
-
-
         # Crear Deficiencias (una por empresa)
         total = random.randint(5, 20)
         resueltas = random.randint(0, total)
@@ -505,7 +502,6 @@ def crear_datos_random():
                 real=random.randint(80, 400),  # Valor aleatorio para el real
             )
 
-
     empresa_seguridad_y_proteccion = Empresa.objects.filter(
         nombre=NOMBRE_EMPRESA_SEGURIDAD_PROTECCION
     ).first()
@@ -533,7 +529,6 @@ def crear_datos_random():
             almuerzan_unidades=random.randint(50, 150),
             mensajeria=random.randint(20, 80),
             llevan_en_cantina=random.randint(30, 100),
-
         )
     current_year = 2024
     for year in range(current_year - 2, current_year + 1):
@@ -556,8 +551,6 @@ def crear_datos_random():
                 ["Cumplido", "Incumplido", "Pendiente", "Con pérdida"]
             ),
         )
-
-
 
     indicadores = ["Pasajeros", "Distancias", "Combustible Consumido"]
     for indicador in indicadores:
