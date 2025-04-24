@@ -118,7 +118,7 @@ class Interruptos(models.Model):
 
 class Delitos(models.Model):
     no_denuncia = models.IntegerField(
-        max_length=10, verbose_name="Código", validators=[MinValueValidator(1)]
+        max_length=10, verbose_name="No. Denuncia", validators=[MinValueValidator(1)]
     )
     denuncia = models.IntegerField(verbose_name="Número de Denuncia")
     MUM_CHOICES=[
