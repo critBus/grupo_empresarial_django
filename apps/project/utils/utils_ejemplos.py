@@ -111,6 +111,20 @@ def crear_datos_random():
     }
 
     for empresa in Empresa.objects.all():
+        # Crear Inversiones
+        Inversiones.objects.create(
+            plan_obra=random.randint(10000, 50000),
+            real_obra=random.randint(10000, 50000),
+            porciento_obra=random.randint(10000, 50000),
+            plan_no_nominales=random.randint(10000, 50000),
+            real_no_nominales=random.randint(10000, 50000),
+            porciento_no_nominales=random.randint(10000, 50000),
+            plan_resto=random.randint(10000, 50000),
+            real_resto=random.randint(10000, 50000),
+            porciento_resto=random.randint(10000, 50000),
+            empresa=empresa,
+        )
+
         # Crear Cuadro
         cuadro = Cuadro.objects.create(
             empresa=empresa,
@@ -179,7 +193,6 @@ def crear_datos_random():
                 Delitos.objects.create(
                     no_denuncia=no_denuncia,
                     empresa=empresa,
-                    denuncia=random.randint(1, 100),
                     municipio=random.choice(municipios),
                     fecha=fake.date_between(start_date="-1y", end_date="today"),
                     unidad=fake.company(),
@@ -313,16 +326,6 @@ def crear_datos_random():
                 cantidad_de_obras_real=random.randint(0, 1000),
                 importe_total_real=random.randint(0, 1000),
             )
-
-        # Crear IndicadorGeneral
-        plan_ind = random.randint(1000, 5000)
-        real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
-        IndicadorGeneral.objects.create(
-            empresa=empresa,
-            plan=plan_ind,
-            real=real_ind,
-            tipo=random.choice(["Producción", "Servicios", "Ventas"]),
-        )
 
         # Crear Deficiencias (una por empresa)
         total = random.randint(5, 20)
@@ -525,7 +528,6 @@ def crear_datos_random():
             almuerzan_unidades=random.randint(50, 150),
             mensajeria=random.randint(20, 80),
             llevan_en_cantina=random.randint(30, 100),
-            total_beneficiarios=random.randint(100, 300),
         )
     current_year = 2024
     for year in range(current_year - 2, current_year + 1):
@@ -549,19 +551,6 @@ def crear_datos_random():
             ),
         )
 
-    # Crear Inversiones
-    Inversiones.objects.create(
-        plan_obra=random.randint(10000, 50000),
-        real_obra=random.randint(10000, 50000),
-        porciento_obra=random.randint(10000, 50000),
-        plan_no_nominales=random.randint(10000, 50000),
-        real_no_nominales=random.randint(10000, 50000),
-        porciento_no_nominales=random.randint(10000, 50000),
-        plan_resto=random.randint(10000, 50000),
-        real_resto=random.randint(10000, 50000),
-        porciento_resto=random.randint(10000, 50000),
-    )
-
     indicadores = ["Pasajeros", "Distancias", "Combustible Consumido"]
     for indicador in indicadores:
         plan_ind = random.randint(1000, 5000)
@@ -572,6 +561,15 @@ def crear_datos_random():
             porciento=int((real_ind / plan_ind) * 100),
             indicador=indicador,
         )
+
+    # Crear IndicadorGeneral
+    plan_ind = random.randint(1000, 5000)
+    real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+    IndicadorGeneral.objects.create(
+        plan=plan_ind,
+        real=real_ind,
+        tipo=random.choice(["Producción", "Servicios", "Ventas"]),
+    )
 
 
 def agregar_perdidas():

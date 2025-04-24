@@ -12,6 +12,7 @@ from apps.project.models import (
     CuentasPagar,
     Deficiencias,
     Delitos,
+    IndicadorGeneral,
     IndicadorGeneralGM,
     InformacionGeneral,
     Inmuebles,
@@ -414,14 +415,15 @@ generar_reporte_plan_de_mantenimiento_pdf.short_description = (
 )
 
 
-def generar_reporte_inversiones_pdf():
-    elementos: List[Inversiones] = [Inversiones.get_solo()]
+def generar_reporte_inversiones_pdf(modeladmin, request, queryset):
+    elementos: List[Inversiones] = queryset
 
     # Organizar datos por empresa y año
     lista = []
     for plan in elementos:
         lista.append(
             {
+                "empresa": str(plan.empresa.nombre),
                 "plan_obra": format_float(plan.plan_obra),
                 "real_obra": format_float(plan.real_obra),
                 "porciento_obra": format_float(plan.porciento_obra),
@@ -759,9 +761,13 @@ def generar_reporte_atencion_a_la_familia_pdf(modeladmin, request, queryset):
                 ),
                 "servicio_diario": str(elemento.servicio_diario),
                 "almuerzan_unidades": str(elemento.almuerzan_unidades),
-                "mensajeria": format_float(elemento.mensajeria),
+                "mensajeria": str(elemento.mensajeria),
                 "llevan_en_cantina": str(elemento.llevan_en_cantina),
-                "total_beneficiarios": str(elemento.total_beneficiarios),
+                "total_beneficiarios": str(
+                    elemento.llevan_en_cantina
+                    + elemento.almuerzan_unidades
+                    + elemento.mensajeria
+                ),
             }
         )
 
@@ -1053,4 +1059,26 @@ def generar_reporte_comunales_vehiculos_pdf(request, entidad: Comunales):
         "Comunales y vehículos comunales",
         data,
         file="reporte_comunales_y_vehiculos",
+    )
+
+
+def generar_reporte_perdidas_alimentaria_pdf(modeladmin, request, queryset):
+    elementos: List[IndicadorGeneral] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "tipo": str(elemento.tipo),
+                "plan": str(elemento.plan),
+                "real": str(elemento.real),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Perdida Alimentaria",
+        data,
+        file="reporte_perdidas_alimentaria",
     )

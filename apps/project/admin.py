@@ -1,8 +1,7 @@
 # Register your models here.
 from django.contrib import admin
-from django.urls import path, reverse
+from django.urls import reverse
 from django.utils.safestring import mark_safe
-from solo.admin import SingletonModelAdmin
 
 from .models import (
     AtencionALaFamilia,
@@ -56,6 +55,7 @@ from .utils.reportes import (
     generar_reporte_material_de_construccion_pdf,
     generar_reporte_material_plastico_recilcado_pdf,
     generar_reporte_medicamentos_pdf,
+    generar_reporte_perdidas_alimentaria_pdf,
     generar_reporte_perdidas_pdf,
     generar_reporte_perfeccionamiento_de_comercio_y_gastronomia_pdf,
     generar_reporte_plan_de_construccion_pdf,
@@ -278,7 +278,6 @@ class DelitosAdmin(admin.ModelAdmin):
         "fecha",
         "municipio",
         "tipocidad",
-        "denuncia",
         "valorPerdidas",
     )
     search_fields = ("unidad", "productosSustraidos")
@@ -482,44 +481,21 @@ class PlanDeMantenimientoAdmin(admin.ModelAdmin):
 
 
 @admin.register(Inversiones)
-class InversionesAdmin(SingletonModelAdmin):
-    change_form_template = "admin/project/inversiones/change_form.html"
-
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path(
-                "ejecutar-script/",
-                self.admin_site.admin_view(self.ejecutar_script_view),
-                name="ejecutar-script-inversiones",
-            ),
-        ]
-        return custom_urls + urls
-
-    def ejecutar_script_view(self, request):
-        return generar_reporte_inversiones_pdf()
-
-    def change_view(self, request, object_id, form_url="", extra_context=None):
-        extra_context = extra_context or {}
-        extra_context["show_script_button"] = True
-        return super().change_view(
-            request, object_id, form_url, extra_context=extra_context
-        )
-
-    def history_view(self, request, object_id, extra_context=None):
-        extra_context = extra_context or {}
-        extra_context["show_script_button"] = True
-        return super().history_view(
-            request, object_id, extra_context=extra_context
-        )
+class InversionesAdmin(admin.ModelAdmin):
+    list_display = ("empresa",)
+    list_filter = ("empresa",)
+    ordering = ("empresa",)
+    list_display_links = ("empresa",)
+    actions = [generar_reporte_inversiones_pdf]
 
 
 @admin.register(IndicadorGeneral)
 class IndicadorGeneralAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "tipo")
-    list_filter = ("empresa", "plan", "real", "tipo")
+    list_display = ("plan", "real", "tipo")
+    list_filter = ("plan", "real", "tipo")
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_perdidas_alimentaria_pdf]
 
 
 @admin.register(Deficiencias)
@@ -767,7 +743,6 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
         "almuerzan_unidades",
         "mensajeria",
         "llevan_en_cantina",
-        "total_beneficiarios",
     )
     list_filter = (
         "fecha",
@@ -777,7 +752,6 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
         "almuerzan_unidades",
         "mensajeria",
         "llevan_en_cantina",
-        "total_beneficiarios",
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()

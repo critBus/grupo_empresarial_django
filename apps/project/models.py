@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from solo.models import SingletonModel
 
 User = get_user_model()
 ROL_NAME_ADMIN = "admin"
@@ -118,32 +117,37 @@ class Interruptos(models.Model):
 
 class Delitos(models.Model):
     no_denuncia = models.IntegerField(
-        max_length=10, verbose_name="Código", validators=[MinValueValidator(1)]
+        max_length=10,
+        verbose_name="No. Denuncia",
+        validators=[MinValueValidator(1)],
     )
-    denuncia = models.IntegerField(verbose_name="Número de Denuncia")
-    MUM_CHOICES=[
-        ('San Jose','San José de las Lajas'),
-        ('Batabano','Batabanó'),
-        ('Bejucal','Bejucal'),
-        ('San Nicolas de Bari','San Nicolás de Bari'),
-        ('Guines','Güines'),
-        ('Jaruco','Jaruco'),
-        ('Madruga','Madruga'),
-        ('Melena','Melena del Sur'),
-        ('Nueva Paz','Nueva Paz'),
-        ('Santa Cruz','Santa Cruz del Norte'),
-        ('Quivican','Quivicán')
+    MUM_CHOICES = [
+        ("San Jose", "San José de las Lajas"),
+        ("Batabano", "Batabanó"),
+        ("Bejucal", "Bejucal"),
+        ("San Nicolas de Bari", "San Nicolás de Bari"),
+        ("Guines", "Güines"),
+        ("Jaruco", "Jaruco"),
+        ("Madruga", "Madruga"),
+        ("Melena", "Melena del Sur"),
+        ("Nueva Paz", "Nueva Paz"),
+        ("Santa Cruz", "Santa Cruz del Norte"),
+        ("Quivican", "Quivicán"),
     ]
 
-    municipio = models.CharField(max_length=50, verbose_name="Municipio",choices= MUM_CHOICES)
+    municipio = models.CharField(
+        max_length=50, verbose_name="Municipio", choices=MUM_CHOICES
+    )
     fecha = models.DateField(verbose_name="Fecha")
     unidad = models.CharField(max_length=50, verbose_name="Unidad")
-    TIP_CHOICES=[
-        ('Robo con fuerza','Robo con Fuerza'),
-        ('Hurto','Hurto'),
-        ('Malversacion','Malversación')
+    TIP_CHOICES = [
+        ("Robo con fuerza", "Robo con Fuerza"),
+        ("Hurto", "Hurto"),
+        ("Malversacion", "Malversación"),
     ]
-    tipocidad = models.CharField(max_length=50, verbose_name="Tipicidad",choices=TIP_CHOICES)
+    tipocidad = models.CharField(
+        max_length=50, verbose_name="Tipicidad", choices=TIP_CHOICES
+    )
     productosSustraidos = models.CharField(
         max_length=255, verbose_name="Productos Sustraídos"
     )
@@ -244,53 +248,90 @@ class Inmuebles(models.Model):
     loc_oficina = models.PositiveIntegerField(
         verbose_name="Loc. oficina", default=0, null=True, blank=True
     )
-    cpl = models.PositiveIntegerField(verbose_name="CPL", default=0, null=True, blank=True)
-    almacenes = models.PositiveIntegerField(verbose_name="almacenes", default=0, null=True, blank=True)
-    farmacias_opticas = models.PositiveIntegerField(
-        verbose_name="farmacias y ópticas / C. auditivo", default=0, null=True, blank=True
+    cpl = models.PositiveIntegerField(
+        verbose_name="CPL", default=0, null=True, blank=True
     )
-    taller = models.PositiveIntegerField(verbose_name="taller", default=0, null=True, blank=True)
-    poncheras = models.PositiveIntegerField(verbose_name="Poncheras", default=0, null=True, blank=True)
+    almacenes = models.PositiveIntegerField(
+        verbose_name="almacenes", default=0, null=True, blank=True
+    )
+    farmacias_opticas = models.PositiveIntegerField(
+        verbose_name="farmacias y ópticas / C. auditivo",
+        default=0,
+        null=True,
+        blank=True,
+    )
+    taller = models.PositiveIntegerField(
+        verbose_name="taller", default=0, null=True, blank=True
+    )
+    poncheras = models.PositiveIntegerField(
+        verbose_name="Poncheras", default=0, null=True, blank=True
+    )
     plantas_fre = models.PositiveIntegerField(
         verbose_name="Plantas Fre", default=0, null=True, blank=True
     )
-    top = models.PositiveIntegerField(verbose_name="TOP", default=0, null=True, blank=True)
+    top = models.PositiveIntegerField(
+        verbose_name="TOP", default=0, null=True, blank=True
+    )
     nave_pasaje = models.PositiveIntegerField(
         verbose_name="nave pasaje", default=0, null=True, blank=True
     )
-    funeraria = models.PositiveIntegerField(verbose_name="Funeraria", default=0, null=True, blank=True)
+    funeraria = models.PositiveIntegerField(
+        verbose_name="Funeraria", default=0, null=True, blank=True
+    )
     floristeria = models.PositiveIntegerField(
         verbose_name="Floristería", default=0, null=True, blank=True
     )
-    banos_p = models.PositiveIntegerField(verbose_name="baños P", default=0, null=True, blank=True)
-    tienda = models.PositiveIntegerField(verbose_name="tienda", default=0, null=True, blank=True)
+    banos_p = models.PositiveIntegerField(
+        verbose_name="baños P", default=0, null=True, blank=True
+    )
+    tienda = models.PositiveIntegerField(
+        verbose_name="tienda", default=0, null=True, blank=True
+    )
     base_carga = models.PositiveIntegerField(
         verbose_name="base carga", default=0, null=True, blank=True
     )
     circulos_s = models.PositiveIntegerField(
         verbose_name="Círculos .S", default=0, null=True, blank=True
     )
-    capillas = models.PositiveIntegerField(verbose_name="Capillas", default=0, null=True, blank=True)
-    comedores = models.PositiveIntegerField(verbose_name="comedores", default=0, null=True, blank=True)
+    capillas = models.PositiveIntegerField(
+        verbose_name="Capillas", default=0, null=True, blank=True
+    )
+    comedores = models.PositiveIntegerField(
+        verbose_name="comedores", default=0, null=True, blank=True
+    )
     panaderias = models.PositiveIntegerField(
         verbose_name="panaderías", default=0, null=True, blank=True
     )
-    dulcerias = models.PositiveIntegerField(verbose_name="dulcerías", default=0, null=True, blank=True)
+    dulcerias = models.PositiveIntegerField(
+        verbose_name="dulcerías", default=0, null=True, blank=True
+    )
     pana_dulc = models.PositiveIntegerField(
         verbose_name="Pana / dulc", default=0, null=True, blank=True
     )
-    bodegas = models.PositiveIntegerField(verbose_name="Bodegas", default=0, null=True, blank=True)
+    bodegas = models.PositiveIntegerField(
+        verbose_name="Bodegas", default=0, null=True, blank=True
+    )
     minitalleres = models.PositiveIntegerField(
         verbose_name="minitalleres", default=0, null=True, blank=True
     )
-    fabricas = models.PositiveIntegerField(verbose_name="fábricas", default=0, null=True, blank=True)
+    fabricas = models.PositiveIntegerField(
+        verbose_name="fábricas", default=0, null=True, blank=True
+    )
     carnicerias = models.PositiveIntegerField(
         verbose_name="Carnicerías", default=0, null=True, blank=True
     )
-    m_ideal = models.PositiveIntegerField(verbose_name="M. Ideal", default=0, null=True, blank=True)
-    mais = models.PositiveIntegerField(verbose_name="MAIS", default=0, null=True, blank=True)
-    tmc = models.PositiveIntegerField(verbose_name="TMC", default=0, null=True, blank=True)
-    bar = models.PositiveIntegerField(verbose_name="Bar", default=0, null=True, blank=True)
+    m_ideal = models.PositiveIntegerField(
+        verbose_name="M. Ideal", default=0, null=True, blank=True
+    )
+    mais = models.PositiveIntegerField(
+        verbose_name="MAIS", default=0, null=True, blank=True
+    )
+    tmc = models.PositiveIntegerField(
+        verbose_name="TMC", default=0, null=True, blank=True
+    )
+    bar = models.PositiveIntegerField(
+        verbose_name="Bar", default=0, null=True, blank=True
+    )
     c_elaboracion = models.PositiveIntegerField(
         verbose_name="C. Elabor.", default=0, null=True, blank=True
     )
@@ -303,15 +344,21 @@ class Inmuebles(models.Model):
     c_nocturno = models.PositiveIntegerField(
         verbose_name="C Nocturno", default=0, null=True, blank=True
     )
-    cabaret = models.PositiveIntegerField(verbose_name="Cabaret", default=0, null=True, blank=True)
-    merendero = models.PositiveIntegerField(verbose_name="Merendero", default=0, null=True, blank=True)
+    cabaret = models.PositiveIntegerField(
+        verbose_name="Cabaret", default=0, null=True, blank=True
+    )
+    merendero = models.PositiveIntegerField(
+        verbose_name="Merendero", default=0, null=True, blank=True
+    )
     heladerias = models.PositiveIntegerField(
         verbose_name="Heladerías", default=0, null=True, blank=True
     )
     alojamiento = models.PositiveIntegerField(
         verbose_name="Alojamiento", default=0, null=True, blank=True
     )
-    servicios = models.PositiveIntegerField(verbose_name="Servicios", default=0, null=True, blank=True)
+    servicios = models.PositiveIntegerField(
+        verbose_name="Servicios", default=0, null=True, blank=True
+    )
     incinerador = models.PositiveIntegerField(
         verbose_name="Incinerador", default=0, null=True, blank=True
     )
@@ -357,7 +404,7 @@ class PlanDeMantenimiento(models.Model):
         return f"Plan Mantenimiento - {self.empresa.nombre}"
 
 
-class Inversiones(SingletonModel):
+class Inversiones(models.Model):
     plan_obra = models.IntegerField(
         verbose_name="Preparación de obra: Plan", default=0
     )
@@ -391,6 +438,9 @@ class Inversiones(SingletonModel):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         default=0,
     )
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
+    )
 
     class Meta:
         verbose_name = "Inversión"
@@ -404,16 +454,13 @@ class IndicadorGeneral(models.Model):
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
     tipo = models.CharField(max_length=70, verbose_name="Tipo")
-    empresa = models.OneToOneField(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
 
     class Meta:
         verbose_name = "Pérdida Alimentaria"
         verbose_name_plural = "Pérdidas Alimentarias"
 
     def __str__(self):
-        return f"Pérdida Alimentaria - {self.empresa.nombre}"
+        return "Pérdida Alimentaria"
 
 
 class Deficiencias(models.Model):
@@ -752,9 +799,6 @@ class AtencionALaFamilia(models.Model):
     llevan_en_cantina = models.PositiveIntegerField(
         verbose_name="Llevan en cantina", default=0
     )
-    total_beneficiarios = models.PositiveIntegerField(
-        verbose_name="Total Beneficiarios", default=0
-    )
 
     class Meta:
         verbose_name = "Atención a la Familia"
@@ -995,21 +1039,23 @@ class VehiculosCumnales(models.Model):
     )
 
     MUM_CHOICES = [
-        ('San Jose', 'San José de las Lajas'),
-        ('Batabano', 'Batabanó'),
-        ('Bejucal', 'Bejucal'),
-        ('San Nicolas de Bari', 'San Nicolás de Bari'),
-        ('Guines', 'Güines'),
-        ('Jaruco', 'Jaruco'),
-        ('Madruga', 'Madruga'),
-        ('Melena', 'Melena del Sur'),
-        ('Nueva Paz', 'Nueva Paz'),
-        ('Santa Cruz', 'Santa Cruz del Norte'),
-        ('Quivican', 'Quivicán')
+        ("San Jose", "San José de las Lajas"),
+        ("Batabano", "Batabanó"),
+        ("Bejucal", "Bejucal"),
+        ("San Nicolas de Bari", "San Nicolás de Bari"),
+        ("Guines", "Güines"),
+        ("Jaruco", "Jaruco"),
+        ("Madruga", "Madruga"),
+        ("Melena", "Melena del Sur"),
+        ("Nueva Paz", "Nueva Paz"),
+        ("Santa Cruz", "Santa Cruz del Norte"),
+        ("Quivican", "Quivicán"),
     ]
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad", default=0)
     activo = models.PositiveIntegerField(verbose_name="Activo", default=0)
-    municipio = models.CharField(max_length=256, verbose_name="Municipio",choices= MUM_CHOICES)
+    municipio = models.CharField(
+        max_length=256, verbose_name="Municipio", choices=MUM_CHOICES
+    )
 
     class Meta:
         verbose_name = "Vehículo Comunales"
