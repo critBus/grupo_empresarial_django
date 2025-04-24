@@ -314,15 +314,7 @@ def crear_datos_random():
                 importe_total_real=random.randint(0, 1000),
             )
 
-        # Crear IndicadorGeneral
-        plan_ind = random.randint(1000, 5000)
-        real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
-        IndicadorGeneral.objects.create(
-            empresa=empresa,
-            plan=plan_ind,
-            real=real_ind,
-            tipo=random.choice(["Producción", "Servicios", "Ventas"]),
-        )
+
 
         # Crear Deficiencias (una por empresa)
         total = random.randint(5, 20)
@@ -572,6 +564,15 @@ def crear_datos_random():
             porciento=int((real_ind / plan_ind) * 100),
             indicador=indicador,
         )
+
+    # Crear IndicadorGeneral
+    plan_ind = random.randint(1000, 5000)
+    real_ind = random.randint(int(plan_ind * 0.7), plan_ind)
+    IndicadorGeneral.objects.create(
+        plan=plan_ind,
+        real=real_ind,
+        tipo=random.choice(["Producción", "Servicios", "Ventas"]),
+    )
 
 
 def agregar_perdidas():

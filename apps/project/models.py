@@ -404,16 +404,14 @@ class IndicadorGeneral(models.Model):
     plan = models.IntegerField(verbose_name="Plan")
     real = models.IntegerField(verbose_name="Real")
     tipo = models.CharField(max_length=70, verbose_name="Tipo")
-    empresa = models.OneToOneField(
-        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
-    )
+
 
     class Meta:
         verbose_name = "Pérdida Alimentaria"
         verbose_name_plural = "Pérdidas Alimentarias"
 
     def __str__(self):
-        return f"Pérdida Alimentaria - {self.empresa.nombre}"
+        return f"Pérdida Alimentaria"
 
 
 class Deficiencias(models.Model):

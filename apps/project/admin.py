@@ -65,7 +65,7 @@ from .utils.reportes import (
     generar_reporte_soberania_alimentaria_pdf,
     generar_reporte_transportacion_de_cargas_pdf,
     generar_reporte_transportacion_de_pasajeros_pdf,
-    generar_reporte_ueb_perdidas_pdf,
+    generar_reporte_ueb_perdidas_pdf, generar_reporte_perdidas_alimentaria_pdf,
 )
 
 
@@ -516,10 +516,11 @@ class InversionesAdmin(SingletonModelAdmin):
 
 @admin.register(IndicadorGeneral)
 class IndicadorGeneralAdmin(admin.ModelAdmin):
-    list_display = ("empresa", "plan", "real", "tipo")
-    list_filter = ("empresa", "plan", "real", "tipo")
+    list_display = ( "plan", "real", "tipo")
+    list_filter = ("plan", "real", "tipo")
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()
+    actions = [generar_reporte_perdidas_alimentaria_pdf]
 
 
 @admin.register(Deficiencias)

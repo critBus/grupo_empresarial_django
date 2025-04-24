@@ -30,7 +30,7 @@ from apps.project.models import (
     TransportacionDeCarga,
     TransportacionDePasajeros,
     UEBperdidas,
-    VehiculosCumnales,
+    VehiculosCumnales, IndicadorGeneral,
 )
 from apps.project.utils.util_reporte_d import custom_export_report_by_name
 
@@ -1053,4 +1053,26 @@ def generar_reporte_comunales_vehiculos_pdf(request, entidad: Comunales):
         "Comunales y vehículos comunales",
         data,
         file="reporte_comunales_y_vehiculos",
+    )
+
+
+def generar_reporte_perdidas_alimentaria_pdf(modeladmin, request, queryset):
+    elementos: List[IndicadorGeneral] = queryset
+    lista = []
+    for elemento in elementos:
+        lista.append(
+            {
+                "tipo": str(elemento.tipo),
+                "plan": str(elemento.plan),
+                "real": str(elemento.real),
+            }
+        )
+
+    data = {
+        "lista": lista,
+    }
+    return custom_export_report_by_name(
+        "Perdida Alimentaria",
+        data,
+        file="reporte_perdidas_alimentaria",
     )
