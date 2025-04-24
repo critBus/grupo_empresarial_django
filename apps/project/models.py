@@ -750,9 +750,7 @@ class AtencionALaFamilia(models.Model):
     llevan_en_cantina = models.PositiveIntegerField(
         verbose_name="Llevan en cantina", default=0
     )
-    total_beneficiarios = models.PositiveIntegerField(
-        verbose_name="Total Beneficiarios", default=0
-    )
+
 
     class Meta:
         verbose_name = "Atención a la Familia"

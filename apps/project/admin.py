@@ -768,7 +768,7 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
         "almuerzan_unidades",
         "mensajeria",
         "llevan_en_cantina",
-        "total_beneficiarios",
+
     )
     list_filter = (
         "fecha",
@@ -778,7 +778,7 @@ class AtencionALaFamiliaAdmin(admin.ModelAdmin):
         "almuerzan_unidades",
         "mensajeria",
         "llevan_en_cantina",
-        "total_beneficiarios",
+
     )
     ordering = list(list_display).copy()
     list_display_links = list(list_display).copy()

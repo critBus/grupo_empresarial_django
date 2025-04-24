@@ -759,9 +759,9 @@ def generar_reporte_atencion_a_la_familia_pdf(modeladmin, request, queryset):
                 ),
                 "servicio_diario": str(elemento.servicio_diario),
                 "almuerzan_unidades": str(elemento.almuerzan_unidades),
-                "mensajeria": format_float(elemento.mensajeria),
+                "mensajeria": str(elemento.mensajeria),
                 "llevan_en_cantina": str(elemento.llevan_en_cantina),
-                "total_beneficiarios": str(elemento.total_beneficiarios),
+                "total_beneficiarios": str(elemento.llevan_en_cantina+elemento.almuerzan_unidades+elemento.mensajeria),
             }
         )
 

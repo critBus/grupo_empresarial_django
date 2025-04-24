@@ -517,7 +517,7 @@ def crear_datos_random():
             almuerzan_unidades=random.randint(50, 150),
             mensajeria=random.randint(20, 80),
             llevan_en_cantina=random.randint(30, 100),
-            total_beneficiarios=random.randint(100, 300),
+
         )
     current_year = 2024
     for year in range(current_year - 2, current_year + 1):
