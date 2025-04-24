@@ -121,7 +121,7 @@ class Delitos(models.Model):
         verbose_name="No. Denuncia",
         validators=[MinValueValidator(1)],
     )
-    denuncia = models.IntegerField(verbose_name="Número de Denuncia")
+    denuncia = models.IntegerField(verbose_name="Cantidad de Denuncias")
     MUM_CHOICES = [
         ("San Jose", "San José de las Lajas"),
         ("Batabano", "Batabanó"),
