@@ -482,36 +482,12 @@ class PlanDeMantenimientoAdmin(admin.ModelAdmin):
 
 
 @admin.register(Inversiones)
-class InversionesAdmin(SingletonModelAdmin):
-    change_form_template = "admin/project/inversiones/change_form.html"
-
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path(
-                "ejecutar-script/",
-                self.admin_site.admin_view(self.ejecutar_script_view),
-                name="ejecutar-script-inversiones",
-            ),
-        ]
-        return custom_urls + urls
-
-    def ejecutar_script_view(self, request):
-        return generar_reporte_inversiones_pdf()
-
-    def change_view(self, request, object_id, form_url="", extra_context=None):
-        extra_context = extra_context or {}
-        extra_context["show_script_button"] = True
-        return super().change_view(
-            request, object_id, form_url, extra_context=extra_context
-        )
-
-    def history_view(self, request, object_id, extra_context=None):
-        extra_context = extra_context or {}
-        extra_context["show_script_button"] = True
-        return super().history_view(
-            request, object_id, extra_context=extra_context
-        )
+class InversionesAdmin(admin.ModelAdmin):
+    list_display = ("empresa",)
+    list_filter = ("empresa",)
+    ordering = ("empresa",)
+    list_display_links = ("empresa",)
+    actions = [generar_reporte_inversiones_pdf]
 
 
 @admin.register(IndicadorGeneral)

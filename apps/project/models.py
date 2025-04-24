@@ -357,7 +357,7 @@ class PlanDeMantenimiento(models.Model):
         return f"Plan Mantenimiento - {self.empresa.nombre}"
 
 
-class Inversiones(SingletonModel):
+class Inversiones(models.Model):
     plan_obra = models.IntegerField(
         verbose_name="Preparación de obra: Plan", default=0
     )
@@ -390,6 +390,9 @@ class Inversiones(SingletonModel):
         verbose_name="Resto de inversiones no nominales: Porcentaje",
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         default=0,
+    )
+    empresa = models.ForeignKey(
+        Empresa, on_delete=models.CASCADE, verbose_name="Empresa"
     )
 
     class Meta:

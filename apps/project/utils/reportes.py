@@ -414,14 +414,15 @@ generar_reporte_plan_de_mantenimiento_pdf.short_description = (
 )
 
 
-def generar_reporte_inversiones_pdf():
-    elementos: List[Inversiones] = [Inversiones.get_solo()]
+def generar_reporte_inversiones_pdf(modeladmin, request, queryset):
+    elementos: List[Inversiones] = queryset
 
     # Organizar datos por empresa y año
     lista = []
     for plan in elementos:
         lista.append(
             {
+                "empresa":str(plan.empresa.nombre),
                 "plan_obra": format_float(plan.plan_obra),
                 "real_obra": format_float(plan.real_obra),
                 "porciento_obra": format_float(plan.porciento_obra),

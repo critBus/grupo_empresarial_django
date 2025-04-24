@@ -111,6 +111,21 @@ def crear_datos_random():
     }
 
     for empresa in Empresa.objects.all():
+
+        # Crear Inversiones
+        Inversiones.objects.create(
+            plan_obra=random.randint(10000, 50000),
+            real_obra=random.randint(10000, 50000),
+            porciento_obra=random.randint(10000, 50000),
+            plan_no_nominales=random.randint(10000, 50000),
+            real_no_nominales=random.randint(10000, 50000),
+            porciento_no_nominales=random.randint(10000, 50000),
+            plan_resto=random.randint(10000, 50000),
+            real_resto=random.randint(10000, 50000),
+            porciento_resto=random.randint(10000, 50000),
+            empresa=empresa
+        )
+
         # Crear Cuadro
         cuadro = Cuadro.objects.create(
             empresa=empresa,
@@ -490,6 +505,7 @@ def crear_datos_random():
                 real=random.randint(80, 400),  # Valor aleatorio para el real
             )
 
+
     empresa_seguridad_y_proteccion = Empresa.objects.filter(
         nombre=NOMBRE_EMPRESA_SEGURIDAD_PROTECCION
     ).first()
@@ -541,18 +557,7 @@ def crear_datos_random():
             ),
         )
 
-    # Crear Inversiones
-    Inversiones.objects.create(
-        plan_obra=random.randint(10000, 50000),
-        real_obra=random.randint(10000, 50000),
-        porciento_obra=random.randint(10000, 50000),
-        plan_no_nominales=random.randint(10000, 50000),
-        real_no_nominales=random.randint(10000, 50000),
-        porciento_no_nominales=random.randint(10000, 50000),
-        plan_resto=random.randint(10000, 50000),
-        real_resto=random.randint(10000, 50000),
-        porciento_resto=random.randint(10000, 50000),
-    )
+
 
     indicadores = ["Pasajeros", "Distancias", "Combustible Consumido"]
     for indicador in indicadores:
